@@ -1,0 +1,10 @@
+name: PseudoModel
+tstep: {{forecast_timestep}}
+states:
+{% for pseudo_model_state in pseudo_model_states %}
+- date: '{{ pseudo_model_state.date }}'
+  basename: '{{ pseudo_model_state.basename }}'
+  ocn_filename: '{{ pseudo_model_state.ocn_filename }}'
+  ice_filename: '{{ pseudo_model_state.ice_filename }}'
+  read_from_file: {{ pseudo_model_state.read_from_file }}
+{% endfor %}

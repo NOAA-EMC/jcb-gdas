@@ -1,0 +1,6 @@
+read_from_file: 1
+basename: {{ background_path}}
+ocn_filename: MOM.res.nc
+ice_filename: cice.res.nc
+date: "{{ marine_background_time }}"
+state variables: {{&soca_model_vars [cicen, hicen, hsnon, socn, tocn, uocn, vocn, ssh, hocn, mld, layer_depth]}}
