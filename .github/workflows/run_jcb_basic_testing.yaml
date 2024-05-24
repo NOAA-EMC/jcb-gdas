@@ -62,6 +62,7 @@ jobs:
         cd jcb_repo
         python get_submod_path.py $JCB_APP_REPO > SUBMODPATH
         SUBMODPATH=$(cat SUBMODPATH)
+        echo $SUBMODPATH
         cd $SUBMODPATH
         git checkout ${{ env.JCB_APP_BRANCH_NAME }}
 
