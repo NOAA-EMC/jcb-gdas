@@ -30,8 +30,8 @@ jobs:
 
     - name: Add repo url to the environment
       run: |
-        echo ${{ github.repository }}
-        echo "JCB_APP_REPO=${{ github.repository }}" >> $GITHUB_ENV
+        echo "https://github.com/${{ github.repository }}"
+        echo "JCB_APP_REPO="https://github.com/${{ github.repository }}" >> $GITHUB_ENV
 
     - name: Determine branch to use
       id: determine-branch
