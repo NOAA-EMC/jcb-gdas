@@ -55,6 +55,9 @@ jobs:
         git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
         cd jcb_repo/src/jcb/configuration/apps/gdas
         git checkout ${{ env.BRANCH_NAME }}
+        echo `git rev-parse HEAD`
+        git branch
+        ls -l
         cd -
 
     - name: Install dependencies
