@@ -16,6 +16,7 @@ jobs:
 
     env:
       JCB_REPO: https://github.com/NOAA-EMC/jcb.git
+      JCB_APP_REPO: https://github.com/NOAA-EMC/jcb-gdas.git
       JCB_DEVELOP_BRANCH: develop
 
     steps:
@@ -33,7 +34,7 @@ jobs:
       id: determine-branch
       run: |
         # Determine if the branch exists in the jcb repo
-        BRANCH_NAME=${{ github.ref_name }}
+        BRANCH_NAME=${{ github.ref }}
         echo "BRANCH NAME IS $BRANCH_NAME"
         git ls-remote --exit-code --heads $JCB_REPO $BRANCH_NAME
         if [ $? -eq 0 ]; then
