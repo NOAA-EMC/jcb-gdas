@@ -40,9 +40,6 @@ jobs:
           BRANCH_NAME=${BRANCH_REF#refs/heads/}
         fi
         echo "Branch name: $BRANCH_NAME"
-
-        # Determine if the branch exists in the jcb repo
-        BRANCH_NAME=${{ github.ref }}
         echo "BRANCH NAME IS $BRANCH_NAME"
         git ls-remote --exit-code --heads $JCB_REPO $BRANCH_NAME
         if [ $? -eq 0 ]; then
