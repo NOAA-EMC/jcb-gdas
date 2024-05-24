@@ -16,8 +16,6 @@ jobs:
 
     env:
       JCB_REPO: https://github.com/NOAA-EMC/jcb.git
-      JCB_APP_REPO: https://github.com/NOAA-EMC/jcb-gdas.git
-      JCB_DEVELOP_BRANCH: develop
 
     steps:
     - name: Checkout submodule repository
@@ -40,6 +38,8 @@ jobs:
           BRANCH_NAME=${BRANCH_REF#refs/heads/}
         fi
 
+        echo "JCB_APP_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
         if git ls-remote --heads $JCB_REPO $BRANCH_NAME | grep -q "refs/heads/$BRANCH_NAME"; then
           echo "Branch $BRANCH_NAME exists in jcb repo."
           echo "JCB_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
@@ -54,7 +54,7 @@ jobs:
         git config --global core.hooksPath empty_hooks
         git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
         cd jcb_repo/src/jcb/configuration/apps/gdas
-        git checkout ${{ env.BRANCH_NAME }}
+        git checkout ${{ env.JCB_APP_BRANCH_NAME }}
         echo `git rev-parse HEAD`
         git branch
         ls -l
@@ -65,7 +65,8 @@ jobs:
         cd jcb_repo
         pip install .[testing]
 
-    - name: Run unit tests
+    - name: Run the JCB client integration tests
       run: |
         cd $GITHUB_WORKSPACE
+        cd test/client_integration
         pytest -v
