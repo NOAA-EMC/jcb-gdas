@@ -16,7 +16,6 @@ jobs:
 
     env:
       JCB_REPO: https://github.com/NOAA-EMC/jcb.git
-      JCB_APP_REPO: "https://github.com/${GITHUB_REPOSITORY}"
 
     steps:
     - name: Checkout submodule repository
@@ -28,6 +27,11 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'  # specify your python version
+
+    - name: Add repo url to the environment
+      run: |
+        echo ${{ github.repository }}
+        echo "JCB_APP_REPO=${{ github.repository }}" >> $GITHUB_ENV
 
     - name: Determine branch to use
       id: determine-branch
