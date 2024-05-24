@@ -1,4 +1,4 @@
-name: Run JCB basic testing with jcb-gdas changes
+name: Run JCB basic testing with client changes
 
 on:
   push:
@@ -16,6 +16,7 @@ jobs:
 
     env:
       JCB_REPO: https://github.com/NOAA-EMC/jcb.git
+      JCB_APP_REPO: "https://github.com/${GITHUB_REPOSITORY}"
 
     steps:
     - name: Checkout submodule repository
@@ -53,7 +54,11 @@ jobs:
         mkdir -p empty_hooks
         git config --global core.hooksPath empty_hooks
         git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
-        cd jcb_repo/src/jcb/configuration/apps/gdas
+
+        cd jcb_repo
+        python get_submod_path.py $JCB_APP_REPO > SUBMODPATH
+        SUBMODPATH=$(cat SUBMODPATH)
+        cd $SUBMODPATH
         git checkout ${{ env.JCB_APP_BRANCH_NAME }}
 
     - name: Install dependencies
