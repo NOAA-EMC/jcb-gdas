@@ -55,10 +55,6 @@ jobs:
         git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
         cd jcb_repo/src/jcb/configuration/apps/gdas
         git checkout ${{ env.JCB_APP_BRANCH_NAME }}
-        echo `git rev-parse HEAD`
-        git branch
-        ls -l
-        cd -
 
     - name: Install dependencies
       run: |
@@ -67,6 +63,5 @@ jobs:
 
     - name: Run the JCB client integration tests
       run: |
-        cd $GITHUB_WORKSPACE
-        cd test/client_integration
+        cd jcb_repo/test/client_integration
         pytest -v
