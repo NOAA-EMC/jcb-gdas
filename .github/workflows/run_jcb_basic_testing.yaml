@@ -33,6 +33,14 @@ jobs:
     - name: Determine branch to use
       id: determine-branch
       run: |
+        if [ "${{ github.event_name }}" == "pull_request" ]; then
+          BRANCH_NAME=${{ github.head_ref }}
+        else
+          BRANCH_REF=${{ github.ref }}
+          BRANCH_NAME=${BRANCH_REF#refs/heads/}
+        fi
+        echo "Branch name: $BRANCH_NAME"
+
         # Determine if the branch exists in the jcb repo
         BRANCH_NAME=${{ github.ref }}
         echo "BRANCH NAME IS $BRANCH_NAME"
