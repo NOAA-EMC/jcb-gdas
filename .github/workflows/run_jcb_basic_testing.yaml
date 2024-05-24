@@ -50,6 +50,7 @@ jobs:
 
     - name: Clone jcb repository
       run: |
+        GIT_CLONE_PROTECTION_ACTIVE=false
         git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
         cd jcb_repo/src/jcb/configuration/apps/gdas
         git checkout ${{ env.BRANCH_NAME }}
