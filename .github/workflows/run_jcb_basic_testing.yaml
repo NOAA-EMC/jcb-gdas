@@ -60,10 +60,7 @@ jobs:
         git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
 
         cd jcb_repo
-        python get_submod_path.py $JCB_APP_REPO > SUBMODPATH
-        SUBMODPATH=$(cat SUBMODPATH)
-        echo $SUBMODPATH
-        cd $SUBMODPATH
+        cd $(python get_submod_path.py $JCB_APP_REPO)
         git checkout ${{ env.JCB_APP_BRANCH_NAME }}
 
     - name: Install dependencies
