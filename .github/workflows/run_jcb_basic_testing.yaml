@@ -40,7 +40,7 @@ jobs:
           BRANCH_NAME=${BRANCH_REF#refs/heads/}
         fi
 
-        if git ls-remote --heads $REPO_URL $BRANCH_NAME | grep -q "refs/heads/$BRANCH_NAME"; then
+        if git ls-remote --heads $JCB_REPO $BRANCH_NAME | grep -q "refs/heads/$BRANCH_NAME"; then
           echo "Branch $BRANCH_NAME exists in jcb repo."
           echo "JCB_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         else
