@@ -39,20 +39,18 @@ jobs:
           BRANCH_REF=${{ github.ref }}
           BRANCH_NAME=${BRANCH_REF#refs/heads/}
         fi
-        echo "Branch name: $BRANCH_NAME"
-        echo "BRANCH NAME IS $BRANCH_NAME"
-        git ls-remote --exit-code --heads $JCB_REPO $BRANCH_NAME
-        if [ $? -eq 0 ]; then
+
+        if git ls-remote --heads $REPO_URL $BRANCH_NAME | grep -q "refs/heads/$BRANCH_NAME"; then
           echo "Branch $BRANCH_NAME exists in jcb repo."
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          echo "JCB_BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
         else
           echo "Branch $BRANCH_NAME does not exist in jcb repo. Using develop branch."
-          echo "BRANCH_NAME=$JCB_DEVELOP_BRANCH" >> $GITHUB_ENV
+          echo "JCB_BRANCH_NAME=develop" >> $GITHUB_ENV
         fi
 
     - name: Clone jcb repository
       run: |
-        git clone --branch ${{ env.BRANCH_NAME }} $JCB_REPO jcb_repo
+        git clone --branch ${{ env.JCB_BRANCH_NAME }} --recursive $JCB_REPO jcb_repo
         cd jcb_repo/src/jcb/configuration/apps/gdas
         git checkout ${{ env.BRANCH_NAME }}
         cd -
