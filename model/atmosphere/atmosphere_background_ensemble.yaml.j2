@@ -13,6 +13,6 @@ members from template:
     filename_sfcd: "%yyyy%mm%dd.%hh%MM%ss.sfc_data.nc"
     filename_sfcw: "%yyyy%mm%dd.%hh%MM%ss.fv_srf_wnd.res.nc"
     filename_cplr: "%yyyy%mm%dd.%hh%MM%ss.coupler.res"
-  pattern: "{{ ensemble_pattern | default("%mem%", true) }}"
+  pattern: "{{ atmosphere_ensemble_pattern | default("%mem%", true) }}"
   nmembers: {{ atmosphere_number_ensemble_members }}
   zero padding: 3

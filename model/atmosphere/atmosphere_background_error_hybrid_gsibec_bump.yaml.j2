@@ -5,19 +5,19 @@ components:
     saber central block:
       saber block name: gsi covariance
       read:
-        gsi akbk: &akbk {{fv3jedi_files_path}}/akbk.nc4
-        gsi error covariance file: &gsiberr {{gsibec_path}}/gsi-coeffs-gfs-global.nc4
-        gsi berror namelist file: &gsibnml {{gsibec_path}}/gfs_gsi_global.nml
-        processor layout x direction: &layout_gsib_x {{layout_gsib_x}}
-        processor layout y direction: &layout_gsib_y {{layout_gsib_y}}
+        gsi akbk: &akbk {{atmosphere_fv3jedi_files_path}}/akbk.nc4
+        gsi error covariance file: &gsiberr {{atmosphere_gsibec_path}}/gsi-coeffs-gfs-global.nc4
+        gsi berror namelist file: &gsibnml {{atmosphere_gsibec_path}}/gfs_gsi_global.nml
+        processor layout x direction: {{atmosphere_layout_gsib_x}}
+        processor layout y direction: {{atmosphere_layout_gsib_y}}
         debugging mode: false
     saber outer blocks:
     - saber block name: gsi interpolation to model grid
       gsi akbk: *akbk
       gsi error covariance file: *gsiberr
       gsi berror namelist file: *gsibnml
-      processor layout x direction: *layout_gsib_x
-      processor layout y direction: *layout_gsib_y
+      processor layout x direction: {{atmosphere_layout_gsib_x}}
+      processor layout y direction: {{atmosphere_layout_gsib_x}}
       debugging mode: false
     linear variable change:
       linear variable change name: Control2Analysis
@@ -41,7 +41,7 @@ components:
         filename_sfcd: "%yyyy%mm%dd.%hh%MM%ss.sfc_data.nc"
         filename_sfcw: "%yyyy%mm%dd.%hh%MM%ss.fv_srf_wnd.res.nc"
         filename_cplr: "%yyyy%mm%dd.%hh%MM%ss.coupler.res"
-      pattern: "{{ ensemble_pattern | default("%mem%", true) }}"
+      pattern: "{{ atmosphere_ensemble_pattern | default("%mem%", true) }}"
       nmembers: {{atmosphere_number_ensemble_members}}
       zero padding: 3
     localization:
