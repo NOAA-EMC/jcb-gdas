@@ -66,7 +66,7 @@ jobs:
     - name: Switch the application branch to match the action
       run: |
         cd jcb_repo
-        cd $(python get_submod_path.py $JCB_APP_REPO)
+        cd $(python jcb_client_path.py $JCB_APP_REPO)
         git checkout ${{ env.JCB_APP_BRANCH }}
 
     - name: Install dependencies
