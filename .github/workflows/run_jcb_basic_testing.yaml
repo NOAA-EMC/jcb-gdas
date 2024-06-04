@@ -63,13 +63,14 @@ jobs:
         cd jcb_repo
         pip install pyyaml
         ./jcb_client_init.py
-        echo "JCB_APP_REPO: $JCB_APP_REPO"
-        echo "Currect directory: $(pwd)"
-        python jcb_client_path.py $JCB_APP_REPO
-        app_path=$(python jcb_client_path.py $JCB_APP_REPO)
-        echo "Application path : $app_path"
-        cd $app_path
-        git checkout ${{ env.JCB_APP_BRANCH }}
+        # If all the branches are found then at this point everything should be good.
+        # If not then the apps branch needs to be checked out explicitly.
+        if [ "${{ env.JCB_BRANCH }}" != "${{ env.JCB_APP_BRANCH }}" ]; then
+          echo "Checking out branch ${{ env.JCB_APP_BRANCH }} for ${{ env.JCB_APP_REPO }}"
+          app_path=$(python jcb_client_path.py $JCB_APP_REPO)
+          cd $app_path
+          git checkout ${{ env.JCB_APP_BRANCH }}
+        fi
 
     - name: Install dependencies
       run: |
