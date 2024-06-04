@@ -63,8 +63,10 @@ jobs:
         cd jcb_repo
         pip install pyyaml
         ./jcb_client_init.py
-        # If all the branches are found then at this point everything should be good.
-        # If not then the apps branch needs to be checked out explicitly.
+
+        # If all the branches are found then at this point everything should be good since
+        # jcb_client_init will check out the correct branches. If not then the app branch needs to
+        # be checked out explicitly.
         if [ "${{ env.JCB_BRANCH }}" != "${{ env.JCB_APP_BRANCH }}" ]; then
           echo "Checking out branch ${{ env.JCB_APP_BRANCH }} for ${{ env.JCB_APP_REPO }}"
           app_path=$(python jcb_client_path.py $JCB_APP_REPO)
