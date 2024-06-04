@@ -66,6 +66,7 @@ jobs:
     - name: Switch the application branch to match the action
       run: |
         cd jcb_repo
+        pip install pyyaml
         cd $(python jcb_client_path.py $JCB_APP_REPO)
         git checkout ${{ env.JCB_APP_BRANCH }}
 
