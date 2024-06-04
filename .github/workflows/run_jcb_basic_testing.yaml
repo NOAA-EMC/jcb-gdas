@@ -65,6 +65,7 @@ jobs:
         ./jcb_client_init.py
         echo "JCB_APP_REPO: ${{ github.repository }}"
         echo "Currect directory: $(pwd)"
+        ls -l
         python jcb_client_path.py ${{ github.repository }}
         app_path=$(python jcb_client_path.py ${{ github.repository }})
         echo "Application path : $app_path"
