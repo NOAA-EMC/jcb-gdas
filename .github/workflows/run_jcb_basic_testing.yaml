@@ -28,7 +28,7 @@ jobs:
 
     - name: Add repo url to the environment
       run: |
-        JCB_APP_REPO="https://github.com/${{ github.repository }}"
+        JCB_APP_REPO="${{ github.repository }}"
         echo "JCB_APP_REPO=${JCB_APP_REPO}" >> $GITHUB_ENV
 
     - name: Determine the name of the client branch
@@ -63,13 +63,13 @@ jobs:
         cd jcb_repo
         pip install pyyaml
         ./jcb_client_init.py
-        echo "JCB_APP_REPO: ${{ github.repository }}"
+        echo "JCB_APP_REPO: $JCB_APP_REPO"
         echo "Currect directory: $(pwd)"
         ls -l
         ls -l src/jcb/configuration
         ls -l src/jcb/configuration/apps
-        python jcb_client_path.py ${{ github.repository }}
-        app_path=$(python jcb_client_path.py ${{ github.repository }})
+        python jcb_client_path.py $JCB_APP_REPO
+        app_path=$(python jcb_client_path.py $JCB_APP_REPO)
         echo "Application path : $app_path"
         cd $app_path
         git checkout ${{ env.JCB_APP_BRANCH }}
