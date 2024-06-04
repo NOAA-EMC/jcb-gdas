@@ -63,8 +63,8 @@ jobs:
         cd jcb_repo
         pip install pyyaml
         ./jcb_client_init.py
-        echo "JCB_APP_REPO: $JCB_APP_REPO"
-        app_path=$(python jcb_client_path.py $JCB_APP_REPO)
+        echo "JCB_APP_REPO: ${{ github.repository }}"
+        app_path=$(python jcb_client_path.py ${{ github.repository }})
         echo "Application path: $app_path"
         cd $app_path
         git checkout ${{ env.JCB_APP_BRANCH }}
