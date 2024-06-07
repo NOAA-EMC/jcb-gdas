@@ -45,12 +45,11 @@ output increment:
   datetime: "{{ snow_increment_time_iso }}"
   filetype: fms restart
   prefix: snowinc
-  filename is datetime templated: true
-  filename_core: "%yyyy%mm%dd.%hh%MM%ss.fv_core.res.nc"
-  filename_trcr: "%yyyy%mm%dd.%hh%MM%ss.fv_tracer.res.nc"
-  filename_sfcd: "%yyyy%mm%dd.%hh%MM%ss.sfc_data.nc"
-  filename_sfcw: "%yyyy%mm%dd.%hh%MM%ss.fv_srf_wnd.res.nc"
-  filename_cplr: "%yyyy%mm%dd.%hh%MM%ss.coupler.res"
+  filename_core: "{{ snow_increment_time_fv3 }}.fv_core.res.nc"
+  filename_trcr: "{{ snow_increment_time_fv3 }}.fv_tracer.res.nc"
+  filename_sfcd: "{{ snow_increment_time_fv3 }}.sfc_data.nc"
+  filename_sfcw: "{{ snow_increment_time_fv3 }}.fv_srf_wnd.res.nc"
+  filename_cplr: "{{ snow_increment_time_fv3 }}.coupler.res"
 ensemble backgrounds:
   pattern: "{{ ensemble_pattern | default("%mem%", true) }}"
   number of members: {{ number_ensemble_members }}
