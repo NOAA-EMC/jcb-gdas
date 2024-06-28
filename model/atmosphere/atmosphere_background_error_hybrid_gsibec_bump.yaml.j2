@@ -33,11 +33,11 @@ components:
       template:
         datetime: "{{ atmosphere_background_time_iso }}"
         filetype: cube sphere history
-	provider: ufs
+        provider: ufs
         state variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
         datapath: {{ atmosphere_background_ensemble_path }}
         filename is datetime templated: true
-	filenames: [ enkf{{ GPREFIX }}cubed_sphere_grid_atmf006.nc, enkf{{ GPREFIX }}cubed_sphere_grid_sfcf006.nc ]
+        filenames: [ {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atmf006.nc, {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_sfcf006.nc ]
       pattern: "{{ atmosphere_ensemble_pattern | default("%mem%", true) }}"
       nmembers: {{atmosphere_number_ensemble_members}}
       zero padding: 3
