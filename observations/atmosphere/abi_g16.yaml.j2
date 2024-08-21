@@ -140,16 +140,16 @@
               minvalue: 0.99
             value: 15
 
-#  - filter: Variable Assignment
-#    assignments:
-#    - name: DerivedMetaData/thinningCriteria
-#      type: int
-#      function:
-#        name: IntObsFunction/Arithmetic
-#        options:
-#          variables:
-#          - name: DerivedMetaData/surfaceParam
-#          coefs: [1]
+  - filter: Variable Assignment
+    assignments:
+    - name: DerivedMetaData/thinningCriteria
+      type: int
+      function:
+        name: IntObsFunction/Arithmetic
+        options:
+          variables:
+          - name: DerivedMetaData/surfaceParam
+          coefs: [1]
 
   obs post filters:
 # step 1: surface type check
