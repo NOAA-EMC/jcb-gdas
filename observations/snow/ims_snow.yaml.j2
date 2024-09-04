@@ -1,0 +1,56 @@
+- 
+
+  # Observation Space (I/O)
+  # -----------------------
+  obs space:
+    name: ims_snow
+    distribution:
+      name: Halo
+      halo size: 250e3
+    obsdatain:
+      engine:
+        type: H5File
+        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}{{snow_obsdatain_suffix}}"
+    obsdataout:
+      engine:
+        type: H5File
+        obsfile: "{{snow_obsdataout_path}}/{{snow_obsdataout_prefix}}{{observation_from_jcb}}{{snow_obsdataout_suffix}}"
+    simulated variables: [totalSnowDepth]
+
+  # Observation Operator
+  # --------------------
+  obs operator:
+    name: Identity
+  obs error:
+    covariance model: diagonal
+  obs localizations:
+    - localization method: Horizontal SOAR
+      lengthscale: 250e3
+      soar horizontal decay: 0.000021
+      max nobs: 1
+
+  # Observation Filters (QC)
+  # ------------------------
+  obs filters:
+    - filter: Bounds Check
+      filter variables:
+      - name: totalSnowDepth
+      minvalue: 0.0
+    - filter: Domain Check # land only
+      where:
+      - variable:
+          name: GeoVaLs/slmsk
+        minvalue: 0.5
+        maxvalue: 1.5
+    - filter: RejectList  # no land-ice
+      where:
+      - variable:
+          name: GeoVaLs/vtype
+        minvalue: 14.5
+        maxvalue: 15.5
+    - filter: Background Check # gross error check
+      filter variables:
+      - name: totalSnowDepth
+      threshold: 6.25
+      action:
+        name: reject
