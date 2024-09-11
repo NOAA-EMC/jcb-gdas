@@ -27,7 +27,7 @@ jedi increment geometry:
   npx: {{ atmosphere_npx_ges }}
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
 fv3 increment geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -39,7 +39,7 @@ fv3 increment geometry:
   npx: {{ atmosphere_npx_ges }}
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
 members from template:
   template:
     background input:
@@ -52,13 +52,13 @@ members from template:
       datetime: '{{ atmosphere_background_time_iso }}'
       state variables: *bkgvars
     jedi increment input:
-      filetype: cube sphere history
+      filetype: fms restart
+      is restart: false
       filename: ./anl/mem%mem%/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
-      provider: ufs
     fv3 increment output:
-      filetype: auxgrid
-      gridtype: gaussian
-      filename: ./anl/mem%mem%/atminc.
+      filetype: fms restart
+      is restart: false
+      filename: ./anl/mem%mem%/atminc.%yyyy%mm%dd_%hh%MM%ssz.nc4
   pattern: '%mem%'
   nmembers: {{ atmosphere_number_ensemble_members }}
   zero padding: 3
