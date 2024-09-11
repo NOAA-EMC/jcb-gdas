@@ -1,67 +1,44 @@
-datetime: '{{ current_cycle | to_isotime }}'
-forecast hours: ['06']
-increment variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,hydrostatic_delz]
-analysis variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,hydrostatic_delz,
-                     w,graupel,surface_geopotential_height,ice_nc,rain_nc,ps,rainwat,snowwat]
-geometries:
-  increment:
-    fms initialization:
-      namelist filename: ./fv3jedi/fmsmpp.nml
-      field table filename: ./fv3jedi/field_table
-    akbk: ./fv3jedi/akbk.nc4
-    layout:
-    - {{ layout_x }}
-    - {{ layout_y }}
-    npx: {{ npx_anl }}
-    npy: {{ npy_anl }}
-    npz: {{ npz_anl }}
-    field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
-  full resolution state:
-    fms initialization:
-      namelist filename: ./fv3jedi/fmsmpp.nml
-      field table filename: ./fv3jedi/field_table
-    akbk: ./fv3jedi/akbk.nc4
-    layout:
-    - {{ layout_x }}
-    - {{ layout_y }}
-    npx: {{ npx_ges }}
-    npy: {{ npy_ges }}
-    npz: {{ npz_ges }}
-    field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
-  ensemble resolution state:
-    fms initialization:
-      namelist filename: ./fv3jedi/fmsmpp.nml
-      field table filename: ./fv3jedi/field_table
-    akbk: ./fv3jedi/akbk.nc4
-    layout:
-    - {{ layout_x }}
-    - {{ layout_y }}
-    npx: {{ npx_anl }}
-    npy: {{ npy_anl }}
-    npz: {{ npz_anl }}
-    field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
-io from template: 
+state geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+increment geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml    
+additions from template: 
   pattern: '%hr%'
+  forecast hours: ['06']
   template:
+    state:
+      datetime: {{ atmosphere_background_time_iso }}
+      filetype: cube sphere history
+      filename: ./calcanl_%hr%/ges.%hr%
+      provider: ufs
+      state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,hydrostatic_delz,
+                        w,graupel,surface_geopotential_height,ice_nc,rain_nc,ps,rainwat,snowwat]
     increment:
-        filetype: cube sphere history
-        filename: ./calcanl_%hr%/siginc.nc.%hr%
-        provider: ufs
-    full resolution states:
-      background:
-        filetype: cube sphere history
-        filename: ./calcanl_%hr%/ges.%hr%
-        provider: ufs
-      analysis: 
-        filetype: auxgrid
-        gridtype: gaussian
-        filename: ./calcanl_%hr%/anl.%hr%.
-    ensemble resolution states:
-      background:
-        filetype: cube sphere history
-        filename: ./calcanl_ensres_%hr%/ges.ensres.%hr%
-        provider: ufs
-      analysis:
-        filetype: auxgrid
-        gridtype: gaussian
-        filename: ./calcanl_ensres_%hr%/anl.ensres.%hr%.
+      filetype: cube sphere history
+      filename: ./calcanl_%hr%/siginc.nc.%hr%
+      provider: ufs
+      added variable: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,hydrostatic_delz]
+    output:
+      filetype: auxgrid
+      gridtype: gaussian
+      filename: ./calcanl_%hr%/anl.%hr%.
