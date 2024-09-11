@@ -54,11 +54,11 @@ members from template:
     jedi increment input:
       filetype: fms restart
       is restart: false
-      filename: ./anl/mem%mem%/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
+      filename_nonrestart: ./anl/mem%mem%/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
     fv3 increment output:
       filetype: fms restart
       is restart: false
-      filename: ./anl/mem%mem%/atminc.%yyyy%mm%dd_%hh%MM%ssz.nc4
+      filename_nonrestart: ./anl/mem%mem%/atminc.%yyyy%mm%dd_%hh%MM%ssz.nc4
   pattern: '%mem%'
   nmembers: {{ atmosphere_number_ensemble_members }}
   zero padding: 3
