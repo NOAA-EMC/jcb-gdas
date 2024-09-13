@@ -24,10 +24,10 @@ jedi increment geometry:
   layout:
   - {{ atmosphere_layout_x }}
   - {{ atmosphere_layout_y }}
-  npx: {{ atmosphere_npx_anl }}
-  npy: {{ atmosphere_npy_anl }}
-  npz: {{ atmosphere_npz_anl }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
 fv3 increment geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -36,9 +36,9 @@ fv3 increment geometry:
   layout:
   - {{ atmosphere_layout_x }}
   - {{ atmosphere_layout_y }}
-  npx: {{ atmosphere_npx_anl }}
-  npy: {{ atmosphere_npy_anl }}
-  npz: {{ atmosphere_npz_anl }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
 members:
 - background input:
@@ -51,10 +51,11 @@ members:
     filenames: [ {{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atmf006.nc, {{ atmosphere_variational_history_prefix }}cubed_sphere_grid_sfcf006.nc ]
     state variables: *bkgvars
   jedi increment input:
-    filetype: cube sphere history
-    filename: ./anl/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
-    provider: ufs
+    filetype: fms restart
+    is restart: false
+    filename is datetime templated: true
+    filename_nonrestart: ./anl/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
   fv3 increment output:
-    filetype: auxgrid
-    gridtype: gaussian
-    filename: ./anl/atminc.
+    filetype: fms restart
+    is restart: false
+    filename_nonrestart: ./anl/atminc.%yyyy%mm%dd_%hh%MM%ssz.nc4

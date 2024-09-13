@@ -1,8 +1,8 @@
 output:
   state component:
-    filetype: cube sphere history
-    filename: ./anl/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
-    provider: ufs
+    filetype: fms restart
+    is restart: false
+    filename_nonrestart: ./anl/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
     fields to write: {{analysis_variables}}
 geometry:
   fms initialization:
@@ -12,7 +12,7 @@ geometry:
   layout:
   - {{atmosphere_layout_x}}
   - {{atmosphere_layout_y}}
-  npx: {{atmosphere_npx_anl}}
-  npy: {{atmosphere_npy_anl}}
-  npz: {{atmosphere_npz_anl}}
-  field metadata override: "{{atmosphere_fv3jedi_files_path}}/fv3jedi_fieldmetadata_history.yaml"
+  npx: {{atmosphere_npx_ges}}
+  npy: {{atmosphere_npy_ges}}
+  npz: {{atmosphere_npz_ges}}
+  field metadata override: "{{atmosphere_fv3jedi_files_path}}/fv3jedi_fieldmetadata_fv3inc.yaml"
