@@ -21,7 +21,7 @@ increment geometry:
   npx: {{ atmosphere_npx_ges }}
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml    
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml    
 additions from template: 
   pattern: '%hr%'
   forecast hours: ['06']
@@ -29,14 +29,14 @@ additions from template:
     state:
       datetime: {{ atmosphere_background_time_iso }}
       filetype: cube sphere history
-      filename: ./calcanl_%hr%/ges.%hr%
+      filename: ./calcanl_%hr%/ges.%hr%.nc
       provider: ufs
       state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,hydrostatic_delz,
                         w,graupel,surface_geopotential_height,ice_nc,rain_nc,ps,rainwat,snowwat]
     increment:
-      filetype: cube sphere history
-      filename: ./calcanl_%hr%/siginc.nc.%hr%
-      provider: ufs
+      filetype: fms restart
+      is restart: false
+      filename_nonrestart: ./calcanl_%hr%/siginc.%hr%.nc
       added variable: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,hydrostatic_delz]
     output:
       filetype: auxgrid
