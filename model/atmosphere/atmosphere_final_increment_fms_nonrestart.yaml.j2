@@ -3,7 +3,7 @@ output:
     filetype: fms restart
     is restart: false
     filename_nonrestart: ./anl/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
-    fields to write: [ugrd,vgrd,tmp,pressfc,spfh,icmr,clwmr,o3mr]
+    fields to write: {{analysis_variables}}
 geometry:
   fms initialization:
     namelist filename: "{{atmosphere_fv3jedi_files_path}}/fmsmpp.nml"
