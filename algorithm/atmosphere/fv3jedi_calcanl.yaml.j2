@@ -29,7 +29,8 @@ additions from template:
     state:
       datetime: "{{ atmosphere_background_time_iso }}"
       filetype: cube sphere history
-      filename: ./calcanl_%hr%/ges.%hr%.nc
+      datapath: ./calcanl_%hr%
+      filenames: [ges.atm.%hr%.nc, ges.sfc.%hr%.nc]
       provider: ufs
       state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz,
                         w,graupel,surface_geopotential_height,ice_nc,rain_nc,ps,rainwat,snowwat]
@@ -37,7 +38,7 @@ additions from template:
       filetype: fms restart
       is restart: false
       filename_nonrestart: ./calcanl_%hr%/siginc.%hr%.nc
-      added variable: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
+      added variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
     output:
       filetype: auxgrid
       gridtype: gaussian
