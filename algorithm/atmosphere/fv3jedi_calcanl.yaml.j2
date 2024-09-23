@@ -53,7 +53,7 @@ additions from template:
     background:
       datetime: "{{ atmosphere_background_time_iso }}"
       filetype: cube sphere history
-      datapath: ./calcanl_%hr%
+      datapath: ./analcalc_%hr%
       filenames: [ges.atm.%hr%.nc, ges.sfc.%hr%.nc]
       provider: ufs
       state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz,
@@ -61,13 +61,13 @@ additions from template:
     increment:
       filetype: fms restart
       is restart: false
-      filename_nonrestart: ./calcanl_%hr%/siginc.%hr%.nc
+      filename_nonrestart: ./analcalc_%hr%/siginc.%hr%.nc
       added variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
     full resolution analysis:
       filetype: auxgrid
       gridtype: gaussian
-      filename: ./calcanl_%hr%/anl.%hr%.
+      filename: ./analcalc_%hr%/anl.%hr%.
     ensemble resolution analysis:
       filetype: auxgrid
       gridtype: gaussian
-      filename: ./calcanl_%hr%/anl.ensres.%hr%.
+      filename: ./analcalc_%hr%/anl.ensres.%hr%.
