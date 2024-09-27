@@ -1,0 +1,13 @@
+mkdir:
+- '{{atmosphere_obsbiasin_path}}'
+copy:
+{% for observation_from_jcb in observations %}
+{% if use_observer(observation_from_jcb) %}
+{% set ob %}
+{% include observation_from_jcb + '.yaml.j2' %}
+{% endset %}
+{% if 'obs bias' in ob %}
+- ['{{atmosphere_obsbiasroot_path}}/{{atmosphere_obsbiasin_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasin_suffix}}', '{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiasin_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasin_suffix}}']
+{% endif %}
+{% endif %}
+{% endfor %}
