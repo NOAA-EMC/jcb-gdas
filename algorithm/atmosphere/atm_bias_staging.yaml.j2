@@ -3,11 +3,8 @@ mkdir:
 copy:
     {% for observation_from_jcb in observations %}
     {% if use_observer(observation_from_jcb) %}
-    {% set ob %}
-    {% include observation_from_jcb + '.yaml.j2' %}
-    {% endset %}
-    {% if 'obs bias' in ob %}
-    - ['{{atmosphere_obsbiasroot_path}}/{{atmosphere_obsbiasin_prefix}}rad_varbc_params.tar', '{{atmosphere_obsbiasin_path}}']
+    {% if observation_from_jcb in bias_files %}
+    - ['{{atmosphere_obsbiasroot_path}}/{{atmosphere_obsbiasin_prefix}}{{bias_files[observation_from_jcb]}}', '{{atmosphere_obsbiasin_path}}']
     {% endif %}
     {% endif %}
     {% endfor %}
