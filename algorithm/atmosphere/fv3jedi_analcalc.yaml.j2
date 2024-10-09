@@ -54,10 +54,10 @@ additions from template:
       datetime: "{{ atmosphere_background_time_iso }}"
       filetype: cube sphere history
       datapath: ./analcalc_%hr%
-      filenames: [ges.atm.%hr%.nc, ges.sfc.%hr%.nc]
+      filename: ges.%hr%.nc
       provider: ufs
-      state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz,
-                        w,graupel,surface_geopotential_height,ice_nc,rain_nc,ps,rainwat,snowwat]
+      state variables: [liq_wat,delz,delp,w,graupel,surface_geopotential_height,
+                        ice_wat,ice_nc,rain_nc,o3mr,rainwat,snowwat,sphum,t,ua,va]
     increment:
       filetype: fms restart
       is restart: false
