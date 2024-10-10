@@ -1,0 +1,73 @@
+background geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+increment geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+full resolution analysis geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
+ensemble resolution analysis geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_anl }}
+  npy: {{ atmosphere_npy_anl }}
+  npz: {{ atmosphere_npz_anl }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
+additions from template: 
+  pattern: '%hr%'
+  forecast hours: ['06']
+  template:
+    background:
+      datetime: "{{ atmosphere_background_time_iso }}"
+      filetype: cube sphere history
+      datapath: ./analcalc_%hr%
+      filename: ges.%hr%.nc
+      provider: ufs
+      state variables: [liq_wat,delz,delp,w,graupel,surface_geopotential_height,
+                        ice_wat,ice_nc,rain_nc,o3mr,rainwat,snowwat,sphum,t,ua,va]
+    increment:
+      filetype: fms restart
+      is restart: false
+      filename_nonrestart: ./analcalc_%hr%/siginc.%hr%.nc
+      added variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
+    full resolution analysis:
+      filetype: auxgrid
+      gridtype: gaussian
+      filename: ./analcalc_%hr%/anl.%hr%.
+    ensemble resolution analysis:
+      filetype: auxgrid
+      gridtype: gaussian
+      filename: ./analcalc_%hr%/anl.ensres.%hr%.
