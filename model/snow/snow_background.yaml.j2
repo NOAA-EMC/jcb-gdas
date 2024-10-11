@@ -1,7 +1,7 @@
 datapath: {{ snow_background_path }}
 filetype: fms restart
 skip coupler file: true
-datetime: '{{ current_cycle | to_isotime }}'
+datetime: '{{ snow_background_time_iso }}'
 state variables: [snodl,vtype,slmsk]
-filename_sfcd: '{{ current_cycle | to_fv3time }}.sfc_data.nc'
-filename_cplr: '{{ current_cycle | to_fv3time }}.coupler.res'
+filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
+filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'

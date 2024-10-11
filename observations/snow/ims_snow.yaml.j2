@@ -23,16 +23,16 @@
 
   # Observation Filters (QC)
   # ------------------------
-  pre obs filters:
-    # assign observation error
-    - filter: Perform Action
-        filter variables:
-        - name: totalSnowDepth
-        action:
-        name: assign error
-        error parameter: 80.0
-  
-  prior obs filters:
+  obs pre filters:
+  # assign observation error
+  - filter: Perform Action
+    filter variables:
+    - name: totalSnowDepth
+    action:
+      name: assign error
+      error parameter: 80.0
+
+  obs prior filters:
   # remove land-ice and sea points
   - filter: Domain Check # land only
     where:
@@ -45,9 +45,9 @@
     - variable:
         name: GeoVaLs/vtype
       minvalue: 14.5
-      maxvalue: 15.5 
+      maxvalue: 15.5
 
-  post obs filters:
+  obs post filters:
   # gross error check
   - filter: Background Check
     filter variables:

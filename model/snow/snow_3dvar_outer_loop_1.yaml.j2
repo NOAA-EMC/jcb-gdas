@@ -15,11 +15,11 @@
     field metadata override: {{snow_fv3jedi_files_path}}/fv3jedi_fieldmetadata_restart.yaml
     time invariant fields:
       state fields:
-        datetime: '{{ SNOW_WINDOW_BEGIN | to_isotime }}'
+        datetime: '{{ snow_background_time_iso }}'
         filetype: fms restart
         skip coupler file: true
         state variables: [orog_filt]
-        datapath: {{ FIXgfs }}/orog/{{ CASE }}/
-        filename_orog: {{ CASE }}.mx{{ OCNRES }}_oro_data.nc
+        datapath: {{snow_orog_files_path}}/
+        filename_orog: {{snow_orog_prefix}}_oro_data.nc
   iagnostics:
     departures: bkgmob

@@ -81,8 +81,8 @@
       action:
         name: reject
     - filter: Temporal Thinning
-      min_spacing: '{{ SNOW_WINDOW_LENGTH }}'
-      seed_time: '{{ current_cycle | to_isotime }}'
+      min_spacing: '{{ window_length }}'
+      seed_time: '{{ snow_background_time_iso }}'
       category_variable:
         name: MetaData/stationIdentification
     - filter: Met Office Buddy Check
