@@ -55,10 +55,10 @@ components:
     members from template:
       template:
         read_from_file: 1
-        date: '{{marine_window_middle | to_isotime}}'
-        basename: ./../
+        date: '{{marine_stddev_time}}'
+        basename: ../ensdata/
         ocn_filename: 'ocn.pert.steric.%mem%.nc'
-        ice_filename: 'ice.%mem%.nc'
+        ice_filename: 'ens/ice.%mem%.nc'
         state variables: [tocn, socn, ssh, uocn, vocn, cicen, hicen, hsnon]
       pattern: '%mem%'
       nmembers: '{{marine_number_ensemble_members}}'
@@ -80,16 +80,16 @@ components:
           - name: ocean
             multivariate strategy: duplicated
             horizontal:
-              filename: hz_ocean.nc
+              filename: ./staticb/hz_ocean.nc
             vertical:
               strategy: duplicated
           - name: ice
             horizontal:
-              filename: hz_ice.nc
+              filename: ./staticb/hz_ice.nc
 
   weight:
     read_from_file: 3
     basename: ./
-    ocn_filename: 'ocn.ens_weights.incr.{{marine_window_middle}}.nc'
-    ice_filename: 'ice.ens_weights.incr.{{marine_window_middle}}.nc'
-    date: '{{marine_window_middle}}'
+    ocn_filename: 'ocean.ens_weights.nc'
+    ice_filename: 'ice.ens_weights.nc'
+    date: '{{marine_stddev_time}}'
