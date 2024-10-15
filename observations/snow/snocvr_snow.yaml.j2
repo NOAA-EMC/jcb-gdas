@@ -7,7 +7,7 @@
     obsdatain:
       engine:
         type: H5File
-        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}{{snow_obsdatain_suffix}}"
+        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}.nc4"
     obsdataout:
       engine:
         type: H5File
@@ -22,6 +22,8 @@
     components:
     - name: Identity
     - name: BackgroundErrorIdentity
+  linear obs operator:
+    name: Identity
   #
 
   # Observation Filters (QC)
