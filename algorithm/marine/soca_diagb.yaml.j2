@@ -2,10 +2,10 @@ geometry:
   mom6_input_nml: mom_input.nml
   fields metadata: ./fields_metadata.yaml
 
-date: '{{ MARINE_WINDOW_END  | to_isotime }}'
+date: '{{ marine_window_end_iso }}'
 
 background:
-  date: '{{ MARINE_WINDOW_END  | to_isotime }}'
+  date: '{{ marine_window_end_iso }}'
   basename: ./bkg/
   ocn_filename: 'ocean.bkg.f009.nc'
   ice_filename: 'ice.bkg.f009.nc'
@@ -13,7 +13,7 @@ background:
 
 background error:
   datadir: ./staticb/
-  date: '{{ MARINE_WINDOW_MIDDLE | to_isotime }}'
+  date: '{{ marine_window_middle_iso }}'
   exp: bkgerr_stddev
   type: incr
 
