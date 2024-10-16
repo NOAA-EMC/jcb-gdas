@@ -149,9 +149,48 @@
         options:
           variables:
           - name: DerivedMetaData/surfaceParam
-          coefs: [1]
+          coefs: [1] 
 
   obs post filters:
+
+# from read_abi: Reject when cloud fraction is more than 30
+  - filter: Domain Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 7-16
+    where:
+    - variable:
+        name: MetaData/cloudAmount
+        channels: 8
+      maxvalue: 30.
+#
+# from read_abi: WV Channels 8-10 scene consistency check SDTB>1.3
+  - filter: Domain Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 7-16
+    where:
+    - variable:
+        name: ClearSkyStdDev/brightnessTemperature
+        channels: 8-10
+      maxvalue: 1.3
+      max_exclusive: true 
+
+#  Thinning
+  - filter: Gaussian Thinning
+    filter variables:
+    - name: brightnessTemperature
+      channels: *{{observation_from_jcb}}_simulated_channels 
+    horizontal_mesh: 145
+    use_reduced_horizontal_grid: true
+    distance_norm: maximum 
+    time_mesh: 'PT06H' 
+    time_min: '2021-07-31T21:00:00Z'
+    time_max: '2021-08-01T03:00:00Z'
+    priority_variable: DerivedMetaData/thinningCriteria
+    action:
+      name: reject
+
 # step 1: surface type check
   - filter: RejectList
     filter variables:
@@ -161,6 +200,7 @@
     - variable:
         name: GeoVaLs/land_area_fraction
       minvalue: 0.99
+
   - filter: RejectList
     filter variables:
     - name: brightnessTemperature
@@ -169,6 +209,7 @@
     - variable:
         name: GeoVaLs/surface_snow_area_fraction
       minvalue: 0.99
+
   - filter: RejectList
     filter variables:
     - name: brightnessTemperature
@@ -177,6 +218,7 @@
     - variable:
         name: GeoVaLs/ice_area_fraction
       minvalue: 0.99
+
   - filter: RejectList
     filter variables:
     - name: brightnessTemperature
@@ -221,7 +263,7 @@
         channels: *{{observation_from_jcb}}_simulated_channels
         options:
           channels: *{{observation_from_jcb}}_simulated_channels 
-     
+   
 #step 4: Cloud detection
   - filter: Bounds Check
     filter variables:
@@ -252,6 +294,7 @@
       maxvalue: 0.5
       max_exclusive: true
 
+
 #step 6: Scene Consistency Channels 8-10 Based on ch 8 SDTB
   - filter: Perform Action
     filter variables:
@@ -265,7 +308,8 @@
       min_exclusive: true
     action:
       name: inflate error
-      inflation factor: 1.14891
+      inflation factor: 1.1489
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -274,12 +318,13 @@
     - variable:
         name: ClearSkyStdDev/brightnessTemperature_8
       maxvalue: 0.6
-      max_exclusive: true
+#      max_exclusive: true
       minvalue: 0.5
       min_exclusive: true
     action:
       name: inflate error
-      inflation factor: 1.29228
+      inflation factor: 1.2923
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -288,11 +333,13 @@
     - variable:
         name: ClearSkyStdDev/brightnessTemperature_8
       maxvalue: 0.7
-      max_exclusive: true
+#      max_exclusive: true
       minvalue: 0.6
+      min_exclusive: true
     action:
       name: inflate error
-      inflation factor: 1.49666
+      inflation factor: 1.4967
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -301,9 +348,10 @@
     - variable:
         name: ClearSkyStdDev/brightnessTemperature_8
       minvalue: 0.7
+      min_exclusive: true
     action:
       name: inflate error
-      inflation factor: 1.51987
+      inflation factor: 1.5199
 
 #step 7: Near SST Check 
   - filter: Bounds Check
@@ -346,7 +394,7 @@
         name: MetaData/cloudAmount
       maxvalue: 2
 
-#step 10: Variable assignment, OmF non bias corrected 
+##step 10: Variable assignment, OmF non bias corrected 
   - filter: Variable Assignment
     assignments:
     - name: OmFNBC@DerivedMetaData
@@ -401,10 +449,9 @@
           options:
             channels: *{{observation_from_jcb}}_simulated_channels
         obserr_bound_max: [{{ get_satellite_variable(observation_from_jcb, "ermax") }}]
-        error parameter vector: *{{observation_from_jcb}}_err
+        error parameter vector: *{{observation_from_jcb}}_err       
     action:
       name: reject
-
 
   # GeoVaLs for Driving Observation Operators (testing mode)
   # --------------------------------------------------------
