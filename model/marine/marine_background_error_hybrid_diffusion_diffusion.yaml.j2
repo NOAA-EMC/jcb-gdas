@@ -3,42 +3,27 @@ components:
 - covariance:
     covariance model: SABER
     saber central block:
-      saber block name: EXPLICIT_DIFFUSION
-      active variables: [tocn, socn, ssh, cicen]
-      geometry:
-        mom6_input_nml: mom_input.nml
-        fields metadata: ./fields_metadata.yaml
-      group mapping:
-      - name: ocean
-        variables:
-        - tocn
-        - socn
-        - ssh
-      - name: ice
-        variables:
-        - cicen
+      saber block name: diffusion
       read:
         groups:
-        - name: ocean
+        - variables: [tocn, socn, ssh]
           horizontal:
-            filename: ./staticb/hz_ocean.nc
+            filepath: ./staticb/hz_ocean
           vertical:
-            filename: ./staticb/vt_ocean.nc
-        - name: ice
+            levels: {{marine_vt_levels}}
+            filepath: ./staticb/vt_ocean
+        - variables: [cicen]
           horizontal:
-            filename: ./staticb/hz_ice.nc
+            filepath: ./staticb/hz_ice
 
     saber outer blocks:
     - saber block name: StdDev
       read:
         model file:
-          date: '{{marine_stddev_time}}'  #'{{marine_window_middle}}'
+          date: '{{marine_stddev_time}}'
           basename: ./staticb/
           ocn_filename: 'ocn.bkgerr_stddev.nc'
           ice_filename: 'ice.bkgerr_stddev.nc'
-          #basename: ./
-          #ocn_filename: 'ocn.bkgerr_stddev.incr.{{marine_window_middle}}.nc'
-          #ice_filename: 'ice.bkgerr_stddev.incr.{{marine_window_middle}}.nc'
           read_from_file: 3
 
     linear variable change:
@@ -46,7 +31,6 @@ components:
       output variables: [cicen, hicen, hsnon, socn, tocn, uocn, vocn, ssh]
       linear variable changes:
       - linear variable change name: BalanceSOCA
-
   weight:
     value: 1.00
 
@@ -63,30 +47,20 @@ components:
       pattern: '%mem%'
       nmembers: '{{marine_number_ensemble_members}}'
     localization:
-      localization method: SABER
+      localization method: SABER=
       saber central block:
-        saber block name: EXPLICIT_DIFFUSION
-        active variables: [tocn, socn, ssh]
-        geometry:
-          mom6_input_nml: mom_input.nml
-          fields metadata: ./fields_metadata.yaml
-        group mapping:
-        - name: ocean
-          variables: [tocn, socn, ssh, uocn, vocn]
-        - name: ice
-          variables: [cicen, hicen, hsnon]
+        saber block name: diffusion
         read:
           groups:
-          - name: ocean
+          - variables: [tocn, socn, ssh]
             multivariate strategy: duplicated
             horizontal:
-              filename: ./staticb/hz_ocean.nc
+              filepath: ./staticb/hz_ocean
             vertical:
               strategy: duplicated
-          - name: ice
+          - variables: [cicen]
             horizontal:
-              filename: ./staticb/hz_ice.nc
-
+              filepath: ./staticb/hz_ice
   weight:
     read_from_file: 3
     basename: ./
