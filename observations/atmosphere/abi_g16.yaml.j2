@@ -152,6 +152,16 @@
           coefs: [1] 
 
   obs post filters:
+  # Satellite Zenith Angle Check
+  - filter: Bounds Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: *{{observation_from_jcb}}_simulated_channels
+    test variables:
+    - name: MetaData/sensorZenithAngle
+    maxvalue: 65.
+    action:
+      name: reject
 
 # from read_abi: Reject when cloud fraction is more than 30
   - filter: Domain Check
@@ -163,7 +173,7 @@
         name: MetaData/cloudAmount
         channels: 8
       maxvalue: 30.
-#
+
 # from read_abi: WV Channels 8-10 scene consistency check SDTB>1.3
   - filter: Domain Check
     filter variables:
@@ -191,7 +201,7 @@
     action:
       name: reject
 
-# step 1: surface type check
+# Surface type check
   - filter: RejectList
     filter variables:
     - name: brightnessTemperature
@@ -241,7 +251,7 @@
       maxvalue: 0.99
       max_exclusive: true
 
-#step 2: BT range check
+# BT range check
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -251,7 +261,7 @@
     action:
       name: reject
 
-#step 3: Model top transmittance check
+# Model top transmittance check
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -264,7 +274,7 @@
         options:
           channels: *{{observation_from_jcb}}_simulated_channels 
    
-#step 4: Cloud detection
+# Cloud detection
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -282,7 +292,7 @@
     action:
       name: reject
 
-#step 5: Scene Consistency Check based on ch13 (10.8 micron)
+# Scene Consistency Check based on ch13 (10.8 micron)
   - filter: Domain Check
     filter variables:
     - name: brightnessTemperature
@@ -295,7 +305,7 @@
       max_exclusive: true
 
 
-#step 6: Scene Consistency Channels 8-10 Based on ch 8 SDTB
+# Scene Consistency Channels 8-10 Based on ch 8 SDTB
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -353,7 +363,7 @@
       name: inflate error
       inflation factor: 1.5199
 
-#step 7: Near SST Check 
+# Near SST Check 
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -368,7 +378,7 @@
     action:
       name: reject
 
-#step 8: Surface Jacobian
+# Surface Jacobian
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -384,7 +394,7 @@
           obserr_demisf: [0.01, 0.02, 0.03, 0.02, 0.03]
           obserr_dtempf: [0.5, 2.0, 4.0, 2.0, 4.0]
 
-#step 9: Channels 7, 10-16 Cloud fraction >2
+# Channels 7, 10-16 Cloud fraction >2
   - filter: Domain Check
     filter variables:
     - name: brightnessTemperature
@@ -394,7 +404,7 @@
         name: MetaData/cloudAmount
       maxvalue: 2
 
-##step 10: Variable assignment, OmF non bias corrected 
+# Variable assignment, OmF non bias corrected 
   - filter: Variable Assignment
     assignments:
     - name: OmFNBC@DerivedMetaData
@@ -417,7 +427,7 @@
             channels: 14
           coefs: [1, -1, 1, -1, 1, -1]
 
-#step 11:Channels 7, 10-16, OmFNBC < -0.75 
+# Channels 7, 10-16, OmFNBC < -0.75 
   - filter: Domain Check
     filter variables:
     - name: brightnessTemperature
@@ -428,7 +438,7 @@
       minvalue: -0.75
       max_exclusive: true
 
-#step12: Final gross check
+# Final gross check
   - filter: Background Check
     filter variables:
     - name: brightnessTemperature
