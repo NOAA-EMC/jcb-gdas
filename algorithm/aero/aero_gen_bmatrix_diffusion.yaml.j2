@@ -24,7 +24,7 @@ background:
                     mass_fraction_of_dust005_in_air, mass_fraction_of_sea_salt001_in_air,
                     mass_fraction_of_sea_salt002_in_air, mass_fraction_of_sea_salt003_in_air,
                     mass_fraction_of_sea_salt004_in_air]
-  datapath: ./bkg
+  datapath: {{ aero_background_path }}
   filename_core: '{{ aero_background_error_time_fv3 }}.anlres.fv_core.res.nc'
   filename_trcr: '{{ aero_background_error_time_fv3 }}.anlres.fv_tracer.res.nc'
   filename_cplr: '{{ aero_background_error_time_fv3 }}.anlres.coupler.res'

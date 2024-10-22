@@ -12,7 +12,7 @@ geometry:
   field metadata override: "{{aero_fv3jedi_files_path}}/fv3jedi_fieldmetadata_restart.yaml"
 output:
   state component:
-    datapath: ./anl
+    datapath: {{ aero_analysis_path }}
     prefix: aeroinc
     filetype: fms restart
     filename_core: '{{ aero_cycle_time_fv3 }}.fv_core.res.nc'
