@@ -9,7 +9,7 @@ input geometry:
   npx: {{ aero_npx_ges }}
   npy: {{ aero_npy_ges }}
   npz: {{ aero_npz_ges }}
-  field metadata override: "{{aero_fv3jedi_files_path}}/fv3jedi_fieldmetadata_restart.yaml"
+  field metadata override: "{{aero_fv3jedi_files_path}}/fv3jedi_fieldmetadata_aerosol_restart.yaml"
 output geometry:
   fms initialization:
     namelist filename: "{{aero_fv3jedi_files_path}}/fmsmpp.nml"
@@ -21,7 +21,7 @@ output geometry:
   npx: {{ aero_npx_anl }}
   npy: {{ aero_npy_anl }}
   npz: {{ aero_npz_anl }}
-  field metadata override: "{{aero_fv3jedi_files_path}}/fv3jedi_fieldmetadata_restart.yaml"
+  field metadata override: "{{aero_fv3jedi_files_path}}/fv3jedi_fieldmetadata_aerosol_restart.yaml"
 states:
 - input:
     datetime: '{{ aero_background_error_time_iso }}'
