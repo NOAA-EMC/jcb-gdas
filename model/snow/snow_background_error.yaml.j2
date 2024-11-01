@@ -11,29 +11,29 @@ saber central block:
       explicit length-scales: true
       horizontal length-scale:
       - groups:
-        - totalSnowDepth_fakeLevels
+        - totalSnowDepth_shadowLevels
         value: 300000.0
       vertical length-scale:
       - groups:
-        - totalSnowDepth_fakeLevels
+        - totalSnowDepth_shadowLevels
         value: 0.0
       interpolation type:
       - groups:
-        - totalSnowDepth_fakeLevels
+        - totalSnowDepth_shadowLevels
         type: c0
       same horizontal convolution: true
     io:
       data directory: {{snow_bump_data_directory}}
-      files prefix: snow_bump_nicas_300km_fakelevels
+      files prefix: snow_bump_nicas_300km_shadowlevels
 saber outer blocks:
-- saber block name: FakeLevels
+- saber block name: ShadowLevels
   fields metadata:
     totalSnowDepth:
       vert_coord: filtered_orography
   calibration:
-    number of fake levels: 50
-    lowest fake level: -450.0
-    highest fake level: 8850.0
+    number of shadow levels: 50
+    lowest shadow level: -450.0
+    highest shadow level: 8850.0
     vertical length-scale: 2000.0
 - saber block name: BUMP_StdDev
   read:
