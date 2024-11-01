@@ -1,0 +1,27 @@
+geometry:
+{% filter indent(width=2) %}
+{% set geometry_background_file = geometry_background_file|default(model_component ~ 'geometry_background', true) ~ '.yaml.j2' %}
+{% include geometry_background_file %}
+{% endfilter %}
+mean output:
+  filetype: fms restart
+  datapath: {{ snow_background_path }}/ensmean
+  filename_core: ensmean.fv_core.res.nc
+  filename_trcr: ensmean.fv_tracer.res.nc
+  filename_sfcd: ensmean.sfc_data.nc
+  filename_sfcw: ensmean.fv_srf_wnd.res.nc
+  filename_cplr: ensmean.coupler.res
+ensemble:
+  members from template:
+    template:
+      datetime: '{{ snow_background_time_iso }}'
+      filetype: fms restart
+      skip coupler file: true
+      state variables: [totalSnowDepth,vtype,slmsk,orog_filt]
+      datapath: {{ snow_background_path }}/mem%mem%/
+      filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
+      filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'
+      filename_orog: '{{snow_orog_prefix}}_oro_data.nc'
+    pattern: '%mem%'
+    nmembers: {{snow_number_ensemble_members}}
+    zero padding: 3
