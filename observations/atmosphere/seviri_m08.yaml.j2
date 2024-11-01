@@ -277,7 +277,7 @@
   - filter: Domain Check
     filter variables:
     - name: brightnessTemperature
-      channels: *seviri_m08_channels
+      channels: *{{observation_from_jcb}}_simulated_channels
     where:
     - variable:
         name: GeoVaLs/surface_geopotential_height 
