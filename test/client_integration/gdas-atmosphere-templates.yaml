@@ -36,12 +36,12 @@ window_length: PT6H
 bound_to_include: begin
 minimizer: DRPCG
 final_diagnostics_departures: anlmob
-analysis_variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
 number_of_outer_loops: 2
 
 
 # Model things
 # ------------
+atmosphere_analysis_variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
 atmosphere_layout_x: 2
 atmosphere_layout_y: 2
 atmosphere_npx_ges: 361
