@@ -1,0 +1,8 @@
+mkdir:
+    - '{{snow_obsdatain_path}}'
+copy:
+    {% for observation_from_jcb in observations %}
+    {% if use_observer(observation_from_jcb) %}
+    - ['{{snow_obsdataroot_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}{{snow_obsdatain_suffix}}', '{{snow_obsdatain_path}}']
+    {% endif %}
+    {% endfor %}
