@@ -60,7 +60,7 @@ members:
     filename: ./anl/atminc.
 
 # Optionally test the application
-{% if test_reference_filename is defined %}
+{% if do_testing %}
 test:
   reference filename: {{test_reference_filename}}
 {% if test_output_filename is defined %}
