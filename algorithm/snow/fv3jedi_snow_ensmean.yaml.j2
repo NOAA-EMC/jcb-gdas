@@ -5,20 +5,19 @@ geometry:
 {% endfilter %}
 mean output:
   filetype: fms restart
-  datapath: {{ snow_background_path }}/ensmean
-  filename_core: ensmean.fv_core.res.nc
-  filename_trcr: ensmean.fv_tracer.res.nc
-  filename_sfcd: ensmean.sfc_data.nc
-  filename_sfcw: ensmean.fv_srf_wnd.res.nc
-  filename_cplr: ensmean.coupler.res
+  datapath: ./bkg/ensmean
+  filename_core: fv_core.res.nc
+  filename_trcr: fv_tracer.res.nc
+  filename_sfcd: sfc_data.nc
+  filename_sfcw: fv_srf_wnd.res.nc
+  filename_cplr: coupler.res
 ensemble:
   members from template:
     template:
       datetime: '{{ snow_background_time_iso }}'
       filetype: fms restart
-      skip coupler file: true
       state variables: [totalSnowDepth,vtype,slmsk,orog_filt]
-      datapath: {{ snow_background_path }}/mem%mem%/
+      datapath: ./bkg/mem%mem%/
       filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
       filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'
       filename_orog: '{{snow_orog_prefix}}_oro_data.nc'
