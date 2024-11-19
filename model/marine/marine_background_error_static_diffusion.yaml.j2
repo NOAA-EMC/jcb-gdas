@@ -3,15 +3,18 @@ saber central block:
   saber block name: diffusion
   read:
     groups:
-    - variables: [tocn, socn, ssh]
+    - variables: [tocn, socn, ssh, cicen]
       horizontal:
         filepath: ./staticb/hz_ocean
       vertical:
         levels: {{marine_vt_levels}}
         filepath: ./staticb/vt_ocean
-    - variables: [cicen]
-      horizontal:
-        filepath: ./staticb/hz_ice
+# TODO(G): OK to not use what's below but it will need
+#          to be fixed when we add ice thickness and
+#          snow depth
+#    - variables: [cicen]
+#      horizontal:
+#        filepath: ./staticb/hz_ice
 
 saber outer blocks:
 - saber block name: StdDev
