@@ -1,6 +1,6 @@
 variable change:
   variable change name: Model2GeoVaLs
-  input variables: &bkgvars [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr,surface_geopotential_height]
+  input variables: &bkgvars [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr,hgtsfc]
   output variables: &fv3incrvars [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
 jedi increment variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
 fv3 increment variables: *fv3incrvars
@@ -58,3 +58,21 @@ members:
     filetype: auxgrid
     gridtype: gaussian
     filename: ./anl/atminc.
+
+# Optionally test the application
+{% if do_testing | default(false) %}
+test:
+  reference filename: {{test_reference_filename}}
+{% if test_output_filename is defined %}
+  test output filename: {{test_output_filename}}
+{% endif %}
+{% if log_output_filename is defined %}
+  log output filename: {{log_output_filename}}
+{% endif %}
+{% if mpi_pattern is defined %}
+  mpi pattern: {{mpi_pattern}}
+{% endif %}
+  float relative tolerance: {{test_float_relative_tolerance | default(1.0e-6, true)}}
+  float absolute tolerance: {{test_float_absolute_tolerance | default(0.0, true) }}
+  integer tolerance: {{test_integer_tolerance | default(0, true) }}
+{% endif %}
