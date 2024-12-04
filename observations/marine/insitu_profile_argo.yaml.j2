@@ -12,7 +12,11 @@
     obsdataout:
       engine:
         type: H5File
-        obsfile: "{{marine_obsdataout_path}}/{{marine_obsdataout_prefix}}{{observation_from_jcb}}{{marine_obsdataout_suffix}}"
+        obsfiles:
+        - "{{marine_obsdataout_path}}/{{marine_obsdataout_prefix}}{{observation_from_jcb}}{{marine_obsdataout_suffix}}"
+        {%- for i in range(1, N + 1) %}
+          - "{{marine_obsdatain_path}}/{{marine_obsdatain_prefix}}{{observation_from_jcb}}_p{{i}}_{{marine_obsdatain_suffix}}"
+        {%- endfor %}
     simulated variables: [waterTemperature, salinity]
     observed variables: [waterTemperature, salinity]
     io pool:
