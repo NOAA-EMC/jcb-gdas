@@ -20,7 +20,7 @@ ensemble:
       datapath: ./bkg/mem%mem%/
       filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
       filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'
-      filename_orog: '{{snow_orog_prefix}}_oro_data.nc'
+      filename_orog: '{{ snow_orog_prefix }}_oro_data.nc'
     pattern: '%mem%'
-    nmembers: {{snow_number_ensemble_members}}
+    nmembers: {{ snow_number_ensemble_members }}
     zero padding: 3

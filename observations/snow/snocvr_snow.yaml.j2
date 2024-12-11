@@ -48,7 +48,7 @@
       filter variables:
       - name: totalSnowDepth
       minvalue: 0.0
-      maxvalue: 2000.0
+      maxvalue: 20000.0
       action:
         name: reject
     - filter: Domain Check
@@ -62,7 +62,7 @@
           name: GeoVaLs/slmsk
         minvalue: 0.5
         maxvalue: 1.5
-    - filter: Domain Check  # no land-ice
+    - filter: RejectList  # no land-ice
       where:
       - variable:
           name: GeoVaLs/vtype
