@@ -6,9 +6,12 @@
     name: sfcsno
     obsdatain:
       engine:
-        type: bufr
-        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}sfcsno.tm00.bufr_d"
-        mapping file: "{{snow_obsdatain_path}}/bufr_sfcsno_mapping.yaml"
+        type: script
+        script file: "{{ USHgfs }}/bufr2ioda_sfcsno.py"
+        args:
+          input_path: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}sfcsno.tm00.bufr_d"
+          mapping_path: "{{snow_obsdatain_path}}/bufr_sfcsno_mapping.yaml"
+        # obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}sfcsno.tm00.bufr_d"
     obsdataout:
       engine:
         type: H5File
