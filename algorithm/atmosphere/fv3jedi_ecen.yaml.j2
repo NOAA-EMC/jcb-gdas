@@ -1,8 +1,13 @@
 forecast hours: ['006']
 window begin: {{ window_begin }}
-state variables: [liq_wat,delz,delp,w,graupel,hgtsfc,
-                  ice_wat,ice_nc,rain_nc,o3mr,rainwat,snowwat,sphum,t,ua,va]
-increment variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
+atmospheric state variables: [liq_wat,delz,delp,w,graupel,hgtsfc,ice_wat,ice_nc,rain_nc,
+                              o3mr,rainwat,snowwat,sphum,t,ua,va]
+surface state variables: [alnsf,alnwf,alvsf,alvwf,cnwat,crain,f10m,facsf,facwf,ffhh,ffmm,
+                          fricv,icec,icetk,land,orog,sfcr,shdmax,shdmin,sltyp,snoalb,snod,
+                          sotyp,spfh2m,tg3,tisfc,tmp2m,tmpsfc,tprcp,veg,vtype,weasd,c0,cd,
+                          dconv,dtcool,qrain,tref,w0,wd,xs,xt,xtts,xu,xv,xz,xzts,zc]
+atmospheric increment variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
+snow increment variables: [
 background geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -54,19 +59,23 @@ correction increment geometry:
 additions from template: 
   pattern: '%hr%'
   template:
-    background:
+    atmospheric background:
       filetype: cube sphere history
       provider: ufs
       filename: ./atmf%hr%.nc
-    increment:
+    surface background:
+      filetype: cube sphere history
+      provider: ufs
+      filename: ./sfcf%hr%.nc      
+    atmospheric increment:
       filetype: fms restart
       is restart: false
       filename_nonrestart: ./atmi%hr%.nc
-    ensemble mean analysis:
+    atmospheric ensemble mean analysis:
       filetype: cube sphere history
       provider: ufs
       filename: ./atma%hr%.ensmean.nc
-    correction increment:
+    atmospheric correction increment:
       filetype: fms restart
       is restart: false
       filename_nonrestart: ./catmi%hr%.nc
