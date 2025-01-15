@@ -22,7 +22,7 @@
   obs operator:
     name: CRTM
     Absorbers: [H2O, O3, CO2]
-    Clouds: &Clouds_in_operator [Water, Ice, Rain, Snow, Graupel]
+    Clouds: &Clouds_in_amsua_n19_operator [Water, Ice, Rain, Snow, Graupel]
 #   Cloud_Fraction: 1.0
     Cloud_Seeding: true
     obs options:
@@ -145,7 +145,7 @@
       channels: *{{observation_from_jcb}}_simulated_channels
       options:
         channels: *{{observation_from_jcb}}_simulated_channels
-        Clouds: *Clouds_in_operator
+        Clouds: *Clouds_in_amsua_n19_operator
         obserr_clearsky: *{{observation_from_jcb}}_err0
         clwret_function:
           name: ObsFunction/CLWRetMW
