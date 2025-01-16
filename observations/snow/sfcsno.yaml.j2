@@ -7,15 +7,14 @@
     obsdatain:
       engine:
         type: script
-        script file: "{{ USHgfs }}/bufr_sfcsno.py"
+        script file: "{{ snow_script_path }}/bufr_sfcsno.py"
         args:
-          input_path: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}sfcsno.tm00.bufr_d"
-          mapping_path: "{{snow_obsdatain_path}}/bufr_sfcsno_mapping.yaml"
-        # obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}sfcsno.tm00.bufr_d"
+          input_path: "{{ snow_obsdatain_path }}/{{ snow_obsdatain_prefix }}sfcsno.tm00.bufr_d"
+          mapping_path: "{{ snow_obsdatain_path }}/bufr_sfcsno_mapping.yaml"
     obsdataout:
       engine:
         type: H5File
-        obsfile: "{{snow_obsdataout_path}}/{{snow_obsdataout_prefix}}sfcsno{{snow_obsdataout_suffix}}"
+        obsfile: "{{ snow_obsdataout_path }}/{{ snow_obsdataout_prefix }}sfcsno{{ snow_obsdataout_suffix }}"
     simulated variables: [totalSnowDepth]
   #
 
