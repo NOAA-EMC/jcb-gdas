@@ -22,7 +22,7 @@
   obs operator:
     name: CRTM
     Absorbers: [H2O, O3, CO2]
-    Clouds: &Clouds_in_atms_n21_operator [Water, Ice, Rain, Snow, Graupel]
+    Clouds: &{{observation_from_jcb}}_clouds [Water, Ice, Rain, Snow, Graupel]
 #   Cloud_Fraction: 1.0
     Cloud_Seeding: true
     obs options:
@@ -38,7 +38,7 @@
     input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiasin_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasin_suffix}}"
     output file: "{{atmosphere_obsbiasout_path}}/{{atmosphere_obsbiasout_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasout_suffix}}"
     variables without bc: [brightnessTemperature]
-    channels: &{{observation_from_jcb}}_not_bias_corrected {{ get_satellite_variable(observation_from_jcb, "not_biascorrtd") }}
+    channels: {{ get_satellite_variable(observation_from_jcb, "not_biascorrtd") }}
     variational bc:
       predictors:
       - name: constant
@@ -135,6 +135,7 @@
           clwret_ch238: 1
           clwret_ch314: 2
           clwret_types: [ObsValue]
+
   # Calculate CLW retrieved from observation
   - filter: Variable Assignment
     assignments:
@@ -146,6 +147,7 @@
           clwret_ch238: 1
           clwret_ch314: 2
           clwret_types: [HofX]
+
   # Calculate symmetric retrieved CLW
   - filter: Variable Assignment
     assignments:
@@ -187,6 +189,7 @@
           scatret_ch314: 2
           scatret_ch890: 16
           scatret_types: [ObsValue]
+
   # Calculate CLW obs/bkg match index
   - filter: Variable Assignment
     assignments:
@@ -205,6 +208,7 @@
           clwret_clearsky: [0.030, 0.030, 0.030, 0.020, 0.030, 0.080, 0.150, 0.000,
             0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.000, 0.020, 0.030, 0.030,
             0.030, 0.030, 0.050, 0.100]
+
   # Calculate symmetric observation error
   - filter: Variable Assignment
     assignments:
@@ -230,6 +234,7 @@
           err1: [20.000, 25.000, 12.000, 7.000, 3.500, 3.000, 0.800, 0.400, 0.400,
             0.400, 0.450, 0.450, 0.550, 0.800, 4.000, 19.000, 30.000, 25.000, 16.500,
             12.000, 9.000, 6.500]
+
   # Calculate Innovation@DerivedMetaData
   - filter: Variable Assignment
     assignments:
@@ -246,6 +251,7 @@
           - name: brightnessTemperature@HofX
             channels: *{{observation_from_jcb}}_simulated_channels
           coefs: [1, -1]
+
   # Step 0-C: Assign Initial All-Sky Observation Error
   - filter: Perform Action
     filter variables:
@@ -256,6 +262,7 @@
       error function:
         name: InitialObsError@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
+
   # Step 1: Remove Observations from the Edge of the Scan
   - filter: Domain Check
     filter variables:
@@ -270,17 +277,17 @@
       flag: ScanEdgeRemoval
     - name: reject
 
-# # Step 2: Data Thinning
-# - filter: Gaussian Thinning
-#   horizontal_mesh: 145
-#   use_reduced_horizontal_grid: true
-#   distance_norm: geodesic
-# #  round_horizontal_bin_count_to_nearest: true
-# #  partition_longitude_bins_using_mesh: true
-#   actions:
-#   - name: set
-#     flag: Thinning
-#   - name: reject
+  # Step 2: Data Thinning
+  - filter: Gaussian Thinning
+    horizontal_mesh: 145
+    use_reduced_horizontal_grid: true
+    distance_norm: geodesic
+  #  round_horizontal_bin_count_to_nearest: true
+  #  partition_longitude_bins_using_mesh: true
+    actions:
+    - name: set
+      flag: Thinning
+    - name: reject
 
   # Step 3A: CLW Retrieval Check (observation_based)
   - filter: Bounds Check
@@ -343,7 +350,7 @@
           obserr_function:
             name: InitialObsError@DerivedMetaData
             channels: *{{observation_from_jcb}}_simulated_channels
-          Clouds: *Clouds_in_atms_n21_operator
+          Clouds: *{{observation_from_jcb}}_clouds
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -370,6 +377,7 @@
         options:
           sensor: *{{observation_from_jcb}}_sensor_id
           channels: *{{observation_from_jcb}}_simulated_channels
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -379,6 +387,7 @@
       inflation variable:
         name: ObsErrorFactorTopo@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
+
   # Step 7: Obs Error Inflation based on TOA Transmittancec Check
   - filter: Variable Assignment
     assignments:
@@ -390,6 +399,7 @@
         channels: *{{observation_from_jcb}}_simulated_channels
         options:
           channels: *{{observation_from_jcb}}_simulated_channels
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -399,6 +409,7 @@
       inflation variable:
         name: ObsErrorFactorTransmitTop@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
+
   # Step 8: Observation Error Inflation based on Surface Jacobian Check
   - filter: Variable Assignment
     assignments:
@@ -413,6 +424,7 @@
           channels: *{{observation_from_jcb}}_simulated_channels
           obserr_demisf: [0.010, 0.020, 0.015, 0.020, 0.200]
           obserr_dtempf: [0.500, 2.000, 1.000, 2.000, 4.500]
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -422,6 +434,7 @@
       inflation variable:
         name: ObsErrorFactorSurfJacobian@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
+
   # Step 9: Situation Dependent Check
   - filter: Variable Assignment
     assignments:
@@ -449,6 +462,7 @@
           obserr_clearsky: [4.500, 4.500, 4.500, 2.500, 0.550, 0.300, 0.300, 0.400,
             0.400, 0.400, 0.450, 0.450, 0.550, 0.800, 4.000, 4.000, 4.000, 3.500,
             3.000, 3.000, 3.000, 3.000]
+
   - filter: Perform Action
     filter variables:
     - name: brightnessTemperature
@@ -458,6 +472,7 @@
       inflation variable:
         name: ObsErrorFactorSituDepend@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
+
   # Step 10: Gross check
   # Remove data if abs(Obs-HofX) > absolute threshold
   - filter: Variable Assignment
@@ -468,6 +483,7 @@
         name: ObsErrorFactorLatRad@ObsFunction
         options:
           latitude_parameters: [25.0, 0.25, 0.04, 3.0]
+
   - filter: Variable Assignment
     assignments:
     - name: ObsErrorBound@DerivedMetaData
@@ -496,6 +512,7 @@
           threshold_precip: 2.5
           obserr_bound_max: [4.5, 4.5, 3.0, 3.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
             1.0, 1.0, 2.0, 4.5, 4.5, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+
   - filter: Background Check
     filter variables:
     - name: brightnessTemperature

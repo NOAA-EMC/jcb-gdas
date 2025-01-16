@@ -22,7 +22,7 @@
   obs operator:
     name: CRTM
     Absorbers: [H2O, O3, CO2]
-    Clouds: &Clouds_in_amsua_n19_operator [Water, Ice, Rain, Snow, Graupel]
+    Clouds: &{{observation_from_jcb}}_clouds [Water, Ice, Rain, Snow, Graupel]
 #   Cloud_Fraction: 1.0
     Cloud_Seeding: true
     obs options:
@@ -36,7 +36,7 @@
     input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiasin_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasin_suffix}}"
     output file: "{{atmosphere_obsbiasout_path}}/{{atmosphere_obsbiasout_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasout_suffix}}"
     variables without bc: [brightnessTemperature]
-    channels: &{{observation_from_jcb}}_not_bias_corrected {{ get_satellite_variable(observation_from_jcb, "not_biascorrtd") }}
+    channels: {{ get_satellite_variable(observation_from_jcb, "not_biascorrtd") }}
     variational bc:
       predictors:
       - name: constant
@@ -145,7 +145,7 @@
       channels: *{{observation_from_jcb}}_simulated_channels
       options:
         channels: *{{observation_from_jcb}}_simulated_channels
-        Clouds: *Clouds_in_amsua_n19_operator
+        Clouds: *{{observation_from_jcb}}_clouds
         obserr_clearsky: *{{observation_from_jcb}}_err0
         clwret_function:
           name: ObsFunction/CLWRetMW
