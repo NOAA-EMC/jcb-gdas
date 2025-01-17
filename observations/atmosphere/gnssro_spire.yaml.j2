@@ -43,15 +43,6 @@
       initial value: false 
       force reinitialization: true
   
-  # Diagnostic flag for qfro
-  - filter: Create Diagnostic Flags
-    filter variables:
-    - name: bendingAngle
-    flags:
-    - name: qfroCheckReject
-      initial value: false
-      force reinitialization: true
-  
   # Step 0-B: pccf Check for CDACC data  - good: 0.1-100, reject: 0
   - filter: Bounds Check
     filter variables:

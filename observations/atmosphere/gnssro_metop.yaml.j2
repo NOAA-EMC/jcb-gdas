@@ -34,15 +34,6 @@
   obs filters:
   # Apply gross check using pccf
   # Step 0-A: Create Diagnostic Flags 
-  # Diagnostic flag for pccf
-  - filter: Create Diagnostic Flags
-    filter variables:  
-    - name: bendingAngle 
-    flags:
-    - name: pccfCheckReject
-      initial value: false 
-      force reinitialization: true
-  
   # Diagnostic flag for qfro
   - filter: Create Diagnostic Flags
     filter variables:
