@@ -3,7 +3,7 @@
   # Observation Space (I/O)
   # -----------------------
   obs space:
-    name: gnssrobndnbam_metop
+    name: gnssrobndnbam
     obsdatain:
       engine:
         type: H5File
@@ -52,23 +52,6 @@
       initial value: false
       force reinitialization: true
   
-  # Step 0-B: pccf Check for CDACC data  - good: 0.1-100, reject: 0
-  #- filter: Bounds Check
-  #  filter variables:
-  #  - name: bendingAngle
-  #  where:
-  #  - variable:
-  #      name: MetaData/satelliteIdentifier
-  #    is_in: 265-269,750-755,44,786,820,825
-  #  test variables:
-  #  - name: MetaData/pccf
-  #  minvalue: 0.1
-  #  maxvalue: 100.1
-  #  actions:
-  #  - name: set
-  #    flag: pccfCheckReject
-  #  - name: reject
-  
   # Step 0-B: qfro Check - good: 0, reject: 1
   - filter: Bounds Check
     filter variables:
@@ -97,14 +80,6 @@
       maxvalue: 55000.1
     action:
       name: reject
-  #2. Background check
-  #- filter: Background Check
-  #  filter variables:
-  #  - name: bendingAngle
-  #  threshold: 10
-  #  action:
-  #    name: reject
-  #  defer to post: true
   #2. metop below 8 km
   - filter: Bounds Check
     filter variables:

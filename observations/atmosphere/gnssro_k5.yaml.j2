@@ -3,7 +3,7 @@
   # Observation Space (I/O)
   # -----------------------
   obs space:
-    name: gnssrobndnbam_k5
+    name: gnssrobndnbam
     obsdatain:
       engine:
         type: H5File
@@ -69,23 +69,6 @@
       flag: pccfCheckReject
     - name: reject
   
-  # Step 0-B: qfro Check - good: 0, reject: 1
-  #- filter: Bounds Check
-  #  filter variables:
-  #  - name: bendingAngle
-  #  where:
-  #  - variable:
-  #      name: MetaData/satelliteIdentifier
-  #    is_in: 3-5,421,440,821
-  #  test variables:
-  #  - name: MetaData/qualityFlags
-  #  minvalue: -0.1
-  #  maxvalue: 0.9
-  #  actions:
-  #  - name: set
-  #    flag: qfroCheckReject
-  #  - name: reject
-  
   #1. gpstop
   - filter: Domain Check
     filter variables:
@@ -97,14 +80,6 @@
       maxvalue: 55000.1
     action:
       name: reject
-  #2. Background check
-  #- filter: Background Check
-  #  filter variables:
-  #  - name: bendingAngle
-  #  threshold: 10
-  #  action:
-  #    name: reject
-  #  defer to post: true
   #3. RONBAM cut off check
   - filter: Background Check RONBAM
     filter variables:
