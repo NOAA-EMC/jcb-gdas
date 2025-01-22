@@ -64,19 +64,19 @@ additions from template:
     atmospheric background:
       filetype: cube sphere history
       provider: ufs
-      filename: ./atmf%hr%.nc
+      filename: ./cubed_sphere_grid_atmf%hr%.nc
     atmospheric increment:
       filetype: fms restart
       is restart: false
-      filename_nonrestart: ./atmi%hr%.nc
+      filename_nonrestart: ./cubed_sphere_grid_atmi%hr%.nc
     atmospheric ensemble mean analysis:
       filetype: cube sphere history
       provider: ufs
-      filename: ./atma%hr%.ensmean.nc
+      filename: ./cubed_sphere_grid_atma%hr%.ensmean.nc
     atmospheric correction increment:
       filetype: fms restart
       is restart: false
-      filename_nonrestart: ./catmi%hr%.nc
+      filename_nonrestart: ./cubed_sphere_grid_catmi%hr%.nc
     atmospheric increment to structured grid:
       grid type: regular gaussian
       local interpolator type: oops unstructured grid interpolator
