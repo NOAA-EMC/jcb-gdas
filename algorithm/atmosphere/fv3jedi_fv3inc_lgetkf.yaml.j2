@@ -48,19 +48,19 @@ members from template:
       provider: ufs
       ufs soil nlev: 4
       ufs fields split by level: [smc,stc]
-      filenames: [ atmf006.nc, sfcf006.nc ]
+      filenames: [ cubed_sphere_grid_atmf006.nc, cubed_sphere_grid_sfcf006.nc ]
       datetime: '{{ atmosphere_background_time_iso }}'
       state variables: *bkgvars
     jedi increment input:
       filetype: fms restart
       is restart: false
       datapath: ./anl/mem%mem%
-      filename_nonrestart: atminc.jedi.nc
+      filename_nonrestart: cubed_sphere_grid_atminc.jedi.nc
     fv3 increment output:
       filetype: fms restart
       is restart: false
       datapath: ./anl/mem%mem%
-      filename_nonrestart: atminc.nc        
+      filename_nonrestart: cubed_sphere_grid_atminc.nc
   pattern: '%mem%'
   nmembers: {{ atmosphere_number_ensemble_members }}
   zero padding: 3

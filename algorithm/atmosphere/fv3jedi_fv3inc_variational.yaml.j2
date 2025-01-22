@@ -48,17 +48,17 @@ members:
     ufs soil nlev: 4
     ufs fields split by level: [smc,stc]
     datetime: "{{ atmosphere_background_time_iso }}"
-    filenames: [ atmf006.nc, sfcf006.nc ]
+    filenames: [ cubed_sphere_grid_atmf006.nc, cubed_sphere_grid_sfcf006.nc ]
     state variables: *bkgvars
   jedi increment input:
     filetype: fms restart
     is restart: false
     filename is datetime templated: true
-    filename_nonrestart: ./anl/atminc.jedi.nc
+    filename_nonrestart: ./anl/cubed_sphere_grid_atminc.jedi.nc
   fv3 increment output:
     filetype: fms restart
     is restart: false
-    filename_nonrestart: ./anl/atminc.nc
+    filename_nonrestart: ./anl/cubed_sphere_grid_atminc.nc
 
 # Optionally test the application
 {% if do_testing | default(false) %}
