@@ -30,11 +30,11 @@
   #  threshold: 5.0
   - filter: Domain Check
     where:
-    - variable: { name: GeoVaLs/sea_surface_temperature}
+    - variable: { name: GeoVaLs/sea_air_temperature_at_2m}
       maxvalue: 2.0
   - filter: Domain Check
     where:
-    - variable: { name: GeoVaLs/sea_surface_temperature}
+    - variable: { name: GeoVaLs/sea_air_temperature_at_2m}
       maxvalue: 0.0
     action:
       name: inflate error
@@ -47,5 +47,5 @@
     action:
       name: passivate
     where:
-    - variable: {name: GeoVaLs/sea_surface_temperature}
+    - variable: {name: GeoVaLs/sea_air_temperature_at_2m}
       maxvalue: -4.0
