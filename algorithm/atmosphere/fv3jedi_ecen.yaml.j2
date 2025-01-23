@@ -1,5 +1,10 @@
 forecast hours: ['006']
 window begin: {{ window_begin }}
+{% if run_type == "gdas" %}
+compute correction increment: true
+{% else %}
+compute correction increment: false
+{% endif %}
 atmospheric variables:
 - cloud_liquid_water
 - layer_thickness
@@ -10,18 +15,6 @@ atmospheric variables:
 - air_temperature
 - eastward_wind
 - northward_wind
-background geometry:
-  fms initialization:
-    namelist filename: ./fv3jedi/fmsmpp.nml
-    field table filename: ./fv3jedi/field_table
-  akbk: ./fv3jedi/akbk.nc4
-  layout:
-  - {{ atmosphere_layout_x }}
-  - {{ atmosphere_layout_y }}
-  npx: {{ atmosphere_npx_ges }}
-  npy: {{ atmosphere_npy_ges }}
-  npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
 increment geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -34,6 +27,18 @@ increment geometry:
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+background geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
 ensemble mean analysis geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -61,22 +66,10 @@ correction increment geometry:
 additions from template:
   pattern: '%hr%'
   template:
-    atmospheric background:
-      filetype: cube sphere history
-      provider: ufs
-      filename: ./cubed_sphere_grid_atmf%hr%.nc
     atmospheric increment:
       filetype: fms restart
       is restart: false
       filename_nonrestart: ./cubed_sphere_grid_atmi%hr%.nc
-    atmospheric ensemble mean analysis:
-      filetype: cube sphere history
-      provider: ufs
-      filename: ./cubed_sphere_grid_atma%hr%.ensmean.nc
-    atmospheric correction increment:
-      filetype: fms restart
-      is restart: false
-      filename_nonrestart: ./cubed_sphere_grid_catmi%hr%.nc
     atmospheric increment to structured grid:
       grid type: regular gaussian
       local interpolator type: oops unstructured grid interpolator
@@ -107,7 +100,7 @@ additions from template:
         - name: levels
           io name: pfull
           variable io name: pfull
-        variables
+        variables:
         - name: cloud_liquid_water
           io name: clwmr
         - name: layer_thickness
@@ -126,3 +119,17 @@ additions from template:
           io name: ugrd
         - name: northward_wind
           io name: vgrd
+{% if run_type == "gdas" %}
+    atmospheric background:
+      filetype: cube sphere history
+      provider: ufs
+      filename: ./cubed_sphere_grid_atmf%hr%.nc
+    atmospheric ensemble mean analysis:
+      filetype: cube sphere history
+      provider: ufs
+      filename: ./cubed_sphere_grid_atma%hr%.ensmean.nc
+    atmospheric correction increment:
+      filetype: fms restart
+      is restart: false
+      filename_nonrestart: ./cubed_sphere_grid_catmi%hr%.nc
+{% endif %}
