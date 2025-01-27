@@ -1,0 +1,26 @@
+grid type: regular gaussian
+local interpolator type: atlas interpolator
+interpolation method:
+  type: finite-element
+number of latitude gridpoints: {{ snow_npy_ges - 1 }}
+variables to output: [totalSnowDepth]
+all model levels: true
+datapath: ./anl
+prefix: snowinc_gauss
+use time dimension: true
+use dummy surface levels: false
+level first dimension ordering: true
+field aliases:
+  dimensions:
+    - name: longitude
+      io name: grid_xt
+      variable io name: grid_xt
+    - name: latitude
+      io name: grid_yt
+      variable io name: grid_yt
+    - name: levels
+      io name: pfull
+      variable io name: pfull
+  variables:
+    - name: totalSnowDepth
+      io name: snodl

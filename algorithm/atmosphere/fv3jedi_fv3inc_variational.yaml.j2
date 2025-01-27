@@ -59,6 +59,57 @@ members:
     filetype: fms restart
     is restart: false
     filename_nonrestart: ./anl/cubed_sphere_grid_atminc.nc
+  fv3 increment to structured grid:
+    grid type: regular gaussian
+    local interpolator type: atlas interpolator
+    interpolation method:
+      type: finite-element
+    all model levels: true
+    number of latitude gridpoints: {{ atmosphere_npy_ges - 1 }}
+    prefix: atminc
+    use time dimension: true
+    use dummy surface levels: false
+    level first dimension ordering: true
+    variables to output:
+    - cloud_liquid_water
+    - layer_thickness
+    - air_pressure_thickness
+    - cloud_liquid_ice
+    - ozone_mass_mixing_ratio
+    - water_vapor_mixing_ratio_wrt_moist_air
+    - air_temperature
+    - eastward_wind
+    - northward_wind
+    field aliases:
+      dimensions:
+      - name: longitude
+        io name: grid_xt
+        variable io name: grid_xt
+      - name: latitude
+        io name: grid_yt
+        variable io name: grid_yt
+      - name: levels
+        io name: pfull
+        variable io name: pfull
+      variables:
+      - name: cloud_liquid_water
+        io name: clwmr
+      - name: layer_thickness
+        io name: delz
+      - name: air_pressure_thickness
+        io name: dpres
+      - name: cloud_liquid_ice
+        io name: icmr
+      - name: ozone_mass_mixing_ratio
+        io name: o3mr
+      - name: water_vapor_mixing_ratio_wrt_moist_air
+        io name: spfh
+      - name: air_temperature
+        io name: tmp
+      - name: eastward_wind
+        io name: ugrd
+      - name: northward_wind
+        io name: vgrd
 
 # Optionally test the application
 {% if do_testing | default(false) %}
