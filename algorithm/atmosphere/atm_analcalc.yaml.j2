@@ -1,0 +1,36 @@
+input geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+output geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+states:
+- input:
+    datetime: "{{ atmosphere_background_time_iso }}"
+    filetype: fms restart
+    is restart: false
+    state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
+    filename_nonrestart: cubed_sphere_grid_atmi006.nc
+    datapath: ./
+  output:
+    filetype: auxgrid
+    gridtype: gaussian
+    filename: atmi006.
