@@ -1,0 +1,35 @@
+input geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ aero_layout_x }}
+  - {{ aero_layout_y }}
+  npx: {{ aero_npx_ges }}
+  npy: {{ aero_npy_ges }}
+  npz: {{ aero_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
+output geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ aero_layout_x }}
+  - {{ aero_layout_y }}
+  npx: {{ aero_npx_ges }}
+  npy: {{ aero_npy_ges }}
+  npz: {{ aero_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+states:
+- input:
+    datetime: "{{ aero_background_time_iso }}"
+    filetype: fms restart
+    prefix: aeroinc
+    state variables: {{ analysis_variables }}
+    datapath: ./
+  output:
+    filetype: auxgrid
+    gridtype: gaussian
+    filename: aeroi006.

@@ -23,14 +23,16 @@ output geometry:
   npz: {{ atmosphere_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
 states:
+{% for fh in iau_hours %}
 - input:
-    datetime: "{{ atmosphere_background_time_iso }}"
+    datetime: {{ atmosphere_background_time_iso }}
     filetype: fms restart
     is restart: false
     state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
-    filename_nonrestart: cubed_sphere_grid_atmi006.nc
+    filename_nonrestart: cubed_sphere_grid_atmi{{ '%03d' % fh }}.nc
     datapath: ./
   output:
     filetype: auxgrid
     gridtype: gaussian
-    filename: atmi006.
+    filename: atmi{{ '%03d' % fh }}.
+{% endfor %}
