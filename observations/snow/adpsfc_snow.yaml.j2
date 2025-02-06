@@ -42,6 +42,11 @@
       - name: BkgError/totalSnowDepth_background_error
         type: float
         value: 30.0
+    - filter: RejectList
+      where:
+      - variable:
+          name: MetaData/stationIdentification
+        is_in: {{ get_conventional_stations(observation_from_jcb, "reject") }}
   obs prior filters:
     - filter: Bounds Check
       filter variables:
