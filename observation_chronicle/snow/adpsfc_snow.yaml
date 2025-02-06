@@ -1,0 +1,20 @@
+# observation type metadata
+# -------------------
+commissioned: 1970-01-01T00:00:00
+observer_type: conventional  # Type of chronicle to use
+
+# observation type initial configuration
+# --------------------------------
+reject_list: ['KBWI']
+
+# Chronicle of changes for this observation type
+# ----------------------------------------
+chronicles:
+
+- action_date: "2009-12-22T00:00:00"
+  justification: 'I do not like DCA anymore'
+  add_to_reject_list: ['KDCA']
+
+- action_date: "2009-12-22T00:00:00"
+  justification: 'I now like BWI'
+  remove_from_reject_list: ['KBWI']
