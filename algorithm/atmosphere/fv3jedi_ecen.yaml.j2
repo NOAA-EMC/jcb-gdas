@@ -1,6 +1,6 @@
 forecast hours: ['006']
 window begin: {{ window_begin }}
-atmospheric variables:
+increment variables:
 - cloud_liquid_water
 - layer_thickness
 - air_pressure_thickness
@@ -10,7 +10,7 @@ atmospheric variables:
 - air_temperature
 - eastward_wind
 - northward_wind
-increment geometry:
+variational increment geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
     field table filename: ./fv3jedi/field_table
@@ -22,7 +22,7 @@ increment geometry:
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
-background geometry:
+deterministic background geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
     field table filename: ./fv3jedi/field_table
@@ -61,19 +61,19 @@ correction increment geometry:
 additions from template:
   pattern: '%hr%'
   template:
-    atmospheric increment:
+    variational increment:
       filetype: fms restart
       is restart: false
       filename_nonrestart: ./cubed_sphere_grid_atmi%hr%.nc
-    atmospheric background:
+    deterministic background:
       filetype: cube sphere history
       provider: ufs
       filename: ./cubed_sphere_grid_atmf%hr%.nc
-    atmospheric ensemble mean analysis:
+    ensemble mean analysis:
       filetype: cube sphere history
       provider: ufs
       filename: ./cubed_sphere_grid_atma%hr%.ensmean.nc
-    atmospheric correction increment:
+    correction increment:
       filetype: fms restart
       is restart: false
       filename_nonrestart: ./cubed_sphere_grid_catmi%hr%.nc
