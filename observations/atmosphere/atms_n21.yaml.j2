@@ -24,6 +24,9 @@
     Absorbers: [H2O, O3, CO2]
     Clouds: &{{observation_from_jcb}}_clouds [Water, Ice, Rain, Snow, Graupel]
 #   Cloud_Fraction: 1.0
+#   ---methods for cloud fraction and radii in fov: thompson, or none
+    method for cloud fraction within fov: thompson
+    method for hydrometeor effective radii within fov: thompson
     Cloud_Seeding: true
     obs options:
       Sensor_ID: &{{observation_from_jcb}}_sensor_id atms_n21
@@ -572,18 +575,18 @@
     - name: DerivedMetaData/ColumnLiquidCloud
       type: float
       function:
-        name: TotalColumnCloudGuess@ObsFunction
+        name: IntObsFunction/LinearCombination
         options:
-          cloud_content: mass_content_of_cloud_liquid_water_in_atmosphere_layer
+          variables: [GeoVals/mass_content_of_cloud_liquid_water_in_atmosphere_layer]
 # Column ice cloud
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/ColumnIceCloud
       type: float
       function:
-        name: TotalColumnCloudGuess@ObsFunction
+        name: IntObsFunction/LinearCombination
         options:
-          cloud_content: mass_content_of_cloud_ice_in_atmosphere_layer
+          variables: [GeoVals/mass_content_of_cloud_ice_in_atmosphere_layer]
 # Combined ColumnLiquidCloud + ColumnIceCloud
   - filter: Variable Assignment
     assignments:
@@ -596,16 +599,16 @@
           - name: DerivedMetaData/ColumnLiquidCloud
           - name: DerivedMetaData/ColumnIceCloud
           coefs: [1, 1]
-# replace zero by 1e-7 in DerivedMetaData/ColumnLiquidIceCloud
+# replace zero by 9.99e-7 in DerivedMetaData/ColumnLiquidIceCloud
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/ColumnLiquidIceCloud
       type: float
-      value: 1.0e-7
+      value: 9.99e-07
     where:
     - variable:
         name: DerivedMetaData/ColumnLiquidIceCloud
-      maxvalue: 1.0e-8
+      maxvalue: 9.99e-07
 
 # ratio of liquid /(Liquid+Ice)
   - filter: Variable Assignment
@@ -619,6 +622,15 @@
           - name: DerivedMetaData/ColumnLiquidCloud
           - name: DerivedMetaData/ColumnLiquidIceCloud
           exponents: [1,-1]
+  - filter: Variable Assignment
+    assignments:
+    - name: DerivedMetaData/ColumnRatioLiquidCloud
+      type: float
+      value: 0.0
+    where:
+    - variable:
+        name: DerivedMetaData/ColumnLiquidIceCloud
+      maxvalue: 1.0e-06
 # TotalColumnVaporGuess
   - filter: Variable Assignment
     assignments:
@@ -656,7 +668,7 @@
           - name: DerivedMetaData/PotentialTemperatureAt700hPa
           - name: DerivedMetaData/PotentialTemperatureSurface
           coefs: [1, -1]
-## cao_check
+#  cold-air-outbreak (cao) check for all-sky DA with Rain, Snow, or Graupel
   - filter: BlackList
     filter variables:
     - name: brightnessTemperature
@@ -669,11 +681,11 @@
         name: DerivedMetaData/ColumnRatioLiquidCloud
       maxvalue: 0.5
     - variable:
-        name: DerivedMetaData/ColumnLiquidIceCloud
-      minvalue: 1.0e-6
-    - variable:
         name: DerivedMetaData/PotentialTemperatureDiff
       maxvalue: 12.0
+    - variable:
+        name: GeoVaLs/water_area_fraction
+      minvalue: 0.99
     action:
       name: reject
   # GeoVaLs for Driving Observation Operators (testing mode)
