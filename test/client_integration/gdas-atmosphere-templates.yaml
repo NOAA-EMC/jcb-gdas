@@ -36,7 +36,7 @@ window_length: PT6H
 bound_to_include: begin
 minimizer: DRPCG
 final_diagnostics_departures: anlmob
-analysis_variables: &anvars [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
+analysis_variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
 number_of_outer_loops: 2
 
 # Testing
@@ -46,7 +46,6 @@ do_testing: false
 
 # Model things
 # ------------
-atmosphere_analysis_variables: *anvars
 atmosphere_layout_x: 2
 atmosphere_layout_y: 2
 atmosphere_npx_ges: 361
@@ -60,6 +59,9 @@ atmosphere_fv3jedi_files_path: DATA/fv3jedi
 # Background
 atmosphere_background_path: DATA/bkg
 atmosphere_background_ensemble_path: "DATA/ens/mem%mem%"
+
+atmosphere_variational_history_prefix: "bkg_"
+atmosphere_ensemble_history_prefix: "ens_"
 
 atmosphere_background_time_iso: '2024-02-02T00:00:00Z'
 
