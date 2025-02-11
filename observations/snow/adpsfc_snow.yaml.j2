@@ -46,7 +46,7 @@
       where:
       - variable:
           name: MetaData/stationIdentification
-        is_in: {{ get_conventional_stations(observation_from_jcb, "reject") }}
+        is_in: {{ get_conventional_rejected_stations(observation_from_jcb) }}
   obs prior filters:
     - filter: Bounds Check
       filter variables:
