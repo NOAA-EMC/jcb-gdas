@@ -23,6 +23,7 @@ output geometry:
   npz: {{ snow_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
 states:
+{% for ihour in range( snow_iau_hours | length ) %}
 - input:
     datetime: "{{ snow_background_time_iso }}"
     filetype: fms restart
@@ -32,4 +33,5 @@ states:
   output:
     filetype: auxgrid
     gridtype: gaussian
-    filename: snowi006.
+    filename: snowi{{ '%03d' % snow_iau_hours[ihour] }}.
+{% endfor %}

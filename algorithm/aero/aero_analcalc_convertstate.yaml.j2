@@ -23,8 +23,9 @@ output geometry:
   npz: {{ aero_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
 states:
+{% for ihour in range( aero_iau_hours | length ) %}
 - input:
-    datetime: "{{ aero_background_time_iso }}"
+    datetime: {{ aero_iau_times_iso[ihour] }}
     filetype: fms restart
     prefix: aeroinc
     state variables: {{ analysis_variables }}
@@ -32,4 +33,5 @@ states:
   output:
     filetype: auxgrid
     gridtype: gaussian
-    filename: aeroi006.
+    filename: aeroi{{ '%03d' % aero_iau_hours[ihour] }}.
+{% endfor %}

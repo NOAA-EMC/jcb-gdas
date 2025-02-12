@@ -3,7 +3,7 @@ output:
     filetype: fms restart
     is restart: false
     filename_nonrestart: ./anl/cubed_sphere_grid_atminc.jedi.nc
-    fields to write: [ugrd,vgrd,tmp,pressfc,spfh,icmr,clwmr,o3mr]
+    fields to write: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
 geometry:
   fms initialization:
     namelist filename: "{{atmosphere_fv3jedi_files_path}}/fmsmpp.nml"

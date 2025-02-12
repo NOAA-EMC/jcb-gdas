@@ -58,22 +58,23 @@ correction increment geometry:
   npy: {{ atmosphere_npy_anl }}
   npz: {{ atmosphere_npz_anl }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
-additions from template:
-  pattern: '%hr%'
-  template:
-    variational increment:
-      filetype: fms restart
-      is restart: false
-      filename_nonrestart: ./cubed_sphere_grid_atmi%hr%.nc
-    deterministic background:
-      filetype: cube sphere history
-      provider: ufs
-      filename: ./cubed_sphere_grid_atmf%hr%.nc
-    ensemble mean analysis:
-      filetype: cube sphere history
-      provider: ufs
-      filename: ./cubed_sphere_grid_atma%hr%.ensmean.nc
-    correction increment:
-      filetype: fms restart
-      is restart: false
-      filename_nonrestart: ./cubed_sphere_grid_catmi%hr%.nc
+forecast hours:
+{% for ihour in range( atmosphere_iau_hours | length ) %}
+- forecast time: {{ atmosphere_iau_times_iso[ihour] }}
+  variational increment:
+    filetype: fms restart
+    is restart: false
+    filename_nonrestart: ./cubed_sphere_grid_atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+  deterministic background:
+    filetype: cube sphere history
+    provider: ufs
+    filename: ./cubed_sphere_grid_atmf{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+  ensemble mean analysis:
+    filetype: cube sphere history
+    provider: ufs
+    filename: ./cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
+  correction increment:
+    filetype: fms restart
+    is restart: false
+    filename_nonrestart: ./cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+{% endfor %}
