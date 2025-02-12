@@ -1,16 +1,5 @@
-input geometry:
-  fms initialization:
-    namelist filename: ./fv3jedi/fmsmpp.nml
-    field table filename: ./fv3jedi/field_table
-  akbk: ./fv3jedi/akbk.nc4
-  layout:
-  - {{ atmosphere_layout_x }}
-  - {{ atmosphere_layout_y }}
-  npx: {{ atmosphere_npx_ges }}
-  npy: {{ atmosphere_npy_ges }}
-  npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
-output geometry:
+variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
+background geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
     field table filename: ./fv3jedi/field_table
@@ -22,17 +11,33 @@ output geometry:
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
-states:
+increment geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+additions:
 {% for ihour in range( atmosphere_iau_hours | length ) %}
-- input:
-    datetime: {{ atmosphere_iau_times_iso[ihour] }}
+- datetime: {{ atmosphere_iau_times_iso[ihour] }}
+  background:
+    filetype: cube sphere history
+    provider: ufs
+    filename: cubed_sphere_grid_atmf{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+    datapath: ./
+  increment:
     filetype: fms restart
     is restart: false
-    state variables: [ua,va,t,sphum,ice_wat,liq_wat,o3mr,delp,delz]
     filename_nonrestart: cubed_sphere_grid_atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
     datapath: ./
-  output:
+  analysis:
     filetype: auxgrid
     gridtype: gaussian
-    filename: atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.
+    filename: atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.
 {% endfor %}

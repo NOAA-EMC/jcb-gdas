@@ -1,16 +1,5 @@
-input geometry:
-  fms initialization:
-    namelist filename: ./fv3jedi/fmsmpp.nml
-    field table filename: ./fv3jedi/field_table
-  akbk: ./fv3jedi/akbk.nc4
-  layout:
-  - {{ aero_layout_x }}
-  - {{ aero_layout_y }}
-  npx: {{ aero_npx_ges }}
-  npy: {{ aero_npy_ges }}
-  npz: {{ aero_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
-output geometry:
+variables: {{ analysis_variables }}
+background geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
     field table filename: ./fv3jedi/field_table
@@ -22,16 +11,34 @@ output geometry:
   npy: {{ aero_npy_ges }}
   npz: {{ aero_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
-states:
+increment geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ aero_layout_x }}
+  - {{ aero_layout_y }}
+  npx: {{ aero_npx_ges }}
+  npy: {{ aero_npy_ges }}
+  npz: {{ aero_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
+additions:
 {% for ihour in range( aero_iau_hours | length ) %}
-- input:
-    datetime: {{ aero_iau_times_iso[ihour] }}
-    filetype: fms restart
-    prefix: aeroinc
-    state variables: {{ analysis_variables }}
+- datetime: {{ aero_iau_times_iso[ihour] }}
+  background:
+    filetype: cube sphere history
+    provider: ufs
+    filename: cubed_sphere_grid_atmf{{ '%03d' % aero_iau_hours[ihour] }}.nc
     datapath: ./
-  output:
+  increment:
+    filetype: fms restart
+    filename is datetime templated: true
+    filename_trcr: '%yyyy%mm%dd.%hh%MM%ss.fv_tracer.res.nc'
+    prefix: aeroinc
+    datapath: ./
+  analysis:
     filetype: auxgrid
     gridtype: gaussian
-    filename: aeroi{{ '%03d' % aero_iau_hours[ihour] }}.
+    filename: aeroa{{ '%03d' % aero_iau_hours[ihour] }}.
 {% endfor %}
