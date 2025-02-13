@@ -1,0 +1,20 @@
+covariance model: SABER
+saber central block:
+  saber block name: BUMP_NICAS
+  saber active variables: [totalSnowDepth]
+  calibration:
+    general:
+      universe length-scale: 5000000.0
+    drivers:
+      multivariate strategy: univariate
+      compute nicas: true
+    nicas:
+      resolution: 6               # discretization for the correlation function
+      explicit length-scales: true
+      horizontal length-scale:
+      - groups: [totalSnowDepth]
+        value: 2500000.0
+      vertical length-scale:
+      - groups: [totalSnowDepth]
+        value: 700.0
+

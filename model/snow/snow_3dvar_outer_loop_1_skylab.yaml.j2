@@ -1,0 +1,18 @@
+- ninner: 50
+  gradient norm reduction: 1e-10
+  geometry:
+    akbk: {{ snow_fv3jedi_files_path }}/akbk.nc4
+    npx: {{ snow_npx_anl }}
+    npy: {{ snow_npy_anl }}
+    npz: {{ snow_npz_anl }}
+    field metadata override: gfs-land.yaml
+    time invariant fields:
+      state fields:
+        datetime: '{{ snow_background_time_iso }}'
+        filetype: fms restart
+        skip coupler file: true
+        state variables: [orog_filt]
+        datapath: {{ snow_orog_files_path }}
+        filename_orog: {{ snow_orog_prefix }}_oro_data.nc
+        filename_sfcd: {{ snow_orog_prefix }}_oro_data.nc
+    vert coordinate: orography
