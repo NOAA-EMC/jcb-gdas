@@ -57,12 +57,12 @@ members from template:
       filetype: fms restart
       is restart: false
       datapath: ./anl/mem%mem%
-      filename_nonrestart: cubed_sphere_grid_atminc.jedi.nc
+      filename_nonrestart: {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atminc.jedi.nc
     fv3 increment output:
       filetype: fms restart
       is restart: false
       datapath: ./anl/mem%mem%
-      filename_nonrestart: cubed_sphere_grid_atminc.nc
+      filename_nonrestart: {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atminc.nc
   pattern: '%mem%'
   nmembers: {{ atmosphere_number_ensemble_members }}
   zero padding: 3

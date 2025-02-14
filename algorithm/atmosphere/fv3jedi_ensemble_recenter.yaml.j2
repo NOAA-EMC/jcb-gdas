@@ -61,9 +61,9 @@ forecast hours:
   ensemble mean analysis:
     filetype: cube sphere history
     provider: ufs
-    filename: ./{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
+    filename: ./{{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
   correction increment:
     filetype: fms restart
     is restart: false
-    filename_nonrestart: ./{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+    filename_nonrestart: ./{{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
 {% endfor %}
