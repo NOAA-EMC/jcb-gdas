@@ -24,7 +24,7 @@
     - variable: {name: GeoVaLs/sea_area_fraction}
       minvalue: 0.9
   - filter: Bounds Check
-    minvalue: 1.0
+    minvalue: -1.2
     maxvalue: 41.0
   - filter: Background Check
     absolute threshold: 5.0
@@ -39,18 +39,8 @@
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_surface_temperature}
-      minvalue: -1.0
+      minvalue: -1.2
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/distance_from_coast}
-      minvalue: 100e3
-  - filter: Perform Action
-    action:
-      name: assign error
-      error function:
-        name: ObsFunction/LinearCombination
-        options:
-          variables:
-          - ObsError/seaSurfaceTemperature
-          coefs:
-          - 1.0
+      minvalue: 50e3
