@@ -5,9 +5,32 @@ components:
     saber blocks:
     - saber block name: BUMP_NICAS
       saber central block: true
-      input variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      output variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      active variables: [psi,chi,t,ps,rh,liq_wat,o3mr]
+      input variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      output variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      active variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - liq_wat
+      - o3mr
       bump:
         io:
           data directory: {{atmosphere_bump_data_directory}}
@@ -36,9 +59,32 @@ components:
           io:
             files prefix: nicas/nicas_2D_gfs
     - saber block name: StdDev
-      input variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      output variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      active variables: [psi,chi,t,ps,rh,liq_wat,o3mr]
+      input variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      output variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      active variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - liq_wat
+      - o3mr
       file:
         filetype: fms restart
         datetime: 2021-12-22T00:00:00Z
@@ -52,9 +98,32 @@ components:
         filename_sfcw: stddev.fv_srf_wnd.res.nc
         filename_cplr: stddev.coupler.res
     - saber block name: BUMP_VerticalBalance
-      input variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      output variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      active variables: [psi,chi,t,ps,rh,liq_wat,o3mr]
+      input variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      output variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      active variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - liq_wat
+      - o3mr
       bump:
         general:
           universe length-scale: 2000.0e3
@@ -74,9 +143,29 @@ components:
           - balanced variable: var4
             unbalanced variable: var1
     - saber block name: BUMP_PsiChiToUV
-      input variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-      output variables: [ua,va,t,ps,rh,ice_wat,liq_wat,o3mr]
-      active variables: [psi,chi,ua,va]
+      input variables:
+      - psi
+      - chi
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      output variables:
+      - ua
+      - va
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      active variables:
+      - psi
+      - chi
+      - ua
+      - va
       bump:
         general:
           universe length-scale: 2000.0e3
@@ -87,8 +176,24 @@ components:
           read local psichitouv: true
     linear variable change:
       linear variable change name: Control2Analysis
-      input variables: [ua,va,t,ps,rh,ice_wat,liq_wat,o3mr]
-      output variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
+      input variables:
+      - ua
+      - va
+      - t
+      - ps
+      - rh
+      - ice_wat
+      - liq_wat
+      - o3mr
+      output variables:
+      - ua
+      - va
+      - t
+      - ps
+      - sphum
+      - ice_wat
+      - liq_wat
+      - o3mr
   weight:
     value: 0.1
 - covariance:
@@ -97,7 +202,15 @@ components:
       template:
         datetime: "{{ atmosphere_background_time_iso }}"
         filetype: fms restart
-        state variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
+        state variables:
+        - ua
+        - va
+        - t
+        - ps
+        - sphum
+        - ice_wat
+        - liq_wat
+        - o3mr
         datapath: {{ atmosphere_background_ensemble_path}}
         filename is datetime templated: true
         filename_core: "%yyyy%mm%dd.%hh%MM%ss.fv_core.res.nc"
@@ -108,21 +221,5 @@ components:
       pattern: "{{ atmosphere_ensemble_pattern | default("%mem%", true) }}"
       nmembers: {{atmosphere_number_ensemble_members}}
       zero padding: 3
-#    localization:
-#      localization method: SABER
-#      saber block:
-#      - saber block name: BUMP_NICAS
-#        input variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-#        output variables: [psi,chi,t,ps,rh,ice_wat,liq_wat,o3mr]
-#        active variables: [psi,chi,t,ps,rh,liq_wat,o3mr]
-#        bump:
-#          datadir: {{atmosphere_bump_data_directory}}
-#          verbosity: main
-#          strategy: specific_univariate
-#          method: loc
-#          load_nicas_local: true
-#          grids:
-#          - prefix: nicas/nicas_3D_gfs
-#            variables: [stream_function,velocity_potential,air_temperature,relative_humidity,cloud_liquid_water,ozone_mass_mixing_ratio]
   weight:
     value: 0.9
