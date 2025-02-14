@@ -6,31 +6,31 @@ components:
     - saber block name: BUMP_NICAS
       saber central block: true
       input variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       output variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       active variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       bump:
         io:
           data directory: {{atmosphere_bump_data_directory}}
@@ -39,8 +39,8 @@ components:
           read local nicas: true
         nicas:
           minimum level:
-          - variables:
-            - liq_wat
+          - northward_windriables:
+            - cloud_liquid_water
             value: 76
         grids:
         - model:
@@ -60,31 +60,31 @@ components:
             files prefix: nicas/nicas_2D_gfs
     - saber block name: StdDev
       input variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       output variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       active variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       file:
         filetype: fms restart
         datetime: 2021-12-22T00:00:00Z
@@ -99,31 +99,31 @@ components:
         filename_cplr: stddev.coupler.res
     - saber block name: BUMP_VerticalBalance
       input variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       output variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       active variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       bump:
         general:
           universe length-scale: 2000.0e3
@@ -144,28 +144,28 @@ components:
             unbalanced variable: var1
     - saber block name: BUMP_PsiChiToUV
       input variables:
-      - psi
-      - chi
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       output variables:
-      - ua
-      - va
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - eastward_wind
+      - northward_wind
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       active variables:
-      - psi
-      - chi
-      - ua
-      - va
+      - air_horizontal_streamfunction
+      - air_horizontal_velocity_potential
+      - eastward_wind
+      - northward_wind
       bump:
         general:
           universe length-scale: 2000.0e3
@@ -177,23 +177,23 @@ components:
     linear variable change:
       linear variable change name: Control2Analysis
       input variables:
-      - ua
-      - va
-      - t
-      - ps
-      - rh
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - eastward_wind
+      - northward_wind
+      - air_temperature
+      - air_pressure_at_surface
+      - relative_humidity
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
       output variables:
-      - ua
-      - va
-      - t
-      - ps
-      - sphum
-      - ice_wat
-      - liq_wat
-      - o3mr
+      - eastward_wind
+      - northward_wind
+      - air_temperature
+      - air_pressure_at_surface
+      - water_vapor_mixing_ratio_wrt_moist_air
+      - cloud_liquid_ice
+      - cloud_liquid_water
+      - ozone_mass_mixing_ratio
   weight:
     value: 0.1
 - covariance:
@@ -203,14 +203,14 @@ components:
         datetime: "{{ atmosphere_background_time_iso }}"
         filetype: fms restart
         state variables:
-        - ua
-        - va
-        - t
-        - ps
-        - sphum
-        - ice_wat
-        - liq_wat
-        - o3mr
+        - eastward_wind
+        - northward_wind
+        - air_temperature
+        - air_pressure_at_surface
+        - water_vapor_mixing_ratio_wrt_moist_air
+        - cloud_liquid_ice
+        - cloud_liquid_water
+        - ozone_mass_mixing_ratio
         datapath: {{ atmosphere_background_ensemble_path}}
         filename is datetime templated: true
         filename_core: "%yyyy%mm%dd.%hh%MM%ss.fv_core.res.nc"

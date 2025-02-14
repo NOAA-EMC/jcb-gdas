@@ -11,7 +11,7 @@ output:
     - spfh
     - icmr
     - clwmr
-    - o3mr
+    - ozone_mass_mixing_ratio
 geometry:
   fms initialization:
     namelist filename: "{{atmosphere_fv3jedi_files_path}}/fmsmpp.nml"
@@ -23,4 +23,3 @@ geometry:
   npx: {{atmosphere_npx_anl}}
   npy: {{atmosphere_npy_anl}}
   npz: {{atmosphere_npz_anl}}
-  field metadata override: "{{atmosphere_fv3jedi_files_path}}/fv3jedi_fieldmetadata_history.yaml"
