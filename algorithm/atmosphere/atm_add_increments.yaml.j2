@@ -34,10 +34,10 @@ additions:
   increment:
     filetype: fms restart
     is restart: false
-    filename_nonrestart: {{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+    filename_nonrestart: {{ atmosphere_variational_analysis_prefix }}cubed_sphere_grid_atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
     datapath: ./
   analysis:
     filetype: auxgrid
     gridtype: gaussian
-    filename: {{ atmosphere_variational_history_prefix }}atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.
+    filename: atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.
 {% endfor %}
