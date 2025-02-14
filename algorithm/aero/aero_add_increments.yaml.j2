@@ -29,7 +29,7 @@ additions:
   background:
     filetype: cube sphere history
     provider: ufs
-    filename: {{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atmf{{ '%03d' % aero_iau_hours[ihour] }}.nc
+    filename: {{ aero_variational_history_prefix }}cubed_sphere_grid_atmf{{ '%03d' % aero_iau_hours[ihour] }}.nc
     datapath: ./
   increment:
     filetype: fms restart
