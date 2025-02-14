@@ -2,7 +2,7 @@ output:
   state component:
     filetype: fms restart
     is restart: false
-    filename_nonrestart: ./anl/cubed_sphere_grid_atminc.jedi.nc
+    filename_nonrestart: ./anl/{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atminc.jedi.nc
     fields to write: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
 geometry:
   fms initialization:

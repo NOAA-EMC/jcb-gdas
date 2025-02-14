@@ -48,7 +48,9 @@ members from template:
       provider: ufs
       ufs soil nlev: 4
       ufs fields split by level: [smc,stc]
-      filenames: [ cubed_sphere_grid_atmf006.nc, cubed_sphere_grid_sfcf006.nc ]
+      filenames:
+      - {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atmf006.nc
+      - {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_sfcf006.nc
       datetime: '{{ atmosphere_background_time_iso }}'
       state variables: *bkgvars
     jedi increment input:

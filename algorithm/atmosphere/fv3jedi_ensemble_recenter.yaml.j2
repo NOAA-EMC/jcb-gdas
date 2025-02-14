@@ -1,27 +1,4 @@
-forecast hours: ['006']
-window begin: {{ window_begin }}
-increment variables:
-- cloud_liquid_water
-- layer_thickness
-- air_pressure_thickness
-- cloud_liquid_ice
-- ozone_mass_mixing_ratio
-- water_vapor_mixing_ratio_wrt_moist_air
-- air_temperature
-- eastward_wind
-- northward_wind
-variational increment geometry:
-  fms initialization:
-    namelist filename: ./fv3jedi/fmsmpp.nml
-    field table filename: ./fv3jedi/field_table
-  akbk: ./fv3jedi/akbk.nc4
-  layout:
-  - {{ atmosphere_layout_x }}
-  - {{ atmosphere_layout_y }}
-  npx: {{ atmosphere_npx_ges }}
-  npy: {{ atmosphere_npy_ges }}
-  npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+increment variables: [liq_wat,delz,delp,ice_wat,o3mr,sphum,t,ua,va]
 deterministic background geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -34,6 +11,18 @@ deterministic background geometry:
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
+variational increment geometry:
+  fms initialization:
+    namelist filename: ./fv3jedi/fmsmpp.nml
+    field table filename: ./fv3jedi/field_table
+  akbk: ./fv3jedi/akbk.nc4
+  layout:
+  - {{ atmosphere_layout_x }}
+  - {{ atmosphere_layout_y }}
+  npx: {{ atmosphere_npx_ges }}
+  npy: {{ atmosphere_npy_ges }}
+  npz: {{ atmosphere_npz_ges }}
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
 ensemble mean analysis geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -60,21 +49,21 @@ correction increment geometry:
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
 forecast hours:
 {% for ihour in range( atmosphere_iau_hours | length ) %}
-- forecast time: {{ atmosphere_iau_times_iso[ihour] }}
-  variational increment:
-    filetype: fms restart
-    is restart: false
-    filename_nonrestart: ./cubed_sphere_grid_atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+- datetime: {{ atmosphere_iau_times_iso[ihour] }}
   deterministic background:
     filetype: cube sphere history
     provider: ufs
-    filename: ./cubed_sphere_grid_atmf{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+    filename: ./{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atmf{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+  variational increment:
+    filetype: fms restart
+    is restart: false
+    filename_nonrestart: ./{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
   ensemble mean analysis:
     filetype: cube sphere history
     provider: ufs
-    filename: ./cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
+    filename: ./{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
   correction increment:
     filetype: fms restart
     is restart: false
-    filename_nonrestart: ./cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+    filename_nonrestart: ./{{ atmosphere_variational_history_prefix }}cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
 {% endfor %}
