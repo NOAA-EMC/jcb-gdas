@@ -575,18 +575,18 @@
     - name: DerivedMetaData/ColumnLiquidCloud
       type: float
       function:
-        name: IntObsFunction/LinearCombination
+        name: TotalColumnCloudGuess@ObsFunction
         options:
-          variables: [GeoVals/mass_content_of_cloud_liquid_water_in_atmosphere_layer]
+          variables: [GeoVaLs/mass_content_of_cloud_liquid_water_in_atmosphere_layer]
 # Column ice cloud
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/ColumnIceCloud
       type: float
       function:
-        name: IntObsFunction/LinearCombination
+        name: TotalColumnCloudGuess@ObsFunction
         options:
-          variables: [GeoVals/mass_content_of_cloud_ice_in_atmosphere_layer]
+          variables: [GeoVaLs/mass_content_of_cloud_ice_in_atmosphere_layer]
 # Combined ColumnLiquidCloud + ColumnIceCloud
   - filter: Variable Assignment
     assignments:
