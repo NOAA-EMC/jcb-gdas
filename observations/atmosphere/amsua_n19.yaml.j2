@@ -369,7 +369,7 @@
       function:
         name: TotalColumnCloudGuess@ObsFunction
         options:
-          variables: [GeoVaLs/mass_content_of_cloud_liquid_water_in_atmosphere_layer]
+          cloud_content: mass_content_of_cloud_liquid_water_in_atmosphere_layer
 # Column ice cloud
   - filter: Variable Assignment
     assignments:
@@ -378,7 +378,7 @@
       function:
         name: TotalColumnCloudGuess@ObsFunction
         options:
-          variables: [GeoVaLs/mass_content_of_cloud_ice_in_atmosphere_layer]
+          cloud_content: mass_content_of_cloud_ice_in_atmosphere_layer
 # Combined ColumnLiquidCloud + ColumnIceCloud
   - filter: Variable Assignment
     assignments:
@@ -438,7 +438,7 @@
       function:
         name: PotentialTemperatureGuess2D@ObsFunction
         options:
-          approximate pressure: surface_pressure
+          use surface pressure: true
 # potentialTemperature near 700 hPa
   - filter: Variable Assignment
     assignments:
@@ -447,7 +447,8 @@
       function:
         name: PotentialTemperatureGuess2D@ObsFunction
         options:
-          approximate pressure: 70000.0
+          use surface pressure: false
+          pressure to evaluate potential temperature: 70000.0
 # stability = Difference between PotentialTemperatur values
   - filter: Variable Assignment
     assignments:

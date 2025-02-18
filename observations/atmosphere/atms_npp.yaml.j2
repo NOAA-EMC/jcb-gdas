@@ -89,40 +89,6 @@
               maxvalue: 0.99
             value: 1 # Will zero clouds by default
 
-  # Observation Pre Filters (QC)
-  # ----------------------------
-  obs pre filters:
-  # Step 0-A: Create Diagnostic Flags
-  - filter: Create Diagnostic Flags
-    filter variables:
-    - name: brightnessTemperature
-      channels: *{{observation_from_jcb}}_simulated_channels
-    flags:
-    - name: ScanEdgeRemoval
-      initial value: false
-      force reinitialization: false
-    - name: Thinning
-      initial value: false
-      force reinitialization: false
-    - name: CLWRetrievalCheck
-      initial value: false
-      force reinitialization: false
-    - name: WindowChannelExtremeResidual
-      initial value: false
-      force reinitialization: false
-    - name: HydrometeorCheck
-      initial value: false
-      force reinitialization: false
-    - name: GrossCheck
-      initial value: false
-      force reinitialization: false
-    - name: InterChannelConsistency
-      initial value: false
-      force reinitialization: false
-    - name: UseflagCheck
-      initial value: false
-      force reinitialization: false
-
   # Observation Post Filters (QC)
   # -----------------------------
   obs post filters:
@@ -275,10 +241,8 @@
     - variable:
         name: MetaData/sensorScanPosition
       is_in: 7-90
-    actions:
-    - name: set
-      flag: ScanEdgeRemoval
-    - name: reject
+    action:
+      name: reject
 
   # Step 2: Data Thinning
   - filter: Gaussian Thinning
@@ -287,10 +251,8 @@
     distance_norm: geodesic
   #  round_horizontal_bin_count_to_nearest: true
   #  partition_longitude_bins_using_mesh: true
-    actions:
-    - name: set
-      flag: Thinning
-    - name: reject
+    action:
+      name: reject
 
   # Step 3A: CLW Retrieval Check (observation_based)
   - filter: Bounds Check
@@ -300,10 +262,8 @@
     test variables:
     - name: CLWRetFromObs@DerivedMetaData
     maxvalue: 999.0
-    actions:
-    - name: set
-      flag: CLWRetrievalCheck
-    - name: reject
+    action:
+      name: reject
 
   # Step 3B: CLW Retrieval Check (background_based)
   - filter: Bounds Check
@@ -313,10 +273,8 @@
     test variables:
     - name: CLWRetFromBkg@DerivedMetaData
     maxvalue: 999.0
-    actions:
-    - name: set
-      flag: CLWRetrievalCheck
-    - name: reject
+    action:
+      name: reject
 
   # Step 4: Window Channel Sanity Check
   - filter: Bounds Check
@@ -329,10 +287,8 @@
     maxvalue: 200.0
     minvalue: -200.0
     flag all filter variables if any test variable is out of bounds: true
-    actions:
-    - name: set
-      flag: WindowChannelExtremeResidual
-    - name: reject
+    action:
+      name: reject
 
   # Step 5: Hydrometeor Check (cloud/precipitation affected chanels)
   - filter: Variable Assignment
@@ -362,11 +318,8 @@
     - name: DerivedMetaData/HydrometeorCheckATMS
       channels: *{{observation_from_jcb}}_simulated_channels
     maxvalue: 0.0
-    actions:
-    - name: set
-      flag: HydrometeorCheck
-      ignore: rejected observations
-    - name: reject
+    action:
+      name: reject
 
   # Step 6: Observation Error Inflation based on Topography Check
   - filter: Variable Assignment
@@ -523,11 +476,8 @@
     function absolute threshold:
     - name: ObsErrorBound@DerivedMetaData
       channels: *{{observation_from_jcb}}_simulated_channels
-    actions:
-    - name: set
-      flag: GrossCheck
-      ignore: rejected observations
-    - name: reject
+    action:
+      name: reject
 
   # Step 11: Inter-Channel Check
   - filter: Bounds Check
@@ -544,11 +494,8 @@
         use_flag: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1,
           1]
     maxvalue: 1.0e-12
-    actions:
-    - name: set
-      flag: InterChannelConsistency
-      ignore: rejected observations
-    - name: reject
+    action:
+      name: reject
 
   # Step 12: Useflag Check
   - filter: Bounds Check
@@ -563,11 +510,8 @@
         use_flag: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 1,
           1]
     minvalue: 1.0e-12
-    actions:
-    - name: set
-      flag: UseflagCheck
-      ignore: rejected observations
-    - name: reject
+    action:
+      name: reject
 
 # Column liquid cloud
   - filter: Variable Assignment
@@ -577,7 +521,7 @@
       function:
         name: TotalColumnCloudGuess@ObsFunction
         options:
-          variables: [GeoVaLs/mass_content_of_cloud_liquid_water_in_atmosphere_layer]
+          cloud_content: mass_content_of_cloud_liquid_water_in_atmosphere_layer
 # Column ice cloud
   - filter: Variable Assignment
     assignments:
@@ -586,7 +530,7 @@
       function:
         name: TotalColumnCloudGuess@ObsFunction
         options:
-          variables: [GeoVaLs/mass_content_of_cloud_ice_in_atmosphere_layer]
+          cloud_content: mass_content_of_cloud_ice_in_atmosphere_layer
 # Combined ColumnLiquidCloud + ColumnIceCloud
   - filter: Variable Assignment
     assignments:
@@ -646,7 +590,7 @@
       function:
         name: PotentialTemperatureGuess2D@ObsFunction
         options:
-          approximate pressure: surface_pressure
+          use surface pressure: true
 # potentialTemperature near 700 hPa
   - filter: Variable Assignment
     assignments:
@@ -655,7 +599,8 @@
       function:
         name: PotentialTemperatureGuess2D@ObsFunction
         options:
-          approximate pressure: 70000.0
+          use surface pressure: false
+          pressure to evaluate potential temperature: 70000.0
 # stability = Difference between PotentialTemperatur values
   - filter: Variable Assignment
     assignments:
