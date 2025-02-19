@@ -71,6 +71,32 @@
       output file: "{{atmosphere_obsbiasout_path}}/{{atmosphere_obsbiascovout_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiascovout_suffix}}"
 
   # ------------------------
+  obs pre filters:
+  # Remove Observations from the Edge of the Scan
+  - filter: Domain Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 1-22
+    where:
+    - variable:
+        name: MetaData/sensorScanPosition
+      is_in: 7-90
+    action:
+      name: reject
+      name: reduce obs space
+
+  # Data Thinning
+  - filter: Gaussian Thinning
+    horizontal_mesh: 145
+    use_reduced_horizontal_grid: true
+    distance_norm: geodesic
+  #  round_horizontal_bin_count_to_nearest: true
+  #  partition_longitude_bins_using_mesh: true
+    action:
+      name: reject
+      name: reduce obs space
+
+  # ------------------------
   obs prior filters:
   # Zero Atmospheric clouds in CRTM where water_area_fraction < 0.99
   - filter: Variable Assignment
@@ -232,29 +258,7 @@
         name: InitialObsError@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
 
-  # Step 1: Remove Observations from the Edge of the Scan
-  - filter: Domain Check
-    filter variables:
-    - name: brightnessTemperature
-      channels: 1-22
-    where:
-    - variable:
-        name: MetaData/sensorScanPosition
-      is_in: 7-90
-    action:
-      name: reject
-
-  # Step 2: Data Thinning
-  - filter: Gaussian Thinning
-    horizontal_mesh: 145
-    use_reduced_horizontal_grid: true
-    distance_norm: geodesic
-  #  round_horizontal_bin_count_to_nearest: true
-  #  partition_longitude_bins_using_mesh: true
-    action:
-      name: reject
-
-  # Step 3A: CLW Retrieval Check (observation_based)
+  # Step 1A: CLW Retrieval Check (observation_based)
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -265,7 +269,7 @@
     action:
       name: reject
 
-  # Step 3B: CLW Retrieval Check (background_based)
+  # Step 1B: CLW Retrieval Check (background_based)
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -276,7 +280,7 @@
     action:
       name: reject
 
-  # Step 4: Window Channel Sanity Check
+  # Step 2: Window Channel Sanity Check
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -290,7 +294,7 @@
     action:
       name: reject
 
-  # Step 5: Hydrometeor Check (cloud/precipitation affected chanels)
+  # Step 3: Hydrometeor Check (cloud/precipitation affected chanels)
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/HydrometeorCheckATMS
@@ -321,7 +325,7 @@
     action:
       name: reject
 
-  # Step 6: Observation Error Inflation based on Topography Check
+  # Step 4: Observation Error Inflation based on Topography Check
   - filter: Variable Assignment
     assignments:
     - name: ObsErrorFactorTopo@DerivedMetaData
@@ -344,7 +348,7 @@
         name: ObsErrorFactorTopo@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
 
-  # Step 7: Obs Error Inflation based on TOA Transmittancec Check
+  # Step 5: Obs Error Inflation based on TOA Transmittancec Check
   - filter: Variable Assignment
     assignments:
     - name: ObsErrorFactorTransmitTop@DerivedMetaData
@@ -366,7 +370,7 @@
         name: ObsErrorFactorTransmitTop@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
 
-  # Step 8: Observation Error Inflation based on Surface Jacobian Check
+  # Step 6: Observation Error Inflation based on Surface Jacobian Check
   - filter: Variable Assignment
     assignments:
     - name: ObsErrorFactorSurfJacobian@DerivedMetaData
@@ -391,7 +395,7 @@
         name: ObsErrorFactorSurfJacobian@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
 
-  # Step 9: Situation Dependent Check
+  # Step 7: Situation Dependent Check
   - filter: Variable Assignment
     assignments:
     - name: ObsErrorFactorSituDepend@DerivedMetaData
@@ -429,7 +433,7 @@
         name: ObsErrorFactorSituDepend@DerivedMetaData
         channels: *{{observation_from_jcb}}_simulated_channels
 
-  # Step 10: Gross check
+  # Step 8: Gross check
   # Remove data if abs(Obs-HofX) > absolute threshold
   - filter: Variable Assignment
     assignments:
@@ -479,7 +483,7 @@
     action:
       name: reject
 
-  # Step 11: Inter-Channel Check
+  # Step 9: Inter-Channel Check
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
@@ -497,7 +501,7 @@
     action:
       name: reject
 
-  # Step 12: Useflag Check
+  # Step 10: Useflag Check
   - filter: Bounds Check
     filter variables:
     - name: brightnessTemperature
