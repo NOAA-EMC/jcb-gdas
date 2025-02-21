@@ -1,0 +1,23 @@
+# Instrument metadata
+# -------------------
+commissioned: 1970-01-01T00:00:00
+
+observer_type: conventional  # Type of chronicle to use
+
+window_option: max
+
+# observation type initial configuration
+# --------------------------------
+stations_to_reject: ['71120','71397','71621','71727','71816']
+
+# Chronicle of changes for this observation type
+# ----------------------------------------
+chronicles:
+
+- action_date: "1971-12-01T00:00:00"
+  justification: 'This station is okay for this month'
+  remove_from_reject_list: ['71727']
+
+- action_date: "1972-01-01T00:00:00"
+  justification: 'Reject this station again'
+  add_to_reject_list: ['71727']
