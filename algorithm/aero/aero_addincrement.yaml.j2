@@ -1,5 +1,4 @@
-variables: {{ analysis_variables }}
-background geometry:
+state geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
     field table filename: ./fv3jedi/field_table
@@ -23,22 +22,22 @@ increment geometry:
   npy: {{ aero_npy_ges }}
   npz: {{ aero_npz_ges }}
   field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_restart.yaml
-additions:
-{% for ihour in range( aero_iau_hours | length ) %}
-- datetime: {{ aero_iau_times_iso[ihour] }}
-  background:
-    filetype: cube sphere history
-    provider: ufs
-    filename: {{ aero_variational_history_prefix }}cubed_sphere_grid_atmf{{ '%03d' % aero_iau_hours[ihour] }}.nc
-    datapath: ./
-  increment:
-    filetype: fms restart
-    filename is datetime templated: true
-    filename_trcr: '%yyyy%mm%dd.%hh%MM%ss.fv_tracer.res.nc'
-    prefix: aeroinc
-    datapath: ./
-  analysis:
-    filetype: auxgrid
-    gridtype: gaussian
-    filename: aeroa{{ '%03d' % aero_iau_hours[ihour] }}.
-{% endfor %}
+state:
+  datetime: {{ atmosphere_background_time_iso }}
+  state variables: {{ analysis_variables }}
+  filetype: cube sphere history
+  provider: ufs
+  datapath: ./
+  filename: {{ aero_variational_history_prefix }}cubed_sphere_grid_atmf006.nc
+increment:
+  added variables: {{ analysis_variables }}
+  filetype: fms restart
+  datapath: ./
+  filename is datetime templated: true
+  filename_trcr: '%yyyy%mm%dd.%hh%MM%ss.fv_tracer.res.nc'
+  prefix: aeroinc
+output:
+  filetype: auxgrid
+  gridtype: gaussian
+  datapath: ./
+  filename: aeroanl.
