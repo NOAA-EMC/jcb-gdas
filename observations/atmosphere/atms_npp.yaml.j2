@@ -514,26 +514,6 @@
     minvalue: 1.0e-12
     action:
       name: reject
-
-# Column liquid cloud
-  - filter: Variable Assignment
-    assignments:
-    - name: DerivedMetaData/ColumnLiquidCloud
-      type: float
-      function:
-        name: TotalColumnCloudGuess@ObsFunction
-        options:
-          cloud_content: mass_content_of_cloud_liquid_water_in_atmosphere_layer
-# Column ice cloud
-  - filter: Variable Assignment
-    assignments:
-    - name: DerivedMetaData/ColumnIceCloud
-      type: float
-      function:
-        name: TotalColumnCloudGuess@ObsFunction
-        options:
-          cloud_content: mass_content_of_cloud_ice_in_atmosphere_layer
-# Combined ColumnLiquidCloud + ColumnIceCloud
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/ColumnLiquidIceCloud
@@ -542,8 +522,8 @@
         name: ObsFunction/Arithmetic
         options:
           variables:
-          - name: DerivedMetaData/ColumnLiquidCloud
-          - name: DerivedMetaData/ColumnIceCloud
+          - name: GeoVaLs/mass_content_of_cloud_liquid_water_in_atmosphere_column
+          - name: GeoVaLs/mass_content_of_cloud_ice_in_atmosphere_column
           coefs: [1, 1]
 # replace zero by 9.99e-7 in DerivedMetaData/ColumnLiquidIceCloud
   - filter: Variable Assignment
@@ -565,7 +545,7 @@
         name: ObsFunction/ElementMultiply
         options:
           variables:
-          - name: DerivedMetaData/ColumnLiquidCloud
+          - name: GeoVaLs/mass_content_of_cloud_liquid_water_in_atmosphere_column
           - name: DerivedMetaData/ColumnLiquidIceCloud
           exponents: [1,-1]
   - filter: Variable Assignment
