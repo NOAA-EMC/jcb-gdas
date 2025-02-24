@@ -39,7 +39,7 @@ fv3 increment geometry:
   npx: {{ atmosphere_npx_ges }}
   npy: {{ atmosphere_npy_ges }}
   npz: {{ atmosphere_npz_ges }}
-  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_fv3inc.yaml
+  field metadata override: ./fv3jedi/fv3jedi_fieldmetadata_history.yaml
 members from template:
   template:
     background input:
@@ -48,21 +48,19 @@ members from template:
       provider: ufs
       ufs soil nlev: 4
       ufs fields split by level: [smc,stc]
-      filenames:
-      - {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atmf006.nc
-      - {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_sfcf006.nc
+      filenames: [ {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_atmf006.nc, {{ atmosphere_ensemble_history_prefix }}cubed_sphere_grid_sfcf006.nc ]
       datetime: '{{ atmosphere_background_time_iso }}'
       state variables: *bkgvars
     jedi increment input:
-      filetype: fms restart
-      is restart: false
+      filetype: cube sphere history
+      provider: ufs
       datapath: ./anl/mem%mem%
-      filename_nonrestart: cubed_sphere_grid_atminc.jedi.nc
+      filename: cubed_sphere_grid_atminc.jedi.nc
     fv3 increment output:
-      filetype: fms restart
-      is restart: false
+      filetype: cube sphere history
+      provider: ufs
       datapath: ./anl/mem%mem%
-      filename_nonrestart: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atminc.nc
+      filename: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atminc.nc
   pattern: '%mem%'
   nmembers: {{ atmosphere_number_ensemble_members }}
   zero padding: 3
