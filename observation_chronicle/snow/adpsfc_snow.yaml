@@ -25,6 +25,6 @@ chronicles:
   justification: 'These stations are okay from this time'
   remove_from_reject_list: [71120, 71397, 71727, 71816]
 
-- action_date: "2022-12-30T00:00:00"
+- action_date: "2022-10-01T00:00:00"
   justification: 'Add to reject these stations'
-  add_to_reject_list: [47095, 47098, 47101, 47102, 71869]
+  add_to_reject_list: [47095, 47098, 47101, 47102]
