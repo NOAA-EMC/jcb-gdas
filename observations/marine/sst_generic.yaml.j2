@@ -44,3 +44,13 @@
     where:
     - variable: {name: GeoVaLs/distance_from_coast}
       minvalue: 50e3
+  - filter: AcceptList  # Palmico Sound
+    where:
+    - variable:
+        name: MetaData/latitude
+      minvalue: 34.54
+      maxvalue: 36.0
+    - variable:
+        name: MetaData/longitude
+      minvalue: -76.54
+      maxvalue: -75.0
