@@ -418,7 +418,7 @@
     - name: DerivedMetaData/PotentialTemperatureSurface
       type: float
       function:
-        name: PotentialTemperatureGuess2D@ObsFunction
+        name: PotentialTemperatureFromTemperature@ObsFunction
         options:
           use surface pressure: true
 # potentialTemperature near 700 hPa
@@ -427,7 +427,7 @@
     - name: DerivedMetaData/PotentialTemperatureAt700hPa
       type: float
       function:
-        name: PotentialTemperatureGuess2D@ObsFunction
+        name: PotentialTemperatureFromTemperature@ObsFunction
         options:
           use surface pressure: false
           pressure to evaluate potential temperature: 70000.0
