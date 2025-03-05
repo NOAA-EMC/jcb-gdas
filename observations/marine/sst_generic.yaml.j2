@@ -47,9 +47,7 @@
       minvalue: 50e3
 
   obs post filters:
-  - filter: Background Check
-    absolute threshold: 5.0
-  - filter: Perform Action  # Palmico Sound
+  - filter: Perform Action  # Pamlico Sound & Chesapeake Bay
     action:
       name: accept
     where:
@@ -61,4 +59,5 @@
         name: MetaData/longitude
       minvalue: -76.88
       maxvalue: -74.5
-
+  - filter: Background Check
+    absolute threshold: 5.0
