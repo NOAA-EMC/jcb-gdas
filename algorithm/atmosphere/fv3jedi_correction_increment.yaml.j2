@@ -64,10 +64,10 @@ forecast hours:
     filetype: cube sphere history
     provider: ufs
     datapath: ./
-    filename: enkf{{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
+    filename: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atma{{ '%03d' % atmosphere_iau_hours[ihour] }}.ensmean.nc
   correction increment:
     filetype: cube sphere history
     provider: ufs
     datapath: ./
-    filename: enkf{{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
+    filename: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_catmi{{ '%03d' % atmosphere_iau_hours[ihour] }}.nc
 {% endfor %}
