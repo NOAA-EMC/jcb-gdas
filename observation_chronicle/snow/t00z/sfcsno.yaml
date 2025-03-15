@@ -15,6 +15,7 @@ stations_to_reject: [71120, 71397, 71621, 71727, 71816  # from North America
   , 47037, 47039, 47041, 47046, 47050, 47052, 47055, 47058, 47060, 47061
   , 47065, 47067, 47068, 47069, 47070, 47069, 47070, 47075, 47090
   , 48698, 48830 # from Singapore
+  , 50136, 50603, 50953, 50968, 52955, 54094, 55696, 56004, 56146, 56357, 56586 # China
   , 65250] # from Africa
 
 # Chronicle of changes for this observation type
@@ -26,5 +27,10 @@ chronicles:
   remove_from_reject_list: [71120, 71397, 71727, 71816]
 
 - action_date: "2022-10-01T00:00:00"
+  justification: 'These stations are okay from this time'
+  remove_from_reject_list: [50136, 50603, 50953, 50968, 52955, 54094, 55696
+                          , 56004, 56146, 56357, 56586]
+
+- action_date: "2022-10-01T01:00:00"
   justification: 'Add to reject these stations'
   add_to_reject_list: [47095, 47098, 47101, 47102]
