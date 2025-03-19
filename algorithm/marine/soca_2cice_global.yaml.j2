@@ -23,23 +23,31 @@ variable change:
       min hice: 0.5
       min hsno: 0.1
   cice background state:
-    restart: {{ ice_rst }}
+    restart: ./Data/{{ marine_window_middle_fv3 }}'.cice_model.res.nc'
     ncat: 5
     ice_lev: 7
     sno_lev: 1
   cice output:
-    restart: {{ ice_rst }}
+    restart: ./Data/{{ marine_window_middle_fv3 }}'.cice_model.res.nc'
   increment output:
     datadir: Data
     exp: soca2cice
     type: incr
-    date: '{{ fcst_begin }}'
+    {% if marine_do_iau %}
+    date: {{ marine_window_begin_iso }}
+    {% else %}
+    date: {{ marine_window_middle_iso }}
+    {% endif %}
   soca increment:
     read_from_file: 1
     basename: ./
-    ocn_filename: {{ ocn_inc }}
-    ice_filename: {{ ice_inc }}
-    date: '{{ fcst_begin }}'
+    ocn_filename: ./Data/ocn.3dvarfgat_pseudo.incr.{{ marine_window_middle_iso }}.nc
+    ice_filename: ./Data/ice.3dvarfgat_pseudo.incr.{{ marine_window_middle_iso }}.nc
+    {% if marine_do_iau %}
+    date: {{ marine_window_begin_iso }}
+    {% else %}
+    date: {{ marine_window_middle_iso }}
+    {% endif %}
   output variables:
   - sea_water_potential_temperature
   - sea_water_salinity
@@ -51,9 +59,13 @@ states:
 - input:
      read_from_file: 1
      basename: ./
-     ocn_filename: {{ ocn_ana }}
-     ice_filename: {{ ice_ana }}
-     date: '{{ fcst_begin }}'
+     ocn_filename: ./Data/ocn.3dvarfgat_pseudo.an.{{ marine_window_middle_iso }}.nc
+     ice_filename: ./Data/ice.3dvarfgat_pseudo.an.{{ marine_window_middle_iso }}.nc
+     {% if marine_do_iau %}
+     date: {{ marine_window_begin_iso }}
+     {% else %}
+     date: {{ marine_window_middle_iso }}
+     {% endif %}
      state variables:
      - sea_water_potential_temperature
      - sea_water_salinity
@@ -65,4 +77,8 @@ states:
      datadir: Data
      exp: soca2cice
      type: fc
-     date: '{{ fcst_begin }}'
+     {% if marine_do_iau %}
+     date: {{ marine_window_begin_iso }}
+     {% else %}
+     date: {{ marine_window_middle_iso }}
+     {% endif %}
