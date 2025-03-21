@@ -79,8 +79,8 @@
 
   # Observation Pre Filters (QC)
   # ------------------------------
-  Step 1: Remove missing data from the obs space
   obs pre filters:
+  # Step 1: Remove missing data from the obs space
   - filter: RejectList
     where:
     - variable:
@@ -90,7 +90,7 @@
     action:
       name: reduce obs space
  
-  Step 2: Create thinning scores based on surface types  
+  # Step 2: Create thinning scores based on surface types  
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/thinningScore
@@ -100,7 +100,7 @@
   - filter: Variable Assignment
     where:
     - variable:
-        name: MetaData/earthSurfaceType 
+        name: MetaData/earthSurfaceType
       is_in: 5, 7, 10   # ocean/water
     assignments:
     - name: DerivedMetaData/thinningScore
@@ -110,7 +110,7 @@
   - filter: Variable Assignment
     where:
     - variable:
-        name: MetaData/earthSurfaceType 
+        name: MetaData/earthSurfaceType
       is_in: 0 , 12     # land 
     assignments:
     - name: DerivedMetaData/thinningScore
@@ -120,7 +120,7 @@
   - filter: Variable Assignment
     where:
     - variable:
-        name: MetaData/earthSurfaceType 
+        name: MetaData/earthSurfaceType
       is_in: 3, 4, 9    # Ice/Sea Ice/Frozen Soil
     assignments:
     - name: DerivedMetaData/thinningScore
@@ -130,7 +130,7 @@
   - filter: Variable Assignment
     where:
     - variable:
-        name: MetaData/earthSurfaceType 
+        name: MetaData/earthSurfaceType
       is_in: 8, 11      # Snow
     assignments:
     - name: DerivedMetaData/thinningScore
