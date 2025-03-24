@@ -29,7 +29,7 @@ chronicles:
 
 - action_date: "2022-10-01T00:00:00"
   justification: 'These stations are okay from this time'
-  remove_from_reject_list: [50136, 50603, 50953, 50968, 52955, 54094, 55696
+  remove_from_reject_list: [50136, 50603, 50953, 50968, 52955, 55696
                           , 56004, 56146, 56357, 56586]
 
 - action_date: "2022-10-01T01:00:00"
