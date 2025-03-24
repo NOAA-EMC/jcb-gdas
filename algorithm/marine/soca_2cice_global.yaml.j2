@@ -23,12 +23,20 @@ variable change:
       min hice: 0.5
       min hsno: 0.1
   cice background state:
-    restart: ./Data/{{ marine_window_middle_fv3 }}'.cice_model.res.nc'
+    {% if marine_do_iau %}
+    restart: ./Data/{{ marine_window_begin_fv3 }}.cice_model.res.nc
+    {% else %}
+    restart: ./Data/{{ marine_window_middle_fv3 }}.cice_model.res.nc
+    {% endif %}
     ncat: 5
     ice_lev: 7
     sno_lev: 1
   cice output:
-    restart: ./Data/{{ marine_window_middle_fv3 }}'.cice_model.res.nc'
+    {% if marine_do_iau %}
+    restart: ./Data/{{ marine_window_begin_fv3 }}.cice_model.res.nc
+    {% else %}
+    restart: ./Data/{{ marine_window_middle_fv3 }}.cice_model.res.nc
+    {% endif %}
   increment output:
     datadir: Data
     exp: soca2cice
