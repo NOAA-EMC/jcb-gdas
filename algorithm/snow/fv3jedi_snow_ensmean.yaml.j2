@@ -16,7 +16,16 @@ ensemble:
     template:
       datetime: '{{ snow_background_time_iso }}'
       filetype: fms restart
-      state variables: [snodl,vtype,slmsk,orog_filt,stc,sheleg]
+      state variables:
+      - totalSnowDepth
+      - vtype
+      - slmsk
+      - filtered_orography
+      - stc
+      - sheleg
+      field io names:
+        totalSnowDepth: snodl
+        filtered_orography: orog_filt
       datapath: ./bkg/mem%mem%/
       filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
       filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'

@@ -4,14 +4,23 @@ output:
     filename: ./anl/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
     provider: ufs
     fields to write:
-    - ugrd
-    - vgrd
-    - tmp
-    - pressfc
-    - spfh
-    - icmr
-    - clwmr
+    - eastward_wind
+    - northward_wind
+    - air_temperature
+    - air_pressure_at_surface
+    - water_vapor_mixing_ratio_wrt_moist_air
+    - cloud_liquid_ice
+    - cloud_liquid_water
     - ozone_mass_mixing_ratio
+    field io names:
+      eastward_wind: ugrd
+      northward_wind: vgrd
+      air_temperature: tmp
+      air_pressure_at_surface: pressfc
+      water_vapor_mixing_ratio_wrt_moist_air: spfh
+      cloud_liquid_ice: icmr
+      cloud_liquid_water: clwmr
+      ozone_mass_mixing_ratio: o3mr
 geometry:
   fms initialization:
     namelist filename: "{{atmosphere_fv3jedi_files_path}}/fmsmpp.nml"
