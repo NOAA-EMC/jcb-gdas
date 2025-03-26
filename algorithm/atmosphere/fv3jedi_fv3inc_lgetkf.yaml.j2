@@ -88,13 +88,14 @@ members from template:
         geopotential_height_at_surface: hgtsfc
     jedi increment input:
       filetype: cube sphere history
-      filename: ./anl/mem%mem%/atminc.%yyyy%mm%dd.%hh%MM%ssz.nc4
       provider: ufs
-      field io names: *field_io_names
+      datapath: ./anl/mem%mem%
+      filename: cubed_sphere_grid_atminc.jedi.nc
     fv3 increment output:
-      filetype: auxgrid
-      gridtype: gaussian
-      filename: ./anl/mem%mem%/atminc.
+      filetype: cube sphere history
+      provider: ufs
+      datapath: ./anl/mem%mem%
+      filename: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atminc.nc
       field io names:
         eastward_wind: u_inc
         northward_wind: v_inc
