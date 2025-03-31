@@ -1,5 +1,5 @@
 - obs space:
-    name: "{{observation_from_jcb}}"
+    name: {{observation_from_jcb}}
     obsdatain:
       engine:
         type: H5File
@@ -60,6 +60,7 @@
         name: MetaData/longitude
       minvalue: 32
       maxvalue: 56
+{% if enable_obs_localization %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3
@@ -67,3 +68,4 @@
     min grid mult: 2.0
     min value: 200.0e3
     max value: 900.0e3
+{% endif %}
