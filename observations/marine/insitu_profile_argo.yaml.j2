@@ -336,7 +336,7 @@
             - ObsError/salinity
             coefs:
             - 1000.0
-{% if enable_obs_localization %}
+{% if enable_obs_localization | default(false) %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3

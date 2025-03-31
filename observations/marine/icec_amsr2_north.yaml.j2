@@ -49,7 +49,7 @@
 #    select_median: true
 #    action:
 #      name: reduce obs space
-{% if enable_obs_localization %}
+{% if enable_obs_localization | default(false) %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3

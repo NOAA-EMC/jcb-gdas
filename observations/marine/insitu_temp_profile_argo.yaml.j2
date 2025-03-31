@@ -171,7 +171,7 @@
     min grid mult: 2.0
     min value: 200.0e3
     max value: 900.0e3
-{% if enable_obs_localization %}
+{% if enable_obs_localization | default(false) %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3
