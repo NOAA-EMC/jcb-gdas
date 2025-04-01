@@ -60,7 +60,7 @@
         name: MetaData/longitude
       minvalue: 32
       maxvalue: 56
-{% if enable_obs_localization | default(false) %}
+{% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3
