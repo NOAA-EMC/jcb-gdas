@@ -9,6 +9,9 @@
         type: bufr
         obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}sfcsno.tm00.bufr_d"
         mapping file: "{{snow_obsdatain_path}}/bufr_sfcsno_mapping.yaml"
+        missing file action: warn
+      obsgrouping:
+          group variables: [stationIdentification]
     obsdataout:
       engine:
         type: H5File
@@ -155,8 +158,7 @@
       where:
       - variable:
           name: MetaData/stationIdentification
-        is_in: [71120,71397,71621,71727,71816]
-        size where true: 5
+        is_in: {{ get_conventional_rejected_stations(observation_from_jcb) }}
       actions:
       - name: set
         flag: rejectlist
