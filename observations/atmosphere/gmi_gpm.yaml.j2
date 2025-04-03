@@ -151,6 +151,7 @@
           clwret_ch37v: 6
           clwret_ch37h: 7
           clwret_types: [ObsValue]
+          use bias-corrected HofX: false
 # Check CLW retrievals from ObsValue
   - filter: Bounds Check
     filter variables:
@@ -170,6 +171,7 @@
           clwret_ch37v: 6
           clwret_ch37h: 7
           clwret_types: [HofX]
+          use bias-corrected HofX: false
 # Ckeck CLW retrievals from Hofx
   - filter: Bounds Check
     filter variables:
@@ -266,12 +268,13 @@
               clwret_ch37v: 6
               clwret_ch37h: 7
               clwret_types: [ObsValue, HofX]
+              use bias-corrected HofX: false
           x0: &{{observation_from_jcb}}_x0 [{{ get_satellite_variable(observation_from_jcb, "x0") }}]
           x1: &{{observation_from_jcb}}_x1 [{{ get_satellite_variable(observation_from_jcb, "x1") }}]
           x2: &{{observation_from_jcb}}_x2 [{{ get_satellite_variable(observation_from_jcb, "x2") }}]
           err0: &{{observation_from_jcb}}_err0 [{{ get_satellite_variable(observation_from_jcb, "error") }}]
-          err1: &{{observation_from_jcb}}_err1 [{{ get_satellite_variable(observation_from_jcb, "error_cld") }}]
-          err2: &{{observation_from_jcb}}_err2 [{{ get_satellite_variable(observation_from_jcb, "error_cld1") }}]
+          err1: &{{observation_from_jcb}}_err2 [{{ get_satellite_variable(observation_from_jcb, "error_cld1") }}]
+          err2: &{{observation_from_jcb}}_err1 [{{ get_satellite_variable(observation_from_jcb, "error_cld") }}]
 # #  Gross check
 # - filter: Background Check
 #   filter variables:
