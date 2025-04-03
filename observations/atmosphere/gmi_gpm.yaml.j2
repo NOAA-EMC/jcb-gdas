@@ -127,6 +127,20 @@
     - variable:
         name: GeoVaLs/average_surface_temperature_within_field_of_view
       minvalue: 275
+
+  # Data Thinning
+  - filter: Gaussian Thinning
+    horizontal_mesh: 100
+    use_reduced_horizontal_grid: true
+    distance_norm: geodesic
+  #  round_horizontal_bin_count_to_nearest: true
+  #  partition_longitude_bins_using_mesh: true
+    actions:
+    - name: set
+      flag: Thinning
+    - name: reject
+
+  # Toss data within a region lat: 20S - 0N deg and lon: 25E - 40E deg. (Inherited from GEOS)
   - filter: BlackList
     filter variables:
     - name: brightnessTemperature
@@ -140,6 +154,7 @@
         name: MetaData/longitude
       minvalue: 25.0
       maxvalue: 40.0
+
   # Save CLW retrievals from ObsValue
   - filter: Variable Assignment
     assignments:
@@ -160,6 +175,7 @@
     test variables:
     - name: DerivedMetaData/clw_obs
     maxvalue: 900
+
   # Save CLW retrievals from HofX
   - filter: Variable Assignment
     assignments:
@@ -180,6 +196,7 @@
     test variables:
     - name: DerivedMetaData/clw_guess_retrieval
     maxvalue: 900
+
   # emiss_qc
   - filter: BlackList
     filter variables:
@@ -277,7 +294,7 @@
           err1: &{{observation_from_jcb}}_err2 [{{ get_satellite_variable(observation_from_jcb, "error_cld1") }}]
           err2: &{{observation_from_jcb}}_err1 [{{ get_satellite_variable(observation_from_jcb, "error_cld") }}]
 
-  ## Assign vars for cold-air-outbreak check
+  ## Prepare variables used by cold-air-outbreak checks in all-sky.
   # Combined ColumnLiquidCloud + ColumnIceCloud
   - filter: Variable Assignment
     assignments:
@@ -384,12 +401,48 @@
       name: reject
 
   #  Gross check
+# - filter: Background Check
+#   filter variables:
+#   - name: brightnessTemperature
+#     channels: *{{observation_from_jcb}}_simulated_channels
+#   threshold: 2.0
+#   absolute threshold: [{{ get_satellite_variable(observation_from_jcb, "ermax") }}]
+#   action:
+#     name: reject
+
   - filter: Background Check
     filter variables:
     - name: brightnessTemperature
-      channels: *{{observation_from_jcb}}_simulated_channels
+      channels: 1,2,4,6
     threshold: 2.0
-    absolute threshold: [{{ get_satellite_variable(observation_from_jcb, "ermax") }}]
+    absolute threshold: 30
+    action:
+      name: reject
+
+  - filter: Background Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 9,10,11
+    threshold: 2.0
+    absolute threshold: 20
+    action:
+      name: reject
+
+  - filter: Background Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 3,5,7,8
+    threshold: 2.0
+    absolute threshold: 15
+    action:
+      name: reject
+
+  - filter: Background Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 12,13
+    threshold: 2.0
+    absolute threshold: 10
     action:
       name: reject
 
