@@ -74,6 +74,30 @@
 
   # Observation Filters (QC)
   # ------------------------
+  obs pre filters:
+  # Remove Observations from the Edge of the Scan
+  - filter: Domain Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: 1-13
+    where:
+    - variable:
+        name: MetaData/sensorScanPosition
+      is_in: 15-207
+    action:
+      name: reduce obs space
+
+  # Data Thinning
+  - filter: Gaussian Thinning
+    horizontal_mesh: 100
+    use_reduced_horizontal_grid: true
+    distance_norm: geodesic
+  #  round_horizontal_bin_count_to_nearest: true
+  #  partition_longitude_bins_using_mesh: true
+    action:
+      name: reduce obs space
+
+  # ------------------------
   obs prior filters:
   # Zero Atmospheric clouds in CRTM where water_area_fraction < 0.99
   - filter: Variable Assignment
@@ -111,10 +135,6 @@
       channels: *{{observation_from_jcb}}_simulated_channels
     where:
     - variable:
-        name: MetaData/sensorScanPosition
-      minvalue: 15
-      maxvalue: 207
-    - variable:
         name: MetaData/latitude
       minvalue: -55.0
       maxvalue: 55.0
@@ -127,18 +147,6 @@
     - variable:
         name: GeoVaLs/average_surface_temperature_within_field_of_view
       minvalue: 275
-
-  # Data Thinning
-  - filter: Gaussian Thinning
-    horizontal_mesh: 100
-    use_reduced_horizontal_grid: true
-    distance_norm: geodesic
-  #  round_horizontal_bin_count_to_nearest: true
-  #  partition_longitude_bins_using_mesh: true
-    actions:
-    - name: set
-      flag: Thinning
-    - name: reject
 
   # Toss data within a region lat: 20S - 0N deg and lon: 25E - 40E deg. (Inherited from GEOS)
   - filter: BlackList
