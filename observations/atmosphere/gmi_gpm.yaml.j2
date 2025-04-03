@@ -79,7 +79,7 @@
   - filter: Domain Check
     filter variables:
     - name: brightnessTemperature
-      channels: 1-13
+      channels: *{{observation_from_jcb}}_simulated_channels
     where:
     - variable:
         name: MetaData/sensorScanPosition
