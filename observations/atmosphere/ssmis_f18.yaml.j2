@@ -855,11 +855,8 @@
         channels: *{{observation_from_jcb}}_simulated_channels
         use_flag: &{{observation_from_jcb}}_active_channels [{{ get_satellite_variable(observation_from_jcb, "active") }}] 
     minvalue: 1.0e-12
-    actions:
-    - name: set
-      flag: UseflagCheck
-      ignore: rejected observations
-    - name: reject
+    action:
+      name: reject
 
   # GeoVaLs for Driving Observation Operators (testing mode)
   # --------------------------------------------------------
