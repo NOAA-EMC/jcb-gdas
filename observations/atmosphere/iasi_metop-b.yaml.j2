@@ -127,8 +127,6 @@
     use_reduced_horizontal_grid: true
     distance_norm: geodesic
     priority_variable: MetaData/fractionOfClearPixelsInFOV
-  #  round_horizontal_bin_count_to_nearest: true
-  #  partition_longitude_bins_using_mesh: true
     action:
       name: reduce obs space
 
@@ -149,7 +147,7 @@
         name: MetaData/solarZenithAngle
       maxvalue: 88.9999
     - variable:
-        name: water_area_fraction@GeoVaLs
+        name: GeoVaLs/water_area_fraction
       minvalue: 1.0e-12
     action:
       name: reject
@@ -162,7 +160,7 @@
     action:
       name: inflate error
       inflation variable:
-        name: ObsErrorFactorWavenumIR@ObsFunction
+        name: ObsFunction/ObsErrorFactorWavenumIR
         channels: *{{observation_from_jcb}}_simulated_channels
         options:
           channels: *{{observation_from_jcb}}_simulated_channels
@@ -229,7 +227,7 @@
     - name: brightnessTemperature
       channels: *{{observation_from_jcb}}_simulated_channels
     test variables:
-    - name: NearSSTRetCheckIR@ObsFunction
+    - name: ObsFunction/NearSSTRetCheckIR
       channels: *{{observation_from_jcb}}_simulated_channels
       options:
         channels: *{{observation_from_jcb}}_simulated_channels
@@ -280,20 +278,20 @@
     action:
       name: reject
 
-#  # Step 15: Useflag Check
-#  - filter: Bounds Check
-#    filter variables:
-#    - name: brightnessTemperature
-#      channels: *{{observation_from_jcb}}_simulated_channels
-#    test variables:
-#    - name: ObsFunction/ChannelUseflagCheckRad
-#      channels: *{{observation_from_jcb}}_simulated_channels
-#      options:
-#        channels: *{{observation_from_jcb}}_simulated_channels
-#        use_flag: *{{observation_from_jcb}}_active_channels
-#    minvalue: 1.0e-12
-#    action:
-#      name: reject
+  # Step 15: Useflag Check
+  - filter: Bounds Check
+    filter variables:
+    - name: brightnessTemperature
+      channels: *{{observation_from_jcb}}_simulated_channels
+    test variables:
+    - name: ObsFunction/ChannelUseflagCheckRad
+      channels: *{{observation_from_jcb}}_simulated_channels
+      options:
+        channels: *{{observation_from_jcb}}_simulated_channels
+        use_flag: *{{observation_from_jcb}}_active_channels
+    minvalue: 1.0e-12
+    action:
+      name: reject
 
   # GeoVaLs for Driving Observation Operators (testing mode)
   # --------------------------------------------------------
