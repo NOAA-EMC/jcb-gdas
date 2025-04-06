@@ -409,48 +409,12 @@
       name: reject
 
   #  Gross check
-# - filter: Background Check
-#   filter variables:
-#   - name: brightnessTemperature
-#     channels: *{{observation_from_jcb}}_simulated_channels
-#   threshold: 2.0
-#   absolute threshold: [{{ get_satellite_variable(observation_from_jcb, "ermax") }}]
-#   action:
-#     name: reject
-
   - filter: Background Check
     filter variables:
     - name: brightnessTemperature
-      channels: 1,2,4,6
+      channels: *{{observation_from_jcb}}_simulated_channels
     threshold: 2.0
-    absolute threshold: 30
-    action:
-      name: reject
-
-  - filter: Background Check
-    filter variables:
-    - name: brightnessTemperature
-      channels: 9,10,11
-    threshold: 2.0
-    absolute threshold: 20
-    action:
-      name: reject
-
-  - filter: Background Check
-    filter variables:
-    - name: brightnessTemperature
-      channels: 3,5,7,8
-    threshold: 2.0
-    absolute threshold: 15
-    action:
-      name: reject
-
-  - filter: Background Check
-    filter variables:
-    - name: brightnessTemperature
-      channels: 12,13
-    threshold: 2.0
-    absolute threshold: 10
+    absolute threshold vector: [{{ get_satellite_variable(observation_from_jcb, "ermax") }}]
     action:
       name: reject
 
