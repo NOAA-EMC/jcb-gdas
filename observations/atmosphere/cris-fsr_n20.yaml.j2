@@ -169,39 +169,39 @@
   # Step 4: Create cloudFree variable
   - filter: Variable Assignment
     assignments:
-    - name: MetaData/cloudFree 
+    - name: DerivedMetaData/cloudFree 
       type: int
       function:
-        name: ObsFunction/Arithmetic
-      options:
-        variables:
-        - name: DerivedMetaData/cloudCoverTotal
-        coefs: [-1] 
-        intercept: 100 
+        name: IntObsFunction/Arithmetic
+        options:
+          variables:
+          - name: MetaData/cloudCoverTotal
+          coefs: [-1] 
+          intercept: 100 
 
-#  # Step 5: Data Thinning
-#  - filter: Gaussian Thinning
-#    filter variables:
-#    - name: brightnessTemperature
-#      channels: *{{observation_from_jcb}}_simulated_channels
-#    horizontal_mesh: 145
-#    use_reduced_horizontal_grid: true
-#    distance_norm: geodesic
-#    priority_variable: DerivedMetaData/cloudCoverTotal
-#    action:
-#      name: reduce obs space
+  # Step 5: Data Thinning
+  - filter: Gaussian Thinning
+    filter variables:
+    - name: brightnessTemperature
+      channels: *{{observation_from_jcb}}_simulated_channels
+    horizontal_mesh: 145
+    use_reduced_horizontal_grid: true
+    distance_norm: geodesic
+    priority_variable: DerivedMetaData/cloudFree
+    action:
+      name: reduce obs space
 
-  obs prior filters:
+  obs post filters:
   # Step 6: Wavenumber Check
   - filter: RejectList
     filter variables:
-    - name: brightness_temperature
+    - name: brightnessTemperature
       channels: 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981,
                 1982, 1983, 1984, 1985, 1986, 1987, 2119, 2140, 2143, 2147,
                 2153, 2158, 2161, 2168, 2171, 2175, 2182
     where:
     - variable:
-        name: MetaData/solar_zenith_angle
+        name: MetaData/solarZenithAngle
       maxvalue: 88.9999
     - variable:
         name: GeoVaLs/water_area_fraction
@@ -281,14 +281,14 @@
   # Step 12: Surface Temperature Jacobian Check over Land
   - filter: Bounds Check
     filter variables:
-    - name: brightness_temperature
+    - name: brightnessTemperature
       channels: *{{observation_from_jcb}}_simulated_channels
     where:
     - variable:
         name: GeoVaLs/water_area_fraction
       maxvalue: 0.99
     test variables:
-    - name: ObsDiag/brightness_temperature_jacobian_surface_temperature
+    - name: ObsDiag/brightness_temperature_jacobian_skin_temperature_at_surface
       channels: *{{observation_from_jcb}}_simulated_channels
     maxvalue: 0.2
 
