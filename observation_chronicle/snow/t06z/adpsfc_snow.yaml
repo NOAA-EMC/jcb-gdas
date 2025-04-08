@@ -9,6 +9,7 @@ window_option: max
 # observation type initial configuration
 # --------------------------------
 stations_to_reject: [71120, 71397, 71621, 71727, 71816  # from North America
+  , 71641, 71976, 71743, 71902
   , 10863, 16179 # from Europe
   , 40550, 40580, 40582, 40587, 40592 # Mid East
   , 47005, 47008, 47014, 47016, 47020, 47022, 47025, 47028, 47031, 47035 # from North Korea
