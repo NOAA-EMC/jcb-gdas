@@ -3,11 +3,11 @@
   # Observation Space (I/O)
   # -----------------------
   obs space:
-    name: snocvr_snow
+    name: madis_snow
     obsdatain:
       engine:
         type: H5File
-        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}.nc4"
+        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}snocvr_snow.nc4"
         missing file action: warn
     obsdataout:
       engine:
