@@ -8,7 +8,7 @@
       engine:
         type: H5File
         obsfile: "/work2/noaa/da/esposito/ufoeval/GSIobserver_NE_ADC/2021080100/ioda/obs/aircraft_obs_2021080100.nc4" #NICKE test
-        #obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}prepbufr.acft_profiles"
+        #obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}{{atmosphere_obsdatain_suffix}}"
       obsgrouping:
         group variables: [stationIdentification]
         sort variable: pressure
@@ -17,7 +17,7 @@
       engine:
         type: H5File
         obsfile: "/work2/noaa/da/nesposito/BufrConverterTest_aircraft/diags/2021080100/diags_aircft_prepbufr.2021080100.nc" #NICKE test
-        #obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}prepbufr.acft_profiles_{{atmosphere_obsdataout_suffix}}"
+        #obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}{{observation_from_jcb}}{{atmosphere_obsdataout_suffix}}"
     io pool:
       max pool size: 1
     simulated variables: [airTemperature, windEastward, windNorthward, specificHumidity]
@@ -61,7 +61,6 @@
     #input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovin_acft_suffix}}"
     #output file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
     input file: "/work2/noaa/da/nesposito/GDASApp_20250210/build/iodaconv/test/testrun/varbc/acft_out.nc4"  # NICKE test
-    #output file: "/work2/noaa/da/esposito/ufoeval/GSIobserver_NE_ADC/2021080100/ioda/bc/acft_biasout.nc4"   # NICKE test
     variables without bc: [windEastward, windNorthward, specificHumidity]
     bc by record: true
     variational bc:
@@ -345,7 +344,7 @@
           variable: airTemperature
           inflation factor: 8.0
           surface_obs: true 
-          adjusted_error_name: GsiAdjustObsError
+          test_obserr: GsiAdjustObsError
           geovar_sfc_geomz: height_above_mean_sea_level_at_surface
 
   # inflate error for tails with uninitialized bias coefficients (i.e. all coefficients equal to zero)
@@ -421,7 +420,6 @@
   # Background  check
   # ratio threshold 7.0
   - filter: Background Check
-    #test_hofx: HofXBc
     test_hofx: HofX
     filter variables:
     - name: airTemperature
@@ -435,7 +433,6 @@
 
   # ratio threshold * 0.7 if PreQC=3
   - filter: Background Check
-    #test_hofx: HofXBc
     test_hofx: HofX
     filter variables:
     - name: airTemperature
@@ -649,11 +646,8 @@
           variable: windEastward
           inflation factor: 4.0
           surface_obs: false
-          #adjusted_error_name: GsiAdjustObsError
           test_obserr: GsiAdjustObsError
-          #geovar_sfc_geomz: surface_geometric_height
           geovar_sfc_geomz: height_above_mean_sea_level_at_surface
-          #geovar_sfc_geomz: geopotential_height_at_surface
     defer to post: true
 
   # Error inflation based on pressure check
@@ -668,11 +662,8 @@
           variable: windNorthward
           inflation factor: 4.0
           surface_obs: false
-          #adjusted_error_name: GsiAdjustObsError
           test_obserr: GsiAdjustObsError
-          #geovar_sfc_geomz: surface_geometric_height
           geovar_sfc_geomz: height_above_mean_sea_level_at_surface
-          #geovar_sfc_geomz: geopotential_height_at_surface 
     defer to post: true
 
   # Gross Check
@@ -814,7 +805,6 @@
       is_in: 130, 131, 135
     action:
       name: reject 
-    #defer to post: true
 
   # Assign the initial observation error, based on pressure (for RECON aircraft; itype=132)
   - filter: Perform Action
@@ -927,7 +917,6 @@
           inflation factor: 8.0
           request_saturation_specific_humidity_geovals: true
           test_obserr: GsiAdjustObsError
-          #geovar_sfc_geomz: surface_geometric_height
           geovar_sfc_geomz: height_above_mean_sea_level_at_surface
     defer to post: true
 
