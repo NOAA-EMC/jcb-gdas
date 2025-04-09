@@ -7,8 +7,8 @@
     obsdatain:
       engine:
         type: H5File
-        #obsfile: "/work2/noaa/da/esposito/ufoeval/GSIobserver_NE_ADC/2021080100/ioda/obs/aircraft_obs_2021080100.nc4" #NICKE test
-        obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}prepbufr.acft_profiles"
+        obsfile: "/work2/noaa/da/esposito/ufoeval/GSIobserver_NE_ADC/2021080100/ioda/obs/aircraft_obs_2021080100.nc4" #NICKE test
+        #obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}prepbufr.acft_profiles"
       obsgrouping:
         group variables: [stationIdentification]
         sort variable: pressure
@@ -16,8 +16,8 @@
     obsdataout:
       engine:
         type: H5File
-        #obsfile: "/work2/noaa/da/nesposito/BufrConverterTest_aircraft/diags/2021080100/diags_aircft_prepbufr.2021080100.nc" #NICKE test
-        obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}prepbufr.acft_profiles_{{atmosphere_obsdataout_suffix}}"
+        obsfile: "/work2/noaa/da/nesposito/BufrConverterTest_aircraft/diags/2021080100/diags_aircft_prepbufr.2021080100.nc" #NICKE test
+        #obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}prepbufr.acft_profiles_{{atmosphere_obsdataout_suffix}}"
     io pool:
       max pool size: 1
     simulated variables: [airTemperature, windEastward, windNorthward, specificHumidity]
@@ -36,12 +36,7 @@
       hofx scaling field group: DerivedVariables
 
     - name: VertInterp
-      observation alias file: "/work2/noaa/da/acollard/git/GDASApp/parm/atm/obs/testing/swell/obsop_name_map.yaml"
-      variables: [airTemperature ]
-
-    - name: VertInterp
-      variables:
-      - name: specificHumidity 
+      variables: [airTemperature, specificHumidity]
 
   # Linear Observation Operator
   # ---------------------------
@@ -58,20 +53,15 @@
       hofx scaling field group: DerivedVariables
 
     - name: VertInterp
-      observation alias file: "/work2/noaa/da/acollard/git/GDASApp/parm/atm/obs/testing/swell/obsop_name_map.yaml"
-      variables: [airTemperature] 
-
-    - name: VertInterp
-      variables:
-      - name: specificHumidity
+      variables: [airTemperature, specificHumidity] 
 
   # Observation Bias Correction (VarBC)
   # -----------------------------------
   obs bias:
-    input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovin_acft_suffix}}"
-    output file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
+    #input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovin_acft_suffix}}"
+    #output file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
     input file: "/work2/noaa/da/nesposito/GDASApp_20250210/build/iodaconv/test/testrun/varbc/acft_out.nc4"  # NICKE test
-    output file: "/work2/noaa/da/esposito/ufoeval/GSIobserver_NE_ADC/2021080100/ioda/bc/acft_biasout.nc4"   # NICKE test
+    #output file: "/work2/noaa/da/esposito/ufoeval/GSIobserver_NE_ADC/2021080100/ioda/bc/acft_biasout.nc4"   # NICKE test
     variables without bc: [windEastward, windNorthward, specificHumidity]
     bc by record: true
     variational bc:
@@ -88,8 +78,8 @@
       step size: 1.0e-4
       largest analysis variance: 10000.0
       prior:
-        #input file: "/work2/noaa/da/nesposito/GDASApp_20250210/build/iodaconv/test/testrun/varbc/acft_out.nc4"  #NICKE test
-        input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
+        input file: "/work2/noaa/da/nesposito/GDASApp_20250210/build/iodaconv/test/testrun/varbc/acft_out.nc4"  #NICKE test
+        #input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
         inflation:
           ratio: 1.005
           ratio for small dataset: 2.0
