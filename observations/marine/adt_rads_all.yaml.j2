@@ -41,7 +41,7 @@
           variables: [GeoVaLs/mesoscale_representation_error,
                       ObsError/absoluteDynamicTopography]
           coefs: [0.2,
-                  10.0]
+                  4.0]
   - filter: Domain Check
     where:
     - variable: { name: GeoVaLs/sea_ice_area_fraction}
@@ -49,7 +49,7 @@
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/distance_from_coast}
-      minvalue: 100e3
+      minvalue: 50e3
   - filter: BlackList
     where:
     - variable:
@@ -60,3 +60,15 @@
         name: MetaData/longitude
       minvalue: 32
       maxvalue: 56
+  - filter: Perform Action  # US West Coast upwelling
+    action:
+      name: accept
+    where:
+    - variable:
+        name: MetaData/latitude
+      minvalue: 30.0
+      maxvalue: 50.0
+    - variable:
+        name: MetaData/longitude
+      minvalue: -136.0
+      maxvalue: -116.0
