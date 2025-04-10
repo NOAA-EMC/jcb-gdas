@@ -12,7 +12,7 @@
         group variables: [stationIdentification]
         sort variable: pressure
         sort order: descending
-    obsdataout:
+    obsdataout:     #?
       engine:
         type: H5File
         obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}{{observation_from_jcb}}{{atmosphere_obsdataout_suffix}}"
