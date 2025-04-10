@@ -60,6 +60,16 @@ members:
     - ozone_mass_mixing_ratio
     - air_pressure_thickness
     - layer_thickness
+    field io names:
+      eastward_wind: u_inc
+      northward_wind: v_inc
+      air_temperature: T_inc
+      water_vapor_mixing_ratio_wrt_moist_air: sphum_inc
+      cloud_liquid_ice: icmr_inc
+      cloud_liquid_water: liq_wat_inc
+      ozone_mass_mixing_ratio: o3mr_inc
+      air_pressure_thickness: delp_inc
+      layer_thickness: delz_inc
     filetype: cube sphere history
     provider: ufs
     datapath: ./mem{{ '%0{}d'.format(3)|format(imember+1) }}
