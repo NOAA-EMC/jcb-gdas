@@ -17,7 +17,12 @@
     name: ADT
   obs error:
     covariance model: diagonal
-  obs filters:
+
+
+  obs pre filters:
+
+
+  obs prior filters:
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_area_fraction}
@@ -26,12 +31,18 @@
     where:
     - variable: { name: GeoVaLs/sea_surface_temperature}
       minvalue: 5.0
-  - filter: Background Check
-    absolute threshold: 1.0
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_floor_depth_below_sea_surface}
       minvalue: 500
+  - filter: Domain Check
+    where:
+    - variable: { name: GeoVaLs/sea_ice_area_fraction}
+      maxvalue: 0.00001
+  - filter: Domain Check
+    where:
+    - variable: {name: GeoVaLs/distance_from_coast}
+      minvalue: 100e3
   - filter: Perform Action
     action:
       name: assign error
@@ -42,14 +53,11 @@
                       ObsError/absoluteDynamicTopography]
           coefs: [0.2,
                   10.0]
-  - filter: Domain Check
-    where:
-    - variable: { name: GeoVaLs/sea_ice_area_fraction}
-      maxvalue: 0.00001
-  - filter: Domain Check
-    where:
-    - variable: {name: GeoVaLs/distance_from_coast}
-      minvalue: 100e3
+  
+
+  obs post filters:
+  - filter: Background Check
+    absolute threshold: 1.0
   - filter: BlackList
     where:
     - variable:
@@ -60,6 +68,8 @@
         name: MetaData/longitude
       minvalue: 32
       maxvalue: 56
+
+
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
