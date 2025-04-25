@@ -13,5 +13,5 @@ obs spaces:
     simulated variables: [ {{ obs_variables[observation_from_jcb] }} ]
   variable: {{ obs_variables[observation_from_jcb] }}
   experiment identifier: '{{ pslot }}'
-  csv output: '{{ marine_obsdatain_prefix }}ocn.{{ observation_from_jcb }}.stats.csv'
+  csv output: '{{marine_obsdataout_path}}/{{ marine_obsdatain_prefix }}ocn.{{ observation_from_jcb }}.stats.csv'
 {% endfor %}
