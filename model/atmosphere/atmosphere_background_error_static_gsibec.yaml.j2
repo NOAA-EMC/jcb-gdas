@@ -16,7 +16,7 @@ saber outer blocks:
     custom grid matching gsi:
       type: gaussian
       lats: {{ atmosphere_npy_ges + 1 }}
-      lons: {{ (atmosphere_npx_ges - 1) * 2 }}
+      lons: {{ ( atmosphere_npx_ges - 1 ) * 2 }}
     custom partitioner matching gsi:
       bands: {{ atmosphere_layout_gsib_y }}
     halo: 1
