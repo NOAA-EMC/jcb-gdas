@@ -18,7 +18,7 @@ components:
         custom grid matching gsi:
           type: gaussian
           lats: {{ atmosphere_npy_ges + 1 }}
-	  {% set lons_val = (atmosphere_npx_ges - 1) * 2 %}
+          {% set lons_val = (atmosphere_npx_ges - 1) * 2 %}
           lons: {{ lons_val }}
         custom partitioner matching gsi:
           bands: {{ atmosphere_layout_gsib_y }}
