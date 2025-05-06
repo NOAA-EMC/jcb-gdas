@@ -18,6 +18,7 @@ mean output:
   - filtered_orography
   - stc
   - sheleg
+  - fraction_of_ice
   field io names:
     totalSnowDepth: snodl
     filtered_orography: orog_filt
@@ -37,7 +38,7 @@ ensemble:
       field io names:
         totalSnowDepth: snodl
         filtered_orography: orog_filt
-	fraction_of_ice: fice
+        fraction_of_ice: fice
       datapath: ./bkg/mem%mem%/
       filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
       filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'
