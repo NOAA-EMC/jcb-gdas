@@ -11,6 +11,9 @@
   groups to process: ['ombg', 'oman']
   qc groups: ['EffectiveQC0', 'EffectiveQC1']
   output file: "{{ obspace }}_{{ stat_current_cycle_YMDH }}_output_snow.nc"
+  regular grid binning:
+    bin size in degrees: 2.0
+    use negative longitudes: false 
   domains to process:
   - domain:
       name: "SH"
@@ -21,26 +24,45 @@
       first mask variable: latitude
       first mask range: [0,90]
   - domain:
-      name: "CONUS"
+      name: "West_CONUS"
       first mask variable: latitude
       first mask range: [25,49]
       second mask variable: longitude
-      second mask range: [-125,-66]
+      second mask range: [235,260]
+  - domain:
+      name: "East_CONUS"
+      first mask variable: latitude
+      first mask range: [25,49]
+      second mask variable: longitude
+      second mask range: [260,294]
+  - domain:
+      name: "Alaska"
+      first mask variable: latitude
+      first mask range: [52,72]
+      second mask variable: longitude
+      second mask range: [190,230]
   - domain:
       name: "Europe"
       first mask variable: latitude
       first mask range: [35,70]
       second mask variable: longitude
-      second mask range: [-11,38]
+      second mask range: [38,349]
   - domain:
       name: "Africa"
       first mask variable: latitude
       first mask range: [-35,37]
       second mask variable: longitude
-      second mask range: [-17,52]
+      second mask range: [52,343]
   - domain:
       name: "Asia"
       first mask variable: latitude
       first mask range: [0,70]
       second mask variable: longitude
       second mask range: [38, 180]
+   - domain:
+      name: "High_Mount_Asia"
+      first mask variable: latitude
+      first mask range: [20,46]
+      second mask variable: longitude
+      second mask range: [60, 111]
+
