@@ -32,6 +32,8 @@
       Sensor_ID: &{{observation_from_jcb}}_sensor_id gmi_gpm
       EndianType: little_endian
       CoefficientPath: "{{crtm_coefficient_path}}"
+    linear obs operator:
+      Absorbers: [H2O, O3]
 
   # Observation Bias Correction (VarBC)
   # -----------------------------------
@@ -174,7 +176,7 @@
           clwret_ch37v: 6
           clwret_ch37h: 7
           clwret_types: [ObsValue]
-          use bias-corrected HofX: false
+          use bias-corrected HofX_at_ch37GHz: false
   # Check CLW retrievals from ObsValue
   - filter: Bounds Check
     filter variables:
@@ -195,7 +197,7 @@
           clwret_ch37v: 6
           clwret_ch37h: 7
           clwret_types: [HofX]
-          use bias-corrected HofX: false
+          use bias-corrected HofX_at_ch37GHz: false
   # Ckeck CLW retrievals from Hofx
   - filter: Bounds Check
     filter variables:
@@ -294,7 +296,7 @@
               clwret_ch37v: 6
               clwret_ch37h: 7
               clwret_types: [ObsValue, HofX]
-              use bias-corrected HofX: false
+              use bias-corrected HofX_at_ch37GHz: false
           x0: &{{observation_from_jcb}}_x0 [{{ get_satellite_variable(observation_from_jcb, "x0") }}]
           x1: &{{observation_from_jcb}}_x1 [{{ get_satellite_variable(observation_from_jcb, "x1") }}]
           x2: &{{observation_from_jcb}}_x2 [{{ get_satellite_variable(observation_from_jcb, "x2") }}]
