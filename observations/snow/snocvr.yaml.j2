@@ -3,11 +3,12 @@
   # Observation Space (I/O)
   # -----------------------
   obs space:
-    name: snocvr_snow
+    name: snocvr
     obsdatain:
       engine:
-        type: H5File
-        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}.nc4"
+        type: bufr
+        obsfile: "{{snow_obsdatain_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}{{snow_obsdatain_suffix}}"
+        mapping file: "{{snow_obsdatain_path}}/bufr_snocvr_mapping.yaml"
         missing file action: warn
       obsgrouping:
         group variables: [stationIdentification]
