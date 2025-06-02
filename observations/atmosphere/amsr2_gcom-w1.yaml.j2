@@ -158,10 +158,10 @@
           clwret_ch18h: 8
           clwret_ch36v: 11
           clwret_ch36h: 12
-          sys_bias: &amsr2_sys_bias [0.4800, 3.0737, 0.7433, 3.6430,
-                                     3.5304, 4.4270, 5.1448, 5.0785,
-                                     4.9763, 9.3215, 2.5789, 5.5274,
-                                     0.6641, 1.3674]
+          sys_bias: [0.4800, 3.0737, 0.7433, 3.6430,
+                     3.5304, 4.4270, 5.1448, 5.0785,
+                     4.9763, 9.3215, 2.5789, 5.5274,
+                     0.6641, 1.3674]
           clwret_types: [ObsValue]
   # Save CLW retrievals from HofX
   - filter: Variable Assignment
@@ -175,7 +175,10 @@
           clwret_ch18h: 8
           clwret_ch36v: 11
           clwret_ch36h: 12
-          sys_bias: *amsr2_sys_bias
+          sys_bias: [0.4800, 3.0737, 0.7433, 3.6430,
+                     3.5304, 4.4270, 5.1448, 5.0785,
+                     4.9763, 9.3215, 2.5789, 5.5274,
+                     0.6641, 1.3674]
           clwret_types: [HofX]
   #  Ckeck CLW retrievals from observations
   - filter: Bounds Check
