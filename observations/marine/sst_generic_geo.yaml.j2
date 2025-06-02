@@ -55,6 +55,12 @@
     where:
     - variable: {name: GeoVaLs/sea_surface_temperature}
       minvalue: -1.2
+  - filter: Domain Check
+    action:
+      name: passivate
+    where:
+    - variable: {name: GeoVaLs/sea_surface_temperature}
+      maxvalue: -4.0
 
   obs post filters:
   - filter: Background Check
