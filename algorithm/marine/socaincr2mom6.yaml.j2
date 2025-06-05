@@ -56,3 +56,8 @@ qc increment:
     sea_water_salinity: [0.0, 44.0]
   increment max:
     steric: 0.5
+  increment stability iterations: 20
+  min stable density gradient: 1e-4
+  steric increment:
+    linear variable changes:
+    - linear variable change name: BalanceSOCA
