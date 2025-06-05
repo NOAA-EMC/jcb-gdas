@@ -19,10 +19,12 @@ mean output:
   - stc
   - sheleg
   - fraction_of_ice
+  - fraction_of_land
   field io names:
     totalSnowDepth: snodl
     filtered_orography: orog_filt
     fraction_of_ice: fice
+    fraction_of_land: landfrac
 ensemble:
   members from template:
     template:
@@ -36,10 +38,12 @@ ensemble:
       - stc
       - sheleg
       - fraction_of_ice
+      - fraction_of_land: landfrac
       field io names:
         totalSnowDepth: snodl
         filtered_orography: orog_filt
         fraction_of_ice: fice
+        fraction_of_land: landfrac
       datapath: ./bkg/mem%mem%/
       filename_sfcd: '{{ snow_background_time_fv3 }}.sfc_data.nc'
       filename_cplr: '{{ snow_background_time_fv3 }}.coupler.res'
