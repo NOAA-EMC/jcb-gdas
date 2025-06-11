@@ -48,6 +48,11 @@ qc increment:
     sea_water_salinity: [0.0, 44.0]
   increment max:
     steric: 0.5
+  increment stability iterations: 20
+  min stable density gradient: 1e-4
+  steric increment:
+    linear variable changes:
+    - linear variable change name: BalanceSOCA
 
 soca background:  # background at the beginning of the window, used to compute analysis at the beginning of the window for soca2cice
   date: '{{ marine_window_begin_iso }}'
@@ -61,6 +66,8 @@ soca background:  # background at the beginning of the window, used to compute a
   - sea_surface_height_above_geoid
   - eastward_sea_water_velocity
   - northward_sea_water_velocity
+  - ocean_mixed_layer_thickness
+  - sea_water_depth
   - sea_water_cell_thickness
   - sea_ice_area_fraction
   - sea_ice_thickness
