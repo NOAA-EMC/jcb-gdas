@@ -34,6 +34,7 @@
     - filter: Domain Check
       where:
       - variable: {name: GeoVaLs/sea_area_fraction}
+        value: is_valid
         minvalue: 0.5
 
   #-------------------------------------------------------------------------------
@@ -155,7 +156,7 @@
 
     #### Arctic Ocean
     #-----------------------------------------------------------------------------
-    
+
     - filter: Bounds Check
       filter variables: [{name: waterTemperature}]
       minvalue: -1.92
@@ -165,10 +166,10 @@
           name: MetaData/latitude
         minvalue: 60
 
-    - filter: Background Check
-      filter variables: [{name: waterTemperature}]
-      threshold: 5.0
-      absolute threshold: 5.0
+#    - filter: Background Check
+#      filter variables: [{name: waterTemperature}]
+#      threshold: 5.0
+#      absolute threshold: 5.0
 
     - filter: Perform Action
       action:
@@ -179,7 +180,7 @@
             variables:
             - ObsError/waterTemperature
             coefs:
-            - 1000.0
+            - 100.0
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
