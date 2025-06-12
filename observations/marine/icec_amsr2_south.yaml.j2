@@ -22,6 +22,7 @@
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_area_fraction}
+      value: is_valid
       minvalue: 0.9
   - filter: Bounds Check
     minvalue: 0.0
@@ -45,6 +46,12 @@
 #    select_median: true
 #    action:
 #      name: reduce obs space
+  - filter: Domain Check
+    action:
+      name: passivate
+    where:
+    - variable: {name: GeoVaLs/sea_surface_temperature}
+      maxvalue: -4.0
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
