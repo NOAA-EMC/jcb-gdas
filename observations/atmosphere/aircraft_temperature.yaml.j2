@@ -39,8 +39,8 @@
   # Observation Bias Correction (VarBC)
   # -----------------------------------
   obs bias:
-    input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovin_acft_suffix}}"
-    output file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
+    input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiasin_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasin_acft_suffix}}"
+    output file: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsbiasout_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiasout_acft_suffix}}"
     bc by record: true
     variational bc:
       predictors:
@@ -56,10 +56,11 @@
       step size: 1.0e-4
       largest analysis variance: 10000.0
       prior:
-        input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovout_acft_suffix}}"
+        input file: "{{atmosphere_obsbiasin_path}}/{{atmosphere_obsbiascovin_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiascovin_acft_suffix}}"
         inflation:
           ratio: 1.005
           ratio for small dataset: 2.0
+      output file: "{{atmosphere_obsbiasout_path}}/{{atmosphere_obsbiascovout_prefix}}{{observation_from_jcb}}{{atmosphere_obsbiascovout_acft_suffix}}"
 
 
   obs pre filters:
