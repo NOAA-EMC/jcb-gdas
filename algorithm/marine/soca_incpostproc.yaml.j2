@@ -42,6 +42,12 @@ output increment:
   type: incr
   output file: inc.nc
 
+increment precision:
+- field: sea_water_potential_temperature
+- field: sea_water_salinity
+- field: sea_surface_height_above_geoid  # Not used in MOM6 iau
+- field: sea_ice_area_fraction
+
 qc increment:
   state bounds:
     sea_water_potential_temperature: [-2.5, 36.0]
