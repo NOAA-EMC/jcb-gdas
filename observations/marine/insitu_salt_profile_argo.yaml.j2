@@ -31,12 +31,14 @@
   # The QC filters used here are based on the document by IODE that can be found at
   # https://cdn.ioos.noaa.gov/media/2017/12/recommendations_in_situ_data_real_time_qc.pdf
   #-------------------------------------------------------------------------------
+
   obs filters:
 
     # land check
     - filter: Domain Check
       where:
       - variable: {name: GeoVaLs/sea_area_fraction}
+        value: is_valid
         minvalue: 0.5
 
 
@@ -45,6 +47,7 @@
     #-----------------------------------------------------------------------------
     ### Global range test
     #-----------------------------------------------------------------------------
+
     - filter: Bounds Check
       filter variables: [{name: salinity}]
       minvalue: 2.0
@@ -123,6 +126,7 @@
 
     #### Northwestern shelves
     #-----------------------------------------------------------------------------
+
     - filter: Bounds Check
       filter variables: [{name: salinity}]
       minvalue: 0.0
@@ -139,6 +143,7 @@
 
     #### Southwestern shelves
     #-----------------------------------------------------------------------------
+
     - filter: Bounds Check
       filter variables: [{name: salinity}]
       minvalue: 0.0
@@ -155,6 +160,7 @@
 
     #### Arctic Ocean
     #-----------------------------------------------------------------------------
+
     - filter: Bounds Check
       filter variables: [{name: salinity}]
       minvalue: 2.0
@@ -169,13 +175,16 @@
       threshold: 5.0
       absolute threshold: 5.0
 
-  obs localizations:
-  - localization method: Rossby
-    base value: 100.0e3
-    rossby mult: 1.0
-    min grid mult: 2.0
-    min value: 200.0e3
-    max value: 900.0e3
+    - filter: Perform Action
+      action:
+        name: assign error
+        error function:
+          name: ObsFunction/LinearCombination
+          options:
+            variables:
+            - ObsError/salinity
+            coefs:
+            - 100.0
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby

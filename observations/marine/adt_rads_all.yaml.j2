@@ -21,6 +21,7 @@
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_area_fraction}
+      value: is_valid
       minvalue: 0.9
   - filter: Domain Check
     where:
@@ -41,7 +42,7 @@
           variables: [GeoVaLs/mesoscale_representation_error,
                       ObsError/absoluteDynamicTopography]
           coefs: [0.2,
-                  10.0]
+                  1.0]
   - filter: Domain Check
     where:
     - variable: { name: GeoVaLs/sea_ice_area_fraction}
@@ -49,7 +50,7 @@
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/distance_from_coast}
-      minvalue: 100e3
+      minvalue: 50e3
   - filter: BlackList
     where:
     - variable:
