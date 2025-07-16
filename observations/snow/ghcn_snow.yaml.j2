@@ -39,6 +39,8 @@
         initial value: false
       - name: landice_check
         initial value: false
+      - name: seaice_check
+        initial value: false
       - name: elevation_bkgdiff
         initial value: false
       - name: rejectlist
@@ -108,6 +110,11 @@
       - variable:
           name: GeoVaLs/fraction_of_ice
         maxvalue: 0.0
+      actions:
+      - name: set
+        flag: seaice_check
+        ignore: rejected observations
+      - name: reject
     - filter: RejectList  # no land-ice
       where:
       - variable:
