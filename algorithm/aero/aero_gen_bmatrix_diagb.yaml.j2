@@ -135,7 +135,7 @@ variables:
   - mass_fraction_of_sea_salt003_in_air
   - mass_fraction_of_sea_salt004_in_air
 
-{% set rescaling_factor_file = rescaling_factor_file|default(aero_gen_bmatrix_rescale_default) %}
+{% set rescaling_factor_file = aero_rescaling_factor_file|default(aero_gen_bmatrix_rescale_default) %}
 {% include rescaling_factor_file %}
 
 number of halo points: {{ aero_diagb_n_halo }}
