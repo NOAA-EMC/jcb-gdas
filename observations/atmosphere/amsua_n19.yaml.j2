@@ -6,8 +6,13 @@
     name: AMSUA N19
     obsdatain:
       engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}{{atmosphere_obsdatain_suffix}}"
+        {{ get_obs_engine(observation_from_jcb,
+	  atmosphere_obsdatain_path,
+          atmosphere_obsdatain_prefix,
+          atmosphere_obsdatain_suffix,
+          script_path='./',
+          script_input= '{"1b": "gdas.t00z.1bamua.tm00.bufr_d"}') 
+        }}
     obsdataout:
       engine:
         type: H5File
