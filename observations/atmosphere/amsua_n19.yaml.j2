@@ -10,8 +10,9 @@
 	  atmosphere_obsdatain_path,
           atmosphere_obsdatain_prefix,
           atmosphere_obsdatain_suffix,
-          script_path='./',
-          script_input= '{"1b": "gdas.t00z.1bamua.tm00.bufr_d"}') 
+          script_path='{{atmosphere_script_path}}',
+          script_input= '{"1b": "gdas.t{{cyc}}z.1bamua{{atmosphere_obs_bufr_suffix}}"}',
+          )
         }}
     obsdataout:
       engine:
