@@ -6,7 +6,7 @@
     name: AMSUA N19
     obsdatain:
       engine:
-        {% set rendered_input = '{"1b": "gdas.t' ~ cyc ~ 'z.1bamua' ~ atmosphere_obs_bufr_suffix ~ '"}' %}
+        {% set rendered_input = '{"1b": "' ~ atmosphere_obsdatain_prefix ~ '1bamua' ~ atmosphere_obs_bufr_suffix ~ '"}' %}
         {% set rendered_script_path = atmosphere_script_path %}
         {{ get_obs_engine(observation_from_jcb,
 	  atmosphere_obsdatain_path,
