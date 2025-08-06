@@ -6,16 +6,8 @@
     name: AMSUA N19
     obsdatain:
       engine:
-        {% set rendered_input = '{"1b": "' ~ atmosphere_obsdatain_prefix ~ '1bamua.tm00.bufr_d"}' %}
-        {% set rendered_script_path = atmosphere_obsdatain_path %}
-        {{ get_obs_engine(observation_from_jcb,
-	  atmosphere_obsdatain_path,
-          atmosphere_obsdatain_prefix,
-          atmosphere_obsdatain_suffix,
-          script_path=rendered_script_path,
-          script_input=rendered_input
-          )
-        }}
+        {% set rendered_input = '{"1b": "' ~ atmosphere_obsdatain_prefix ~ '1bamua' ~ atmosphere_obsdatain_suffix_bufr ~ '"}' %}
+        {{ get_obs_engine(observation_from_jcb, 'atmosphere', script_input=rendered_input)}}
     obsdataout:
       engine:
         type: H5File
