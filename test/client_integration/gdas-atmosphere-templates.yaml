@@ -93,6 +93,7 @@ crtm_coefficient_path: "DATA/crtm/"
 
 # Naming conventions for observational files
 atmosphere_obsdatain_path: DATA/obs
+atmosphere_obsdatain_script_path: DATA/obs
 atmosphere_obsdatain_prefix: OPREFIX
 atmosphere_obsdatain_suffix: ".2024020100.nc"
 atmosphere_obsdatain_suffix_bufr : ".2024020100.bufr_d"
