@@ -3,14 +3,14 @@ mkdir:
 copy_opt:
     {% for observation_from_jcb in observations %}
       {% if use_observer(observation_from_jcb) %}
-        {% if not observation_from_jcb == 'ims_snow' and not observation_from_jcb == 'ghcn_snow' %}
-        # skip ims_snow and gchn_snow, since will be prep-ed separately
-          {% if observation_from_jcb == 'madis_snow' %}
-          # madis_snow is a .nc file with filename 'snocvr_snow' in global GDA.
+        {% if observation_from_jcb == 'ims_snow'%}
+    - ['{{snow_prepobs_path}}/{{snow_obsdatain_prefix}}ims_snow.tm00.nc', '{{snow_obsdatain_path}}']
+        {% elif observation_from_jcb == 'ghcn_snow' %}
+    - ['{{snow_prepobs_path}}/ghcn_snow.nc', '{{snow_obsdatain_path}}']
+        {% elif observation_from_jcb == 'madis_snow' %}
     - ['{{snow_obsdataroot_path}}/{{snow_obsdatain_prefix}}snocvr_snow.nc4', '{{snow_obsdatain_path}}']
-          {% else %}
+        {% else %}
     - ['{{snow_obsdataroot_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}{{snow_obsdatain_suffix}}', '{{snow_obsdatain_path}}']
-          {% endif %}
         {% endif %}
       {% endif %}
     {% endfor %}
