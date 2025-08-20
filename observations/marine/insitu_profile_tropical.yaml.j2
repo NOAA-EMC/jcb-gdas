@@ -30,7 +30,13 @@
           variables:
           - ObsError/waterTemperature
           coefs:
-          - 1000.0
+          - 100.0
+  - filter: Domain Check
+    action:
+      name: passivate
+    where:
+    - variable: {name: GeoVaLs/sea_surface_temperature}
+      maxvalue: -4.0
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby

@@ -22,6 +22,7 @@
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_area_fraction}
+      value: is_valid
       minvalue: 0.9
   - filter: Bounds Check
     minvalue: 0.0
@@ -39,12 +40,14 @@
     action:
       name: inflate error
       inflation factor: 2.0
-#  - filter: Gaussian Thinning
-#    horizontal_mesh: 25  #km
-#    use_reduced_horizontal_grid: true
-#    select_median: true
-#    action:
-#      name: reduce obs space
+{% if letkf_app | default(false) %}
+  - filter: Gaussian Thinning
+    horizontal_mesh: 25  #km
+    use_reduced_horizontal_grid: true
+    select_median: true
+    action:
+      name: reduce obs space
+{% endif %}
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby

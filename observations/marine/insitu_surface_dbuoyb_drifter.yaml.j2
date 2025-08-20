@@ -9,6 +9,7 @@
         type: H5File
         obsfile: "{{marine_obsdataout_path}}/{{marine_obsdataout_prefix}}{{observation_from_jcb}}{{marine_obsdataout_suffix}}"
     simulated variables: [seaSurfaceTemperature]
+    observed variables: [seaSurfaceTemperature]
     io pool:
       max pool size: 1
   get values:
@@ -19,23 +20,7 @@
   obs error:
     covariance model: diagonal
 
-  obs prior filters:
-  - filter: Domain Check
-    where:
-    - variable: {name: GeoVaLs/distance_from_coast}
-      minvalue: 50e3
-  - filter: Perform Action  # accept obs that failed previous QC in Pamlico Sound & Chesapeake Bay
-    action:
-      name: accept
-    where:
-    - variable:
-        name: MetaData/latitude
-      minvalue: 34.5
-      maxvalue: 39.7
-    - variable:
-        name: MetaData/longitude
-      minvalue: -76.88
-      maxvalue: -74.5
+  obs pre filters:
   - filter: Bounds Check
     minvalue: -1.2
     maxvalue: 41.0
@@ -43,6 +28,8 @@
     where:
     - variable: {name: ObsError/seaSurfaceTemperature}
       minvalue: 1.0e-8
+
+  obs prior filters:
   - filter: Domain Check
     where:
     - variable: {name: GeoVaLs/sea_area_fraction}
@@ -57,10 +44,6 @@
     - variable: {name: GeoVaLs/sea_surface_temperature}
       minvalue: -1.2
 
-  obs post filters:
-  - filter: Background Check
-    absolute threshold: 5.0
-
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
@@ -70,3 +53,4 @@
     min value: 200.0e3
     max value: 900.0e3
 {% endif %}
+
