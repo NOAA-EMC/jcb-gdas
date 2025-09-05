@@ -37,6 +37,7 @@
   # Observation Pre Filters (QC)
   # ----------------------------
   obs pre filters:
+  # assign observation error
   - filter: Perform Action
     filter variables:
     - name: ozoneTotal
@@ -44,8 +45,6 @@
       name: assign error
       error parameter: 6.0
 
-  # Observation Prior Filters (QC)
-  # ------------------------------
   # GSI read routine QC
   # range sanity check
   - filter: Bounds Check
