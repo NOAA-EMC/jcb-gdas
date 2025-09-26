@@ -50,12 +50,12 @@
     select_median: true
     action:
       name: reduce obs space
-#  - filter: Domain Check
-#    action:
-#      name: passivate
-#    where:
-#    - variable: {name: GeoVaLs/sea_surface_temperature}
-#      maxvalue: -4.0
+  - filter: Domain Check
+    action:
+      name: passivate
+    where:
+    - variable: {name: GeoVaLs/sea_surface_temperature}
+      maxvalue: -4.0
 {% if letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
