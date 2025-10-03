@@ -25,7 +25,7 @@
     name: Composite
     components:
     - name: VertInterp
-      variables: [airTemperature, virtualTemperature,specificHumidity,windEastward,windNorthward]
+      variables: [airTemperature, virtualTemperature,specificHumidity]
     - name: VertInterp
       variables:
       - name: windEastward
@@ -43,19 +43,38 @@
       variables: [airTemperature, virtualTemperature,specificHumidity,windEastward,windNorthward]
 
   obs pre filters:
-  
-  # Reject all obs with PreQC > 3
+
+
+############ Specific Humidity ########################  
+  # Reject all obs with QualityMarker > 3
 #  - filter: RejectList
 #    apply at iterations: 0,1
 #    filter variables:
 #    - name: specificHumidity
 #    where:
-#    - variable: PreQC/specificHumidity
+#    - variable: QualityMarker/specificHumidity
 #      is_in: 4-15
 #      value: is_not_valid
 #    where operator: or
 #    action:
 #      name: reject
+
+  # Create PreUseFlag group variable (usage in GSI read_prepbufr)
+  # Initialize
+  - filter: Variable Assignment
+    assignments:
+    - name: PreUseFlag/specificHumidity
+      type: int
+      source variable: QualityMarker/specificHumidity
+
+  - filter: Variable Assignment
+    where:
+    - variable:
+        name: PreUseFlag/specificHumidity
+      is_in: 1-15
+    assignments:
+    - name: PreUseFlag/specificHumidity
+      value: 0
 
   # Initial error assignment
   - filter: Perform Action
@@ -76,11 +95,258 @@
       name: inflate error
       inflation factor: 1.2
     where:
-    - variable: PreQC/specificHumidity
+    - variable: QualityMarker/specificHumidity
       is_in: 3,7
 
-  obs prior filters:
+############ Air Temperature  ########################  
 
+  # Air temperature
+  # ---------------
+  # Error assignments
+  # initial error
+  - filter: Perform Action
+    filter variables:
+    - name: airTemperature
+    action:
+      name: assign error
+      error function:
+        name: ObsFunction/ObsErrorModelStepwiseLinear
+        options:
+          xvar:
+            name: MetaData/pressure
+          xvals: [ 110000.0, 105000.0, 100000.0, 95000.0, 90000.0, 85000.0, 80000.0, 75000.0,
+                   70000.0, 65000.0, 60000.0, 55000.0, 50000.0, 45000.0, 40000.0, 35000.0, 
+                   30000.0, 25000.0, 20000.0, 15000.0, 10000.0, 7500.0, 5000.0, 4000.0, 3000.0, 
+                   2000.0, 1000.0, 500.0, 400.0, 300.0, 200.0, 100.0, 0.0 ]
+          errors: [ 1.2, 1.2, 1.2, 1.1, 0.9, 0.8, 0.8, 0.8, 0.8, 0.8,
+                    0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.9, 1.2, 1.2, 1.0,
+                    0.8, 0.8, 0.9, 0.95, 1.0, 1.25, 1.5, 1.5, 1.5, 1.5,
+                    1.5, 1.5, 1.5 ]
+
+### Adjusted error after initial assignment
+##  - filter: Perform Action
+##    filter variables:
+##    - name: airTemperature
+##    action:
+##      name: inflate error
+##      inflation variable:
+##        name: ObsFunction/ObsErrorFactorConventional
+##        options:
+##          test QCflag: QualityMarker
+##          test QCthreshold: 3
+##          inflate variables: [airTemperature]
+##          pressure: MetaData/pressure
+##          distance threshold: -1.
+##    defer to post: true
+
+  # Save AdjustObsErrorData for diagnostics
+  - filter: Variable Assignment
+    assignments:
+    - name: AdjustObsErrorData/airTemperature
+      type: float
+      function:
+        name: ObsFunction/Arithmetic
+        options:
+          variables:
+          - name: ObsErrorData/airTemperature
+    defer to post: true
+
+  # inflate error, x1.2 for QualityMarker = 3,7
+  - filter: Perform Action
+    filter variables:
+    - name: airTemperature
+    action:
+      name: inflate error
+      inflation factor: 1.2
+    where:
+    - variable: QualityMarker/airTemperature
+      is_in: [3 7]
+    defer to post: true
+
+  # inflate error, x1.2  at pressure < 10000 Pa.
+  - filter: Perform Action
+    filter variables:
+    - name: airTemperature
+    action:
+      name: inflate error
+      inflation factor: 1.2
+    where:
+    - variable: MetaData/pressure
+      minvalue: 0
+      maxvalue: 9999
+    defer to post: true
+
+############ Virtual Temperature  ########################  
+
+  # Virtual temperature
+  # ---------------
+  # Error assignments
+  # initial error
+  - filter: Perform Action
+    filter variables:
+    - name: virtualTemperature
+    action:
+      name: assign error
+      error function:
+        name: ObsFunction/ObsErrorModelStepwiseLinear
+        options:
+          xvar:
+            name: MetaData/pressure
+          xvals: [ 110000.0, 105000.0, 100000.0, 95000.0, 90000.0, 85000.0, 80000.0, 75000.0,
+                   70000.0, 65000.0, 60000.0, 55000.0, 50000.0, 45000.0, 40000.0, 35000.0, 
+                   30000.0, 25000.0, 20000.0, 15000.0, 10000.0, 7500.0, 5000.0, 4000.0, 3000.0, 
+                   2000.0, 1000.0, 500.0, 400.0, 300.0, 200.0, 100.0, 0.0 ]
+          errors: [ 1.2, 1.2, 1.2, 1.1, 0.9, 0.8, 0.8, 0.8, 0.8, 0.8,
+                    0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.9, 1.2, 1.2, 1.0,
+                    0.8, 0.8, 0.9, 0.95, 1.0, 1.25, 1.5, 1.5, 1.5, 1.5,
+                    1.5, 1.5, 1.5 ]
+
+  # Create PreUseFlag group variable (usage in GSI read_prepbufr)
+  # Initialize
+  - filter: Variable Assignment
+    assignments:
+    - name: PreUseFlag/virtualTemperature
+      type: int
+      source variable: QualityMarker/virtualTemperature
+
+  - filter: Variable Assignment
+    where:
+    - variable:
+        name: PreUseFlag/virtualTemperature
+      is_in: 1-15
+    assignments:
+    - name: PreUseFlag/virtualTemperature
+      value: 0
+
+### Adjusted error after initial assignment
+##  - filter: Perform Action
+##    filter variables:
+##    - name: virtualTemperature
+##    action:
+##      name: inflate error
+##      inflation variable:
+##        name: ObsFunction/ObsErrorFactorConventional
+##        options:
+##          test QCflag: QualityMarker
+##          test QCthreshold: 3
+##          inflate variables: [virtualTemperature]
+##          pressure: MetaData/pressure
+##          distance threshold: -1.
+##    defer to post: true
+
+  # Save AdjustObsErrorData for diagnostics
+  - filter: Variable Assignment
+    assignments:
+    - name: AdjustObsErrorData/virtualTemperature
+      type: float
+      function:
+        name: ObsFunction/Arithmetic
+        options:
+          variables:
+          - name: ObsErrorData/virtualTemperature
+    defer to post: true
+
+  # inflate error, x1.2 for QualityMarker = 3,7
+  - filter: Perform Action
+    filter variables:
+    - name: virtualTemperature
+    action:
+      name: inflate error
+      inflation factor: 1.2
+    where:
+    - variable: QualityMarker/virtualTemperature
+      is_in: [3 7]
+    defer to post: true
+
+  # inflate error, x1.2  at pressure < 10000 Pa.
+  - filter: Perform Action
+    filter variables:
+    - name: virtualTemperature
+    action:
+      name: inflate error
+      inflation factor: 1.2
+    where:
+    - variable: MetaData/pressure
+      minvalue: 0
+      maxvalue: 9999
+    defer to post: true
+
+############ Vector Wind  ########################  
+  
+  - filter: Bounds Check
+    filter variables:
+    - name: windEastward
+    - name: windNorthward
+    minvalue: -135
+    maxvalue: 135
+
+  # Assign the initial observation error, based on height/pressure
+  - filter: Perform Action
+    filter variables:
+    - name: windEastward
+    - name: windNorthward
+    action:
+      name: assign error
+      error function:
+        name: ObsErrorModelStepwiseLinear@ObsFunction
+        options:
+          xvar:
+            name: MetaData/pressure
+          xvals:  [ 110000.0, 105000.0, 100000.0, 95000.0, 90000.0, 85000.0, 80000.0, 75000.0, 70000.0, 65000.0,
+                    60000.0, 55000.0, 50000.0, 45000.0, 40000.0, 35000.0, 30000.0, 25000.0, 20000.0, 15000.0,
+                    10000.0, 7500.0, 5000.0, 4000.0, 3000.0, 2000.0, 1000.0, 500.0, 400.0, 300.0, 200.0, 100.0, 0.0 ]
+          # When nvqc is true all errors are scaled by 1.2. Seems pointless to put in an
+          # extra calculation, so just scaling here. (but alas we cannot do that due to the surface pressure check)
+          #errors: [ 1.75, 1.75, 1.75, 1.875, 1.875, 1.875, 2.0, 2.0, 2.0, 2.25, 2.375, 2.5, 2.625, 2.875, 3.25,
+          #          3.5, 3.75, 4.0, 3.375, 3.0, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625,
+          #          2.625, 2.625, 2.625, 2.625 ]
+          errors: [ 1.4, 1.4, 1.4, 1.5, 1.5, 1.5, 1.6, 1.6, 1.6, 1.8, 1.9, 2.0, 2.1, 2.3, 2.6,
+                    2.8, 3.0, 3.2, 2.7, 2.4, 2.1, 2.1, 2.1, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52 ]
+
+  # Create PreUseFlag group variable (usage in GSI read_prepbufr)
+  # Initialize
+  - filter: Variable Assignment
+    assignments:
+    - name: PreUseFlag/windNorthward
+      type: int
+      source variable: QualityMarker/windNorthward
+    assignments:
+    - name: PreUseFlag/windEastward
+      type: int
+      source variable: QualityMarker/windEastward
+
+  - filter: Variable Assignment
+    where:
+    - variable:
+        name: PreUseFlag/windNorthward
+      is_in: 1-15
+    assignments:
+    - name: PreUseFlag/windNorthward
+      value: 0
+    - variable:
+        name: PreUseFlag/windEastward
+      is_in: 1-15
+    assignments:
+    - name: PreUseFlag/windEastward
+      value: 0
+
+  # Reject all obs with QualityMarker > 3
+  - filter: RejectList
+    apply at iterations: 0,1
+    filter variables:
+    - name: windEastward
+    - name: windNorthward
+    where:
+    - variable: QualityMarker/windEastward
+      is_in: 4-15
+      value: is_not_valid
+    where operator: or
+    action:
+      name: reject
+  
+
+  obs prior filters:
+############ Specific Humidity ########################  
   # Error inflation based on pressure check (setupq.f90)
   - filter: Perform Action
     filter variables:
@@ -194,14 +460,19 @@
 ##      value: is_valid
 ##    defer to post: true
 
+############ Air Temperature  ########################  
+############ Virtual Temperature  ########################  
+############ Vector Wind  ########################  
+  
+  # Apply variable changes needed for performing wind scaling
+  # ---------------------------------------------------------
+  - filter: Variable Transforms
+    Transform: SurfaceWindScalingPressure
+    SkipWhenNoObs: False
+  
 
   obs post filters:
-
-  - filter: Variable Assignment
-    assignments:
-    - name: ObsError1/specificHumidity
-      type: float
-      source variable: ObsErrorData/specificHumidity
+############ Specific Humidity ########################  
 
   # Gross Error Check
   - filter: Background Check
@@ -213,11 +484,11 @@
       name: reject
     where:
     - variable: ObsType/specificHumidity
-    - variable: PreQC/specificHumidity
+    - variable: QualityMarker/specificHumidity
       is_not_in: 3
     defer to post: true
 
-  # Gross Error Check: cgross*0.7 if PreQC=3
+  # Gross Error Check: cgross*0.7 if QualityMarker=3
   - filter: Background Check
     apply at iterations: 0,1
     filter variables:
@@ -227,7 +498,7 @@
       name: reject
     where:
     - variable: ObsType/specificHumidity
-    - variable: PreQC/specificHumidity
+    - variable: QualityMarker/specificHumidity
       is_in: 3
     defer to post: true
 
@@ -298,122 +569,7 @@
       type: float
       source variable: ObsErrorData/specificHumidity
 
-
-  # GeoVaLs for Driving Observation Operators (testing mode)
-  # --------------------------------------------------------
-  geovals:
-    filename: '{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}_geoval{{atmosphere_obsdatain_suffix}}'
-
-  # Passed benchmark for UFO testing
-  # --------------------------------
-  passedBenchmark: 0
- 
--
-  # Observation Space (I/O)
-  # -----------------------
-  obs space:
-    name: sondes
-    obsdatain:
-      engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}{{atmosphere_obsdatain_suffix}}"
-      obsgrouping:
-        group variables: ["stationIdentification"]
-        sort variable: "pressure"
-        sort order: "descending"
-    obsdataout:
-      engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}{{observation_from_jcb}}{{atmosphere_obsdataout_suffix}}"
-    io pool:
-      max pool size: 1
-    simulated variables: [airTemperature]
-
-
-  obs operator:
-    name: Composite
-    components:
-    - name: VertInterp
-      variables:
-      - name: airTemperature
-  
-  obs post filters:
-  
-  # Air temperature
-  # ---------------
-  # Error assignments
-  # initial error
-  - filter: Perform Action
-    filter variables:
-    - name: airTemperature
-    action:
-      name: assign error
-      error function:
-        name: ObsFunction/ObsErrorModelStepwiseLinear
-        options:
-          xvar:
-            name: MetaData/pressure
-          xvals: [ 110000.0, 105000.0, 100000.0, 95000.0, 90000.0, 85000.0, 80000.0, 75000.0,
-                   70000.0, 65000.0, 60000.0, 55000.0, 50000.0, 45000.0, 40000.0, 35000.0, 
-                   30000.0, 25000.0, 20000.0, 15000.0, 10000.0, 7500.0, 5000.0, 4000.0, 3000.0, 
-                   2000.0, 1000.0, 500.0, 400.0, 300.0, 200.0, 100.0, 0.0 ]
-          errors: [ 1.2, 1.2, 1.2, 1.1, 0.9, 0.8, 0.8, 0.8, 0.8, 0.8,
-                    0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.9, 1.2, 1.2, 1.0,
-                    0.8, 0.8, 0.9, 0.95, 1.0, 1.25, 1.5, 1.5, 1.5, 1.5,
-                    1.5, 1.5, 1.5 ]
-
-### Adjusted error after initial assignment
-##  - filter: Perform Action
-##    filter variables:
-##    - name: airTemperature
-##    action:
-##      name: inflate error
-##      inflation variable:
-##        name: ObsFunction/ObsErrorFactorConventional
-##        options:
-##          test QCflag: PreQC
-##          test QCthreshold: 3
-##          inflate variables: [airTemperature]
-##          pressure: MetaData/pressure
-##          distance threshold: -1.
-##    defer to post: true
-
-  # Save AdjustObsErrorData for diagnostics
-  - filter: Variable Assignment
-    assignments:
-    - name: AdjustObsErrorData/airTemperature
-      type: float
-      function:
-        name: ObsFunction/Arithmetic
-        options:
-          variables:
-          - name: ObsErrorData/airTemperature
-    defer to post: true
-
-  # inflate error, x1.2 for PreQC = 3,7
-  - filter: Perform Action
-    filter variables:
-    - name: airTemperature
-    action:
-      name: inflate error
-      inflation factor: 1.2
-    where:
-    - variable: PreQC/airTemperature
-      is_in: [3 7]
-    defer to post: true
-
-  # inflate error, x1.2  at pressure < 10000 Pa.
-  - filter: Perform Action
-    filter variables:
-    - name: airTemperature
-    action:
-      name: inflate error
-      inflation factor: 1.2
-    where:
-    - variable: MetaData/pressure
-      minvalue: 0
-      maxvalue: 9999
-    defer to post: true
+############ Air Temperature  ########################  
 
   ## error inflation based on pressure check
   - filter: Perform Action
@@ -471,20 +627,40 @@
         name: TempObsErrorData/airTemperature
       is_defined:
     defer to post: true
-  # Screen data by PreUseFlag
-  # PreUseFlag is assigned in reading programs in GSI.
-  - filter: Perform Action
-    filter variables:
-    - name: airTemperature
+
+
+# Ignore this test, just use the QualityMarker check below
+#  # Screen data by PreUseFlag
+#  # PreUseFlag is assigned in reading programs in GSI.
+#  - filter: Perform Action
+#    filter variables:
+#    - name: airTemperature
+#    where:
+#    - variable: PreUseFlag/airTemperature
+#      # PreUseFlag should =< ijter ( # of outloop(0,1,2) + 1) in GSI
+#      minvalue: 1
+#    action:
+#      name: reject
+
+  # Create PreUseFlag group variable (usage in GSI read_prepbufr)
+  # Initialize
+  - filter: Variable Assignment
+    assignments:
+    - name: PreUseFlag/airTemperature
+      type: int
+      source variable: QualityMarker/airTemperature
+
+  - filter: Variable Assignment
     where:
-    - variable: PreUseFlag/airTemperature
-      # PreUseFlag should =< ijter ( # of outloop(0,1,2) + 1) in GSI
-      minvalue: 1
-    action:
-      name: reject
+    - variable:
+        name: PreUseFlag/airTemperature
+      is_in: 1-15
+    assignments:
+    - name: PreUseFlag/airTemperature
+      value: 0
 
   # Background  check
-  # ratio threshold 8.0 if PreQC /= 3
+  # ratio threshold 8.0 if QualityMarker /= 3
   - filter: Background Check
     filter variables:
     - name: airTemperature
@@ -492,10 +668,10 @@
     action:
       name: reject
     where:
-    - variable: PreQC/airTemperature
+    - variable: QualityMarker/airTemperature
       is_not_in: [3]
     defer to post: true
-  # ratio threshold 8.0 * 0.7 = 5.6 if PreQC = 3
+  # ratio threshold 8.0 * 0.7 = 5.6 if QualityMarker = 3
   - filter: Background Check
     filter variables:
     - name: airTemperature
@@ -503,7 +679,7 @@
     action:
       name: reject
     where:
-    - variable: PreQC/airTemperature
+    - variable: QualityMarker/airTemperature
       is_in: [3]
     defer to post: true
   # Re-assign error ObsErrorData/aireTemperature <--- TempObsErrorData/aireTemperature
@@ -539,125 +715,9 @@
     action:
       name: inflate error
       inflation factor: 1.25
+
+############ Virtual Temperature  ########################  
   
-  
-
-  # GeoVaLs for Driving Observation Operators (testing mode)
-  # --------------------------------------------------------
-  geovals:
-    filename: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}_geoval{{atmosphere_obsdatain_suffix}}"
-
-  # Passed benchmark for UFO testing
-  # --------------------------------
-  passedBenchmark: 0
-
--
-  # Observation Space (I/O)
-  # -----------------------
-  obs space:
-    name: sondes
-    obsdatain:
-      engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}{{atmosphere_obsdatain_suffix}}"
-      obsgrouping:
-        group variables: ["stationIdentification"]
-        sort variable: "pressure"
-        sort order: "descending"
-    obsdataout:
-      engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}{{observation_from_jcb}}{{atmosphere_obsdataout_suffix}}"
-    io pool:
-      max pool size: 1
-    simulated variables: [virtualTemperature]
-
-
-  obs operator:
-    name: Composite
-    components:
-    - name: VertInterp
-      variables:
-      - name: virtualTemperature
-  
-  obs post filters:
-  
-  # Air temperature
-  # ---------------
-  # Error assignments
-  # initial error
-  - filter: Perform Action
-    filter variables:
-    - name: virtualTemperature
-    action:
-      name: assign error
-      error function:
-        name: ObsFunction/ObsErrorModelStepwiseLinear
-        options:
-          xvar:
-            name: MetaData/pressure
-          xvals: [ 110000.0, 105000.0, 100000.0, 95000.0, 90000.0, 85000.0, 80000.0, 75000.0,
-                   70000.0, 65000.0, 60000.0, 55000.0, 50000.0, 45000.0, 40000.0, 35000.0, 
-                   30000.0, 25000.0, 20000.0, 15000.0, 10000.0, 7500.0, 5000.0, 4000.0, 3000.0, 
-                   2000.0, 1000.0, 500.0, 400.0, 300.0, 200.0, 100.0, 0.0 ]
-          errors: [ 1.2, 1.2, 1.2, 1.1, 0.9, 0.8, 0.8, 0.8, 0.8, 0.8,
-                    0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.9, 1.2, 1.2, 1.0,
-                    0.8, 0.8, 0.9, 0.95, 1.0, 1.25, 1.5, 1.5, 1.5, 1.5,
-                    1.5, 1.5, 1.5 ]
-
-### Adjusted error after initial assignment
-##  - filter: Perform Action
-##    filter variables:
-##    - name: virtualTemperature
-##    action:
-##      name: inflate error
-##      inflation variable:
-##        name: ObsFunction/ObsErrorFactorConventional
-##        options:
-##          test QCflag: PreQC
-##          test QCthreshold: 3
-##          inflate variables: [virtualTemperature]
-##          pressure: MetaData/pressure
-##          distance threshold: -1.
-##    defer to post: true
-
-  # Save AdjustObsErrorData for diagnostics
-  - filter: Variable Assignment
-    assignments:
-    - name: AdjustObsErrorData/virtualTemperature
-      type: float
-      function:
-        name: ObsFunction/Arithmetic
-        options:
-          variables:
-          - name: ObsErrorData/virtualTemperature
-    defer to post: true
-
-  # inflate error, x1.2 for PreQC = 3,7
-  - filter: Perform Action
-    filter variables:
-    - name: virtualTemperature
-    action:
-      name: inflate error
-      inflation factor: 1.2
-    where:
-    - variable: PreQC/virtualTemperature
-      is_in: [3 7]
-    defer to post: true
-
-  # inflate error, x1.2  at pressure < 10000 Pa.
-  - filter: Perform Action
-    filter variables:
-    - name: virtualTemperature
-    action:
-      name: inflate error
-      inflation factor: 1.2
-    where:
-    - variable: MetaData/pressure
-      minvalue: 0
-      maxvalue: 9999
-    defer to post: true
-
   ## error inflation based on pressure check
   - filter: Perform Action
     filter variables:
@@ -714,20 +774,22 @@
         name: TempObsErrorData/virtualTemperature
       is_defined:
     defer to post: true
-  # Screen data by PreUseFlag
-  # PreUseFlag is assigned in reading programs in GSI.
-  - filter: Perform Action
-    filter variables:
-    - name: virtualTemperature
-    where:
-    - variable: PreUseFlag/virtualTemperature
-      # PreUseFlag should =< ijter ( # of outloop(0,1,2) + 1) in GSI
-      minvalue: 1
-    action:
-      name: reject
+
+# Ignore this test, just use the QualityMarker check below
+#  # Screen data by PreUseFlag
+#  # PreUseFlag is assigned in reading programs in GSI.
+#  - filter: Perform Action
+#    filter variables:
+#    - name: virtualTemperature
+#    where:
+#    - variable: PreUseFlag/virtualTemperature
+#      # PreUseFlag should =< ijter ( # of outloop(0,1,2) + 1) in GSI
+#      minvalue: 1
+#    action:
+#      name: reject
 
   # Background  check
-  # ratio threshold 8.0 if PreQC /= 3
+  # ratio threshold 8.0 if QualityMarker /= 3
   - filter: Background Check
     filter variables:
     - name: virtualTemperature
@@ -735,10 +797,10 @@
     action:
       name: reject
     where:
-    - variable: PreQC/virtualTemperature
+    - variable: QualityMarker/virtualTemperature
       is_not_in: [3]
     defer to post: true
-  # ratio threshold 8.0 * 0.7 = 5.6 if PreQC = 3
+  # ratio threshold 8.0 * 0.7 = 5.6 if QualityMarker = 3
   - filter: Background Check
     filter variables:
     - name: virtualTemperature
@@ -746,7 +808,7 @@
     action:
       name: reject
     where:
-    - variable: PreQC/virtualTemperature
+    - variable: QualityMarker/virtualTemperature
       is_in: [3]
     defer to post: true
   # Re-assign error ObsErrorData/aireTemperature <--- TempObsErrorData/aireTemperature
@@ -783,105 +845,7 @@
       name: inflate error
       inflation factor: 1.25
   
-  
-
-  # GeoVaLs for Driving Observation Operators (testing mode)
-  # --------------------------------------------------------
-  geovals:
-    filename: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}_geoval{{atmosphere_obsdatain_suffix}}"
-
-  # Passed benchmark for UFO testing
-  # --------------------------------
-  passedBenchmark: 0
-
--
-  # Observation Space (I/O)
-  # -----------------------
-  obs space:
-    name: sondes
-    obsdatain:
-      engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}{{atmosphere_obsdatain_suffix}}"
-      obsgrouping:
-        group variables: ["stationIdentification"]
-        sort variable: "pressure"
-        sort order: "descending"
-    obsdataout:
-      engine:
-        type: H5File
-        obsfile: "{{atmosphere_obsdataout_path}}/{{atmosphere_obsdataout_prefix}}{{observation_from_jcb}}{{atmosphere_obsdataout_suffix}}"
-    io pool:
-      max pool size: 1
-    simulated variables: [windEastward, windNorthward]
-
-
-  obs operator:
-    name: Composite
-    components:
-  
-    - name: VertInterp
-      variables:
-      - name: windEastward
-      - name: windNorthward
-      # Hofx scaling
-      hofx scaling field: SurfaceWindScalingPressure
-      hofx scaling field group: DerivedVariables
-  
-  obs prior filters:
-  
-  # Apply variable changes needed for performing wind scaling
-  # ---------------------------------------------------------
-  - filter: Variable Transforms
-    Transform: SurfaceWindScalingPressure
-    SkipWhenNoObs: False
-  
-  obs post filters:
-  
-  - filter: Bounds Check
-    filter variables:
-    - name: windEastward
-    - name: windNorthward
-    minvalue: -135
-    maxvalue: 135
-
-  # Assign the initial observation error, based on height/pressure
-  - filter: Perform Action
-    filter variables:
-    - name: windEastward
-    - name: windNorthward
-    action:
-      name: assign error
-      error function:
-        name: ObsErrorModelStepwiseLinear@ObsFunction
-        options:
-          xvar:
-            name: MetaData/pressure
-          xvals:  [ 110000.0, 105000.0, 100000.0, 95000.0, 90000.0, 85000.0, 80000.0, 75000.0, 70000.0, 65000.0,
-                    60000.0, 55000.0, 50000.0, 45000.0, 40000.0, 35000.0, 30000.0, 25000.0, 20000.0, 15000.0,
-                    10000.0, 7500.0, 5000.0, 4000.0, 3000.0, 2000.0, 1000.0, 500.0, 400.0, 300.0, 200.0, 100.0, 0.0 ]
-          # When nvqc is true all errors are scaled by 1.2. Seems pointless to put in an
-          # extra calculation, so just scaling here. (but alas we cannot do that due to the surface pressure check)
-          #errors: [ 1.75, 1.75, 1.75, 1.875, 1.875, 1.875, 2.0, 2.0, 2.0, 2.25, 2.375, 2.5, 2.625, 2.875, 3.25,
-          #          3.5, 3.75, 4.0, 3.375, 3.0, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625, 2.625,
-          #          2.625, 2.625, 2.625, 2.625 ]
-          errors: [ 1.4, 1.4, 1.4, 1.5, 1.5, 1.5, 1.6, 1.6, 1.6, 1.8, 1.9, 2.0, 2.1, 2.3, 2.6,
-                    2.8, 3.0, 3.2, 2.7, 2.4, 2.1, 2.1, 2.1, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52, 2.52 ]
-
-  # Reject all obs with PreQC > 3
-  - filter: RejectList
-    apply at iterations: 0,1
-    filter variables:
-    - name: windEastward
-    - name: windNorthward
-    where:
-    - variable: PreQC/windEastward
-      is_in: 4-15
-      value: is_not_valid
-    where operator: or
-    action:
-      name: reject
-  
+############ Vector Wind  ########################  
   #- filter: Perform Action
   #  filter variables:
   #  - name: windEastward
@@ -1005,6 +969,7 @@
           variables:
           - name: ObsErrorData/windEastward
     defer to post: true
+
   # assign TempObsErrorData/stationPressure <--- ObsErrorData
   - filter: Variable Assignment
     assignments:
@@ -1075,6 +1040,9 @@
       name: inflate error
       inflation factor: 1.25
   
+############ Air Temperature  ########################  
+############ Virtual Temperature  ########################  
+############ Vector Wind  ########################  
 
   # GeoVaLs for Driving Observation Operators (testing mode)
   # --------------------------------------------------------
