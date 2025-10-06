@@ -7,7 +7,7 @@
     obsdatain:
       engine:
         type: H5File
-        obsfile: "{{snow_prepobs_path}}/{{snow_obsdatain_prefix}}snocvr_snomad.tm00.nc"
+        obsfile: "{{snow_prepobs_path}}/{{snow_obsdatain_prefix}}{{observation_from_jcb}}.tm00.nc"
         missing file action: warn
       obsgrouping:
         group variables: [stationIdentification]
