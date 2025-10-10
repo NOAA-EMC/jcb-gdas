@@ -4,7 +4,6 @@
       engine:
         type: H5File
         obsfile: {{ atmosphere_obsdatain_path }}/atmos_gsi/sfc_ps_obs_{{ stat_current_cycle_YMDH }}.nc4
-            input file: "sfc_ps_obs_{{ current_cycle | to_YMDH }}.nc4"
     simulated variables: ['stationPressure']
     observed variables: ['stationPressure']
   statistics to compute: ['mean', 'count', 'RMS']
