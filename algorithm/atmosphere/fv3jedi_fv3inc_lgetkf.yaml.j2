@@ -94,10 +94,10 @@ members from template:
       datapath: ./anl/mem%mem%
       filename: cubed_sphere_grid_atminc.jedi.nc
     fv3 increment output:
-      filetype: cube sphere history
-      provider: ufs
+      filetype: fms restart
+      is restart: false
       datapath: ./anl/mem%mem%
-      filename: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atminc.nc
+      filename__nonrestart: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atminc.nc
       field io names:
         eastward_wind: u_inc
         northward_wind: v_inc

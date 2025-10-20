@@ -4,6 +4,11 @@
   # -----------------------
   obs space:
     name: gnssrobndnbam_s6
+{% if letkf_app | default(false) %}
+    distribution:
+      name: "{{distribution_type}}"
+      halo size: 1250e3
+{% endif %}
     obsdatain:
       engine:
         type: H5File
@@ -92,3 +97,12 @@
       name: RONBAMErrInflate
     defer to post: true
   # --------------------------------
+
+{% if letkf_app | default(false) %}
+  # Observation Localizations (LocalEnsembleDA)
+  # -------------------------------------------
+  obs localizations:
+  - localization method: Horizontal Gaspari-Cohn
+    lengthscale: 1250e3
+    max nobs: 10000
+{% endif %}
