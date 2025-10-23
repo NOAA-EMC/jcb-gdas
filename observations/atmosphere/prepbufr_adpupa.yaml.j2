@@ -131,7 +131,7 @@
     assignments:
     - name: PreQC/stationPressure
       type: int
-      source variable: QualityMarker/pressure
+      source variable: QualityMarker/stationPressure
 
   # Create PreUseFlag group variable (usage in GSI read_prepbufr)
   # Initialize
@@ -251,7 +251,7 @@
         name: ObsType/pressure
       is_in: 180
     - variable:
-        name: MetaData/observationSubTypeNum
+        name: ObsSubType/stationPressure
       is_in: 0
     action:
       name: inflate error
