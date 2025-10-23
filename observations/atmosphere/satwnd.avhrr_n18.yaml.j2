@@ -1,6 +1,6 @@
 - obs space:
     name: satwind_avhrr_n18
-{% if letkf_app | default(false) %}
+{% if atm_letkf_app | default(false) %}
     distribution:
       name: "{{distribution_type}}"
       halo size: 1250e3
@@ -293,7 +293,7 @@
 
   # End of Filters
 
-{% if letkf_app | default(false) %}
+{% if atm_letkf_app | default(false) %}
   # Observation Localizations (LocalEnsembleDA)
   # -------------------------------------------
   obs localizations:

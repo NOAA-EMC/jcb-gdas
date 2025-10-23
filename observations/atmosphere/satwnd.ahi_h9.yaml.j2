@@ -4,7 +4,7 @@
   # -----------------------
   obs space:
     name: satwind_ahi_h9
-{% if letkf_app | default(false) %}
+{% if atm_letkf_app | default(false) %}
     distribution:
       name: "{{distribution_type}}"
       halo size: 1250e3
@@ -458,7 +458,7 @@
   #    inflation factor: 1.25
   # End of Filters 
 
-{% if letkf_app | default(false) %}
+{% if atm_letkf_app | default(false) %}
   # Observation Localizations (LocalEnsembleDA)
   # -------------------------------------------
   obs localizations:

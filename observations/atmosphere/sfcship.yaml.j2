@@ -4,7 +4,7 @@
   # -----------------------
   obs space:
     name: sfcship
-{% if letkf_app | default(false) %}
+{% if atm_letkf_app | default(false) %}
     distribution:
       name: "{{distribution_type}}"
       halo size: 1250e3
@@ -94,7 +94,7 @@
         name: ObsType/stationPressure
       is_in: 183
 
-{% if letkf_app | default(false) %}
+{% if atm_letkf_app | default(false) %}
   # Observation Localizations (LocalEnsembleDA)
   # -------------------------------------------
   obs localizations:
