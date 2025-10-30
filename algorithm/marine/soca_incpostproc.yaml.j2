@@ -113,3 +113,21 @@ ice analysis postprocessing:
   - sea_ice_thickness
   - sea_ice_snow_thickness
 
+product output:
+  debug: true
+  gaussian grid:
+    grid resolution: 12
+    gaussian output files:
+      sfcinc: "gdas.t00z.dsfcanl.soca"    # dft and dicec
+      sfcanl: "gdas.t00z.sfcanl.soca"     # Tref and icec
+    min thickness for mask: 0.1  # meters
+    flooding iterations: 5
+    local interpolator type: "atlas interpolator"
+    interpolation method:
+      type: finite-element
+  native grid:
+    datadir: ./
+    date: {{ marine_window_middle_iso }}
+    exp: sfc_ana_prod
+    type: incr
+    output file: sfc_ana_prod.nc
