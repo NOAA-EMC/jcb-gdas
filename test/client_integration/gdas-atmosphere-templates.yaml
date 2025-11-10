@@ -51,6 +51,9 @@ atmosphere_layout_y: 2
 atmosphere_npx_ges: 361
 atmosphere_npy_ges: 361
 atmosphere_npz_ges: 127
+atmosphere_npx_his: 361
+atmosphere_npy_his: 361
+atmosphere_npz_his: 127
 atmosphere_npx_anl: 361
 atmosphere_npy_anl: 361
 atmosphere_npz_anl: 127
