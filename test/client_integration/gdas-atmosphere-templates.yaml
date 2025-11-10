@@ -81,6 +81,8 @@ atmosphere_layout_gsib_y: 2
 # Minimization options
 atmosphere_ninner_1: 4
 atmosphere_ninner_2: 2
+atmosphere_grad_red_1: 1e-5
+atmosphere_grad_red_2: 1e-5
 
 # Forecasting
 atmosphere_forecast_length: PT6H
