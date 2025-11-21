@@ -1,0 +1,11 @@
+time window:
+  begin: '{{ stat_current_cycle_iso }}'
+  length: '{{ window_length }}'
+  bound to include: '{{ bound_to_include | default("begin", true) }}'
+
+obs spaces:
+{% for obspace in observations %}
+{% filter indent(width=2) %}
+{% include obspace + '_template.yaml.j2' %}
+{% endfilter %}
+{% endfor %}
