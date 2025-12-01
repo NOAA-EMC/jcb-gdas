@@ -7,7 +7,7 @@
 {% if atm_letkf_app | default(false) %}
     distribution:
       name: "{{distribution_type}}"
-      halo size: 1250e3
+      halo size: {{atm_letkf_dist_halo_size}}
 {% endif %}
     obsdatain:
       engine:
@@ -605,9 +605,9 @@
   # Observation Localizations (LocalEnsembleDA)
   # -------------------------------------------
   obs localizations:
-  - localization method: Horizontal Gaspari-Cohn
-    lengthscale: 1250e3
-    max nobs: 10000
+  - localization method: {{localization_method}}
+    lengthscale: {{hl_lengthscale}}
+    max nobs: {{max_nobs}}
 {% endif %}
 
   # GeoVaLs for Driving Observation Operators (testing mode)

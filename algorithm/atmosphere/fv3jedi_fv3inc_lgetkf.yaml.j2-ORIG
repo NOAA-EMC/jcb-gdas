@@ -94,7 +94,7 @@ members from template:
       datapath: ./anl/mem%mem%
       filename: cubed_sphere_grid_atminc.jedi.nc
     fv3 increment output:
-{% if atm_enkfonly %}
+{% if DOENKFONLY_ATM %}
       filetype: fms restart
       is restart: false
       filename_nonrestart: {{ atmosphere_ensemble_analysis_prefix }}cubed_sphere_grid_atminc.nc
