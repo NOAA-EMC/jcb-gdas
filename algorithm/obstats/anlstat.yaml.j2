@@ -3,7 +3,7 @@ time window:
   length: '{{ window_length }}'
   bound to include: '{{ bound_to_include | default("begin", true) }}'
 
-obs spaces:
+observers:
 {% for obspace in observations %}
 {% filter indent(width=2) %}
 {% include obspace + '_template.yaml.j2' %}
