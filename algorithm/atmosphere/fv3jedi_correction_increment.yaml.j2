@@ -27,9 +27,9 @@ variational increment geometry:
   layout:
   - {{ atmosphere_layout_x }}
   - {{ atmosphere_layout_y }}
-  npx: {{ atmosphere_npx_ges }}
-  npy: {{ atmosphere_npy_ges }}
-  npz: {{ atmosphere_npz_ges }}
+  npx: {{ atmosphere_npx_anl }}
+  npy: {{ atmosphere_npy_anl }}
+  npz: {{ atmosphere_npz_anl }}
 ensemble mean analysis geometry:
   fms initialization:
     namelist filename: ./fv3jedi/fmsmpp.nml
@@ -54,7 +54,7 @@ correction increment geometry:
   npz: {{ atmosphere_npz_anl }}
 forecast hours:
 {% for ihour in range( atmosphere_iau_hours | length ) %}
-- datetime: {{ atmosphere_iau_times_iso[ihour] }}
+- datetime: '{{ atmosphere_iau_times_iso[ihour] }}'
   deterministic background:
     filetype: cube sphere history
     provider: ufs
