@@ -3,15 +3,15 @@
     obsdatain:
       engine:
         type: H5File
-        obsfile: {{ aero_obsdatain_path }}/diag_{{ obspace }}_aod_{{ stat_current_cycle_YMDH }}.nc
+        obsfile: {{ stat_obsdatain_path }}/diag_{{ obspace }}_aod_{{ stat_current_cycle_YMDH }}.nc
     simulated variables: ['aerosolOpticalDepth']
     observed variables: ['aerosolOpticalDepth']
   variables: ['aerosolOpticalDepth']
   groups to process: ['ombg', 'oman']
   qc groups: ['EffectiveQC0', 'EffectiveQC1']
   statistics to compute: ['mean', 'count', 'RMS']
-  output file: "{{ aero_obsdataout_path }}/{{ obspace }}_{{ stat_current_cycle_YMDH }}_output_aod.nc"
-  output ascii file: "{{ aero_obsdataout_path }}/{{ obspace }}_ioda_stats.txt"
+  output file: "{{ stat_obsdataout_path }}/{{ obspace }}_{{ stat_current_cycle_YMDH }}_output_aod.nc"
+  output ascii file: "{{ stat_obsdataout_path }}/{{ obspace }}_ioda_stats.txt"
   regular grid binning:
     bin size in degrees: 5.0
     use negative longitudes: true 
