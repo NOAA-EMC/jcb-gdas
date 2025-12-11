@@ -4,11 +4,6 @@
   # -----------------------
   obs space:
     name: Aircraft
-{% if atm_letkf_app | default(false) %}
-    distribution:
-      name: "{{distribution_type}}"
-      halo size: {{atm_letkf_dist_halo_size}}
-{% endif %}
     obsdatain:
       engine:
         type: H5File
@@ -284,14 +279,6 @@
       name: reject
     defer to post: true
 
-{% if atm_letkf_app | default(false) %}
-  # Observation Localizations (LocalEnsembleDA)
-  # -------------------------------------------
-  obs localizations:
-  - localization method: {{localization_method}}
-    lengthscale: {{hl_lengthscale}}
-    max nobs: {{max_nobs}}
-{% endif %}
 
   # GeoVaLs for Driving Observation Operators (testing mode)
   # --------------------------------------------------------

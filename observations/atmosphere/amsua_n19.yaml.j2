@@ -4,11 +4,6 @@
   # -----------------------
   obs space:
     name: AMSUA N19
-{% if atm_letkf_app | default(false) %}
-    distribution:
-      name: "{{distribution_type}}"
-      halo size: {{atm_letkf_dist_halo_size}}
-{% endif %}
     obsdatain:
       engine:
         type: H5File
@@ -495,16 +490,6 @@
       minvalue: 0.99
     action:
       name: reject
-
-{% if atm_letkf_app | default(false) %}
-  # Observation Localizations (LocalEnsembleDA)
-  # -------------------------------------------
-  obs localizations:
-  - localization method: {{localization_method}}
-    lengthscale: {{hl_lengthscale}}
-    max nobs: {{max_nobs}}
-{% endif %}
-
   # GeoVaLs for Driving Observation Operators (testing mode)
   # --------------------------------------------------------
   geovals:
