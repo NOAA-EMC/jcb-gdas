@@ -1,17 +1,17 @@
 - obs space:
-    name: madis_snow
+    name: sfcsno
     obsdatain:
       engine:
         type: H5File
-        obsfile: "{{ snow_obsdatain_path }}/{{ snow_obsdatain_prefix }}{{ observation_from_jcb }}{{ snow_obsdatain_suffix }}"
+        obsfile: "{{ stat-snow_obsdatain_path }}/{{ stat-snow_obsdatain_prefix }}{{ observation_from_jcb }}{{ stat-snow_obsdatain_suffix }}"
     simulated variables: ['totalSnowDepth']
     observed variables: ['totalSnowDepth']
   statistics to compute: ['mean', 'count', 'RMS']
   variables: [totalSnowDepth]
   groups to process: ['ombg', 'oman']
   qc groups: ['EffectiveQC0', 'EffectiveQC1']
-  output file: "{{ snow_obsdataout_path }}/{{ snow_obsdataout_prefix }}{{ observation_from_jcb }}{{ snow_obsdataout_suffix }}"
-  output ascii file: "{{ snow_obsdataout_path }}/{{ observation_from_jcb }}_ioda_stats.txt"
+  output file: "{{ stat-snow_obsdataout_path }}/{{ stat-snow_obsdataout_prefix }}{{ observation_from_jcb }}{{ stat-snow_obsdataout_suffix }}"
+  output ascii file: "{{ stat-snow_obsdataout_path }}/{{ observation_from_jcb }}_ioda_stats.txt"
   regular grid binning:
     bin size in degrees: 1.0
     use negative longitudes: true
