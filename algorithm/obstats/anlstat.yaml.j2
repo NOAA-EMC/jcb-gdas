@@ -4,7 +4,7 @@ time window:
   bound to include: '{{ bound_to_include | default("begin", true) }}'
 
 observers:
-{% for obspace in observations %}
+{% for observation_from_jcb in observations %}
 {% filter indent(width=2) %}
 {% include model + '_' + obspace + '_template.yaml.j2' %}
 {% endfilter %}
