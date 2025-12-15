@@ -3,15 +3,15 @@
     obsdatain:
       engine:
         type: H5File
-        obsfile: "{{ stat-atmosphere_obsdatain_path }}/{{ stat-atmosphere_obsdatain_prefix }}{{ observation_from_jcb }}{{ stat-atmosphere_obsdatain_suffix }}"
+        obsfile: "{{ stat_atmosphere_obsdatain_path }}/{{ stat_atmosphere_obsdatain_prefix }}{{ observation_from_jcb }}{{ stat_atmosphere_obsdatain_suffix }}"
     simulated variables: ['stationPressure']
     observed variables: ['stationPressure']
   statistics to compute: ['mean', 'count', 'RMS']
   variables: ['stationPressure']
   groups to process: ['ombg', 'oman']
   qc groups: ['EffectiveQC0', 'EffectiveQC1']  
-  output file: "{{ stat-atmosphere_obsdataout_path }}/{{ stat-atmosphere_obsdataout_prefix }}{{ observation_from_jcb }}{{ stat-atmosphere_obsdataout_suffix }}"
-  output ascii file: "{{ stat-atmosphere_obsdataout_path }}/{{ observation_from_jcb }}_ioda_stats.txt"
+  output file: "{{ stat_atmosphere_obsdataout_path }}/{{ stat_atmosphere_obsdataout_prefix }}{{ observation_from_jcb }}{{ stat_atmosphere_obsdataout_suffix }}"
+  output ascii file: "{{ stat_atmosphere_obsdataout_path }}/{{ observation_from_jcb }}_ioda_stats.txt"
   regular grid binning:
     bin size in degrees: 1.0
     use negative longitudes: true 

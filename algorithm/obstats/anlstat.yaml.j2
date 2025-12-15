@@ -6,6 +6,6 @@ time window:
 observers:
 {% for observation_from_jcb in observations %}
 {% filter indent(width=2) %}
-{% include model + '_' + obspace + '_template.yaml.j2' %}
+{% include observation_from_jcb + '.yaml.j2' %}
 {% endfilter %}
 {% endfor %}
