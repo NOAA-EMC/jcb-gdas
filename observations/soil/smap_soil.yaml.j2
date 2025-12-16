@@ -172,16 +172,16 @@
 #        flag: elevation_bkgdiff
 #        ignore: rejected observations
 #      - name: reject
-    - filter: BlackList
-      where:
-      - variable:
-          name: MetaData/stationIdentification
-        is_in: {{ get_conventional_rejected_stations(observation_from_jcb) }}
-      actions:
-      - name: set
-        flag: rejectlist
-        ignore: rejected observations
-      - name: reject
+#    - filter: BlackList
+#      where:
+#      - variable:
+#          name: MetaData/stationIdentification
+#        is_in: {{ get_conventional_rejected_stations(observation_from_jcb) }}
+#      actions:
+#      - name: set
+#        flag: rejectlist
+#        ignore: rejected observations
+#      - name: reject
   obs post filters:
     - filter: Background Check # gross error check
       filter variables:
