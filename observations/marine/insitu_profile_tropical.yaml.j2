@@ -4,6 +4,7 @@
       engine:
         type: H5File
         obsfile: "{{marine_obsdatain_path}}/{{marine_obsdatain_prefix}}{{observation_from_jcb}}{{marine_obsdatain_suffix}}"
+        missing file action: warn
     obsdataout:
       engine:
         type: H5File
@@ -12,6 +13,11 @@
     observed variables: [waterTemperature]
     io pool:
       max pool size: 1
+{% if marine_letkf_app | default(false) %}
+    distribution:
+      name: Halo
+      halo size: {{ marine_letkf_dist_halo_size }}
+{% endif %}
   obs operator:
     name: Composite
     components:
@@ -30,8 +36,14 @@
           variables:
           - ObsError/waterTemperature
           coefs:
-          - 1000.0
-{% if letkf_app | default(false) %}
+          - 100.0
+  - filter: Domain Check
+    action:
+      name: passivate
+    where:
+    - variable: {name: GeoVaLs/sea_surface_temperature}
+      maxvalue: -4.0
+{% if marine_letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3

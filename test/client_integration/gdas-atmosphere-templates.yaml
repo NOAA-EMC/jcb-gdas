@@ -36,7 +36,7 @@ window_length: PT6H
 bound_to_include: begin
 minimizer: DRPCG
 final_diagnostics_departures: anlmob
-analysis_variables: [ua,va,t,ps,sphum,ice_wat,liq_wat,o3mr]
+analysis_variables: [eastward_wind,northward_wind,air_temperature,air_pressure_at_surface,water_vapor_mixing_ratio_wrt_moist_air,ice_wat,liq_wat,o3mr]
 number_of_outer_loops: 2
 
 # Testing
@@ -51,6 +51,9 @@ atmosphere_layout_y: 2
 atmosphere_npx_ges: 361
 atmosphere_npy_ges: 361
 atmosphere_npz_ges: 127
+atmosphere_npx_his: 361
+atmosphere_npy_his: 361
+atmosphere_npz_his: 127
 atmosphere_npx_anl: 361
 atmosphere_npy_anl: 361
 atmosphere_npz_anl: 127
@@ -69,25 +72,40 @@ atmosphere_ensemble_analysis_prefix: "anl_"
 atmosphere_background_time_iso: '2024-02-02T00:00:00Z'
 
 # Background error
-
 atmosphere_bump_data_directory: DATA/berror
 atmosphere_gsibec_path: DATA/berror
 atmosphere_number_ensemble_members: 3
 atmosphere_layout_gsib_x: 2
 atmosphere_layout_gsib_y: 2
 
+# Minimization options
+atmosphere_ninner_1: 4
+atmosphere_ninner_2: 2
+atmosphere_grad_red_1: 1e-5
+atmosphere_grad_red_2: 1e-5
 
 # Forecasting
 atmosphere_forecast_length: PT6H
 atmosphere_forecast_timestep: PT1H
 
 # Write final increment on Gaussian grid in variational
+atmosphere_variational_increment_type: "gaussian"
 atmosphere_final_increment_prefix: "./anl/atminc."
-
 
 # Observation things
 # ------------------
 observations: all_observations
+
+# JCB level option to replace obs filters
+# ---------------------------------------
+replace_obs_filters:
+  observations:
+    - abi_g16
+  override_filters:
+    - filter: PreQC
+      maxvalue: 1.0
+      action:
+        name: reject
 
 crtm_coefficient_path: "DATA/crtm/"
 
@@ -104,21 +122,25 @@ atmosphere_obsdataout_suffix: "_2024020100.nc"
 atmosphere_obsbiasin_path: DATA/obs
 atmosphere_obsbiasin_prefix: GPREFIX
 atmosphere_obsbiasin_suffix: ".satbias.nc"
+atmosphere_obsbiasin_acft_suffix: ".acft_out.nc"
 atmosphere_obstlapsein_prefix: GPREFIX
 atmosphere_obstlapsein_suffix: ".tlapse.txt"
 atmosphere_obsbiascovin_prefix: GPREFIX
 atmosphere_obsbiascovin_suffix: ".satbias_cov.nc"
+atmosphere_obsbiascovin_acft_suffix: ".acft_out_cov.nc"
 
 atmosphere_obsbiasout_path: DATA/bc
 atmosphere_obsbiasout_prefix: APREFIX
 atmosphere_obsbiasout_suffix: ".satbias.nc"
+atmosphere_obsbiasout_acft_suffix: ".acft_out.nc"
 atmosphere_obsbiascovout_prefix: APREFIX
 atmosphere_obsbiascovout_suffix: ".satbias_cov.nc"
+atmosphere_obsbiascovout_acft_suffix: ".acft_out_cov.nc"
 
 
 # Local Ensemble DA (LETKF)
 # -------------------------
-local_ensemble_da_solver: GETKF
+local_ensemble_da_solver: Deterministic GETKF
 
 increment_variables: [ua,va,DZ,delp,t,ps,sphum,ice_wat,liq_wat,o3mr]
 

@@ -3,11 +3,12 @@
   # Observation Space (I/O)
   # -----------------------
   obs space:
-    name: surface_ps
+    name: {{observation_from_jcb}}
     obsdatain:
       engine:
         type: H5File
         obsfile: "{{atmosphere_obsdatain_path}}/{{atmosphere_obsdatain_prefix}}{{observation_from_jcb}}{{atmosphere_obsdatain_suffix}}"
+        missing file action: warn
     obsdataout:
       engine:
         type: H5File
@@ -19,10 +20,10 @@
   # Observation Operator
   # --------------------
   obs operator:
-    name: SfcPCorrected
+    name: SfcCorrected
     variables:
     - name: stationPressure
-    da_psfc_scheme: GSI
+    correction scheme to use: GSL
     station_altitude: height
     geovar_sfc_geomz: height_above_mean_sea_level_at_surface
     geovar_geomz: geopotential_height
@@ -54,6 +55,7 @@
             name: ObsValue/stationPressure
           xvals: [80000, 75000, 70000, 65000, 60000, 55000]
           errors: [110, 120, 120, 120, 120, 1.0e+11]
+
   - filter: Perform Action
     filter variables:
     - name: stationPressure
@@ -70,6 +72,7 @@
             name: ObsValue/stationPressure
           xvals: [85000, 80000, 75000, 70000, 65000, 60000, 55000]
           errors: [120, 140, 140, 140, 140, 140, 1.0e+11]
+
   # Initial Error Assignments for SFCSHIP Observations 
   - filter: Perform Action
     filter variables:
@@ -87,6 +90,7 @@
             name: ObsValue/stationPressure
           xvals: [60000, 55000]
           errors: [130, 1.0e+11]
+
   - filter: Perform Action
     filter variables:
     - name: stationPressure
@@ -114,6 +118,7 @@
             name: ObsValue/stationPressure
           xvals: [80000, 75000, 70000, 65000, 60000, 55000]
           errors: [110, 120, 120, 120, 120, 1.0e+11]
+
   # Create PreQC group variable (pqm in GSI read_prepbufr)
   - filter: Variable Assignment
     assignments:
@@ -286,6 +291,7 @@
           - name: ObsValue/stationPressure
           - name: HofX/stationPressure
           coefs: [1, -1]
+
   - filter: Variable Assignment
     assignments:
     - name: DerivedMetaData/ObsErrorBoundSfcPressure1

@@ -4,6 +4,7 @@
       engine:
         type: H5File
         obsfile: "{{marine_obsdatain_path}}/{{marine_obsdatain_prefix}}{{observation_from_jcb}}{{marine_obsdatain_suffix}}"
+        missing file action: warn
       obsgrouping:
         group variables: [latitude, longitude, dateTime]
         sort variable: depth
@@ -17,6 +18,11 @@
     observed variables: [waterTemperature]
     io pool:
       max pool size: 1
+{% if marine_letkf_app | default(false) %}
+    distribution:
+      name: Halo
+      halo size: {{ marine_letkf_dist_halo_size }}
+{% endif %}
   obs operator:
     name: InsituTemperature
   obs error:
@@ -34,6 +40,7 @@
     - filter: Domain Check
       where:
       - variable: {name: GeoVaLs/sea_area_fraction}
+        value: is_valid
         minvalue: 0.5
 
   #-------------------------------------------------------------------------------
@@ -155,7 +162,7 @@
 
     #### Arctic Ocean
     #-----------------------------------------------------------------------------
-    
+
     - filter: Bounds Check
       filter variables: [{name: waterTemperature}]
       minvalue: -1.92
@@ -165,10 +172,10 @@
           name: MetaData/latitude
         minvalue: 60
 
-    - filter: Background Check
-      filter variables: [{name: waterTemperature}]
-      threshold: 5.0
-      absolute threshold: 5.0
+#    - filter: Background Check
+#      filter variables: [{name: waterTemperature}]
+#      threshold: 5.0
+#      absolute threshold: 5.0
 
     - filter: Perform Action
       action:
@@ -179,8 +186,8 @@
             variables:
             - ObsError/waterTemperature
             coefs:
-            - 1000.0
-{% if letkf_app | default(false) %}
+            - 100.0
+{% if marine_letkf_app | default(false) %}
   obs localizations:
   - localization method: Rossby
     base value: 100.0e3
