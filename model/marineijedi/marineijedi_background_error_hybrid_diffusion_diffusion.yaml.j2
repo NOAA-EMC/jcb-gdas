@@ -15,14 +15,14 @@ components:
           horizontal:
             filepath: ./staticb/hz_ocean
           vertical:
-            levels: {{ marine_ijedi_vt_levels }}
+            levels: {{ marineijedi_vt_levels }}
             filepath: ./staticb/vt_ocean
 
     saber outer blocks:
     - saber block name: StdDev
       read:
         model file:
-          date: '{{ marine_ijedi_stddev_time }}'
+          date: '{{ marineijedi_stddev_time }}'
           state variables:
           - sea_water_potential_temperature
           - sea_water_salinity
@@ -58,13 +58,13 @@ components:
   weight:
     value: 1.00
 
-{% if marine_ijedi_ensemble_b | default(false) %}
+{% if marineijedi_ensemble_b | default(false) %}
 - covariance:
     covariance model: SABER
     ensemble:
       members from template:
         template:
-          date: '{{ marine_ijedi_stddev_time }}'
+          date: '{{ marineijedi_stddev_time }}'
           state variables:
           - sea_water_potential_temperature
           - sea_water_salinity
@@ -85,7 +85,7 @@ components:
               sea_ice_thickness: hi_h
               sea_ice_snow_thickness: hs_h
         pattern: '%mem%'
-        nmembers: {{ marine_ijedi_number_ensemble_members }}
+        nmembers: {{ marineijedi_number_ensemble_members }}
     saber central block:
       saber block name: Ensemble
       localization:
@@ -104,7 +104,7 @@ components:
               vertical:
                 strategy: duplicated
   weight:
-    date: '{{ marine_ijedi_stddev_time }}'
+    date: '{{ marineijedi_stddev_time }}'
     io:
       filetype: mom6
       datapath: ./

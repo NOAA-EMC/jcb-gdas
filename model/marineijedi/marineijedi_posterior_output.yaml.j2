@@ -1,8 +1,8 @@
+date: '{{ marineijedi_window_begin_iso }}'
 io:
   filetype: mom6
-  datapath: {{ marine_ijedi_output_dir }}
-  ocn_file: {{ marine_ijedi_output_exp }}.an.nc
-  ice_file: {{ marine_ijedi_output_exp }}.ice.an.nc
+  datapath: letkf_output
+  ocn_file: letkf.%mem%.nc
   field io names:
     sea_water_potential_temperature: Temp
     sea_water_salinity: Salt

@@ -1,6 +1,6 @@
 members from template:
   template:
-    date: '{{ marine_ijedi_window_middle_iso }}'
+    date: '{{ marineijedi_window_middle_iso }}'
     state variables:
     - sea_water_salinity
     - sea_water_potential_temperature
@@ -8,7 +8,7 @@ members from template:
     - sea_ice_area_fraction
     io:
       filetype: mom6
-      datapath: {{ marine_ijedi_enspert_relpath }}/ens
+      datapath: {{ marineijedi_enspert_relpath }}/ens
       ocn_file: ocean.%mem%.nc
       ice_file: ice.%mem%.nc
       field io names:
@@ -17,4 +17,4 @@ members from template:
         sea_surface_height_above_geoid: ave_ssh
         sea_ice_area_fraction: aice_h
   pattern: '%mem%'
-  nmembers: {{ marine_ijedi_number_ensemble_members }}
+  nmembers: {{ marineijedi_number_ensemble_members }}

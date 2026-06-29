@@ -12,14 +12,14 @@ saber central block:
       horizontal:
         filepath: ./staticb/hz_ocean
       vertical:
-        levels: {{ marine_ijedi_vt_levels }}
+        levels: {{ marineijedi_vt_levels }}
         filepath: ./staticb/vt_ocean
 
 saber outer blocks:
 - saber block name: StdDev
   read:
     model file:
-      date: '{{ marine_ijedi_stddev_time }}'
+      date: '{{ marineijedi_stddev_time }}'
       state variables:
       - sea_water_potential_temperature
       - sea_water_salinity
